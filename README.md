@@ -1,4 +1,6 @@
 # Strukturformel-Zeichner
+_A project by SZ-YBBS_
+
 
 First Header | Second Header
 ------------ | -------------
