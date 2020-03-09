@@ -9,6 +9,7 @@ public class Model {
     }
 
     boolean calculate(String input){
+        this.input = input;
         return mainChain.regex(input);
     }
 
