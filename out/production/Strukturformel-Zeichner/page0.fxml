@@ -8,14 +8,15 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
-      <MenuBar prefHeight="20.0" prefWidth="600.0">
+      <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="32.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="Datei">
             <items>
@@ -36,23 +37,33 @@
               <MenuItem mnemonicParsing="false" text="Hilfe anzeigen" />
                   <MenuItem mnemonicParsing="false" text="Strukturformel-Zeichner" />
             </items>
+               <accelerator>
+                  <KeyCodeCombination alt="ANY" code="H" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
           </Menu>
         </menus>
       </MenuBar>
-      <VBox layoutY="22.0" prefWidth="600.0">
+      <ToolBar layoutX="659.0" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="32.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="-" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" text="||" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="32.0" text="X" />
+        </items>
+      </ToolBar>
+      <VBox layoutY="22.0" prefHeight="580.0" prefWidth="800.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER" prefHeight="100.0">
                <children>
-                  <TextField prefWidth="200.0" promptText="IUPAC-Nomenklatur" />
-                  <Button mnemonicParsing="false" text="Zeichnen" />
+                  <TextField prefHeight="30.0" prefWidth="200.0" promptText="IUPAC-Nomenklatur" />
+                  <Button mnemonicParsing="false" prefHeight="30.0" text="Zeichnen" />
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextArea editable="false" prefHeight="200.0" prefWidth="600.0" text="Info Info Info" />
+                  <TextArea disable="true" editable="false" maxHeight="100.0" minHeight="100.0" prefHeight="100.0" prefWidth="800.0" text="Info Info Info" wrapText="true" />
                </children>
             </HBox>
-            <Canvas height="200.0" width="600.0" />
+            <Canvas height="300.0" width="800.0" />
          </children>
       </VBox>
    </children>
