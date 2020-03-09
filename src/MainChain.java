@@ -16,7 +16,7 @@ public class MainChain {
     public ArrayList<Integer> double_bonds = new ArrayList<>();
     public ArrayList<Integer> triple_bonds = new ArrayList<>();
 
-    //Stores the input String, the regex the name (e.g. Prop) and the ending (e.g. an)
+    //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
     private String input = "";
     private String regex = "\\s?(\\w{3,4})(a?)(\\s?-?(\\d[\\d,]*)-?\\s?)?(\\w{2,})?([aei]n)$";
     private String name = "";
@@ -96,6 +96,24 @@ public class MainChain {
                 correct_input = false;
             }
 
+        } else if (double_bonds.size() >= 1) {
+            for (Integer double_bond : double_bonds) {
+                if (double_bond <= 0 || double_bond >= multibond_count.getValue()) {
+                    //Illegal Positions
+                    System.out.println("Wrong Positions [1 - " + (multibond_count.getValue() - 1) + "] would be correct");
+                    correct_input = false;
+                    break;
+                }
+            }
+        } else if (triple_bonds.size() >= 1) {
+            for (Integer triple_bonds : triple_bonds) {
+                if (triple_bonds <= 0 || triple_bonds >= multibond_count.getValue()) {
+                    //Illegal Positions
+                    System.out.println("Wrong Positions [1 - " + (multibond_count.getValue() - 1) + "] would be correct");
+                    correct_input = false;
+                    break;
+                }
+            }
         } else {
             if (multibond_char.equals("a")) {
                 //Incorrect a after Carbon syllable
@@ -109,6 +127,7 @@ public class MainChain {
                 System.out.println("Incorrect greek number syllable after carbon counting syllable");
                 correct_input = false;
             }
+
         }
 
         return correct_input;
@@ -141,10 +160,22 @@ public class MainChain {
     //Returns if the input was correct
     private boolean calc_multiple_bondings() {
         boolean result = false;
+
+        if ((ending.equals("en") || ending.equals("in")) && name.equals("Meth")) {
+            //Meth syllable with en or in
+            System.out.println("Meth" + ending + " doesn't exist!");
+            return false;
+        }
         if (ending.equals("en")) {
             String[] pos_string = multibond_positions.split(",");
             for (String s : pos_string) {
-                double_bonds.add(Integer.parseInt(s));
+                if (!double_bonds.contains(Integer.parseInt(s))) {
+                    double_bonds.add(Integer.parseInt(s));
+                } else {
+                    //Duplicate Position
+                    System.out.println("Duplicate Position of multibonds");
+                    return false;
+                }
                 result = true;
             }
             if (!result) {
@@ -156,13 +187,25 @@ public class MainChain {
         } else if (ending.equals("in")) {
             String[] pos_string = multibond_positions.split(",");
             for (String s : pos_string) {
-                triple_bonds.add(Integer.parseInt(s));
+                if (!triple_bonds.contains(Integer.parseInt(s))) {
+                    triple_bonds.add(Integer.parseInt(s));
+                } else {
+                    //Duplicate Position
+                    System.out.println("Duplicate Position of multibonds");
+                    return false;
+                }
                 result = true;
             }
 
             if (!result) {
                 System.out.println("Wrong ending \"in\"!");
                 //Ending in but no position given
+                return false;
+            }
+        } else if (ending.equals("an")) {
+            if (multibond_positions != null && !multibond_positions.equals("")) {
+                //Ending "an" but given multibond position
+                System.out.println("An Alkane cannot have a multibond position!");
                 return false;
             }
         }
