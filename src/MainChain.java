@@ -10,24 +10,31 @@ public class MainChain {
     int c_count;
     ArrayList<Integer> double_bondings;
     ArrayList<Integer> triple_bondings;
+    String positions;
 
-    MainChain(){
+    MainChain() {
 
-        regex = "\\s(\\w{3,6}a?(\\s\\-(\\d[\\d,]*)\\-\\s)?[aei]n)$";
+        regex = "\\s?(\\w{3,4}a?)(\\s?\\-?(\\d[\\d,]*)\\-?\\s?)?([aei]n)$";
 
         double_bondings = new ArrayList<>();
         triple_bondings = new ArrayList<>();
     }
 
-    boolean regex(String input){
+    boolean regex(String input) {
         this.input = input;
+        boolean result = true;
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(this.input);
-        name = m.group(1);
-        ending = m.group(3);
-        //name = m.group(1);
-        System.out.println(this);
-        return m.find();
+
+        result = m.find();
+        if (result) {
+            name = m.group(1);
+            positions = m.group(3);
+            ending = m.group(4);
+            System.out.println(this);
+        }
+
+        return result;
     }
 
     @Override
@@ -40,6 +47,7 @@ public class MainChain {
                 ", c_count=" + c_count +
                 ", double_bondings=" + double_bondings +
                 ", triple_bondings=" + triple_bondings +
+                ", positions='" + positions + '\'' +
                 '}';
     }
 }
