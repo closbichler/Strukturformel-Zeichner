@@ -12,7 +12,7 @@ public class Controller {
 
     @FXML
     public void input(){
-        model = new Model();
+
         System.out.println(model.calculate(text.getText()));
 
 

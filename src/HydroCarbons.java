@@ -1,16 +1,17 @@
 public enum HydroCarbons {
     //Used for storing the Carbon Count of the HydroCarb
+    none(0),
+    meth(1), eth(2), prop(3),
+    but(4), pent(5), hex(6),
+    hept(7), oct(8), non(9),
+    dec(10), undec(11), dodec(12),
+    tridec(13), tetradec(14), pentadec(15),
+    hexadec(16), heptadec(17), octadec(18),
+    nonadec(19), eicos(20), heneicos(21),
+    docos(22), tricos(23), tetracos(24),
+    pentacos(25), hexacos(26), heptacos(27),
+    octacos(28), nonacos(29), tricont(30);
 
-    Meth(1), Eth(2), Prop(3),
-    But(4), Pent(5), Hex(6),
-    Hept(7), Oct(8), Non(9),
-    Dec(10), Undec(11), Dodec(12),
-    Tridec(13), Tetradec(14), Pentadec(15),
-    Hexadec(16), Heptadec(17), Octadec(18),
-    Nonadec(19), Eicos(20), Heneicos(21),
-    Docos(22), Tricos(23), Tetracos(24),
-    Pentacos(25), Hexacos(26), Heptacos(27),
-    Octacos(28), Nonacos(29), Tricont(30);
 
     //Found those Names for HydroCarbons from 1 to 30 on the website
     // https://www.internetchemie.info/chemie-lexikon/stoffgruppen/a/alkane.php
