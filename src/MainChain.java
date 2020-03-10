@@ -18,7 +18,7 @@ public class MainChain {
 
     //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
     private String input = "";
-    private String regex = "\\s?(\\w{3,4})(a?)(\\s?-?(\\d[\\d,]*)-?\\s?)?(\\w{2,})?([aei]n)$";
+    private String regex = "\\s?([A-Z][b-z]{3,4})(a)?(\\s?-?(\\d[\\d,]*)-?\\s?)?(\\w{2,})?([aei]n)$";
     private String name = "";
     private String ending = "";
 
@@ -69,13 +69,14 @@ public class MainChain {
         boolean correct_input = true;
 
         if (double_bonds.size() >= 2) {
+
             if (double_bonds.size() != multibond_count.getValue()) {
-                //The amount of multibond_positions of multiple bonds don't match with the greek syllable
+                //The amount of multibond_positions of multiple bonds doesn't match with the greek syllable
                 //e.g. Propa2,3en
                 System.out.println("Wrong greek syllable!");
                 correct_input = false;
             }
-            if (!multibond_char.equals("a")) {
+            if (multibond_char == null) {
                 //missing a after carbon counting syllable
                 //e.g Prop2,3dien
                 System.out.println("Missing a after carbon counting syllable");
@@ -98,18 +99,18 @@ public class MainChain {
 
         } else if (double_bonds.size() >= 1) {
             for (Integer double_bond : double_bonds) {
-                if (double_bond <= 0 || double_bond >= multibond_count.getValue()) {
+                if (double_bond <= 0 || double_bond >= carbon_count.getValue()) {
                     //Illegal Positions
-                    System.out.println("Wrong Positions [1 - " + (multibond_count.getValue() - 1) + "] would be correct");
+                    System.out.println("Wrong Positions [1 - " + (carbon_count.getValue() - 1) + "] would be correct");
                     correct_input = false;
                     break;
                 }
             }
         } else if (triple_bonds.size() >= 1) {
             for (Integer triple_bonds : triple_bonds) {
-                if (triple_bonds <= 0 || triple_bonds >= multibond_count.getValue()) {
+                if (triple_bonds <= 0 || triple_bonds >= carbon_count.getValue()) {
                     //Illegal Positions
-                    System.out.println("Wrong Positions [1 - " + (multibond_count.getValue() - 1) + "] would be correct");
+                    System.out.println("Wrong Positions [1 - " + (carbon_count.getValue() - 1) + "] would be correct");
                     correct_input = false;
                     break;
                 }
@@ -144,10 +145,13 @@ public class MainChain {
             System.out.println("Wrong HydroCarbon name!");
             result = false;
         }
-        if (double_bonds.size() >= 2 && triple_bonds.size() >= 2) {
+
+        if (double_bonds.size() >= 2 || triple_bonds.size() >= 2) {
             try {
+
                 multibond_count = GreekNumbers.valueOf(greek_syllable);
             } catch (NullPointerException e) {
+                multibond_count = GreekNumbers.None;
                 //No Greek Syllable or Wrong Greek Syllable name
                 System.out.println("Wrong or no Greek Syllable!");
                 result = false;
@@ -171,8 +175,10 @@ public class MainChain {
             for (String s : pos_string) {
                 if (!double_bonds.contains(Integer.parseInt(s))) {
                     double_bonds.add(Integer.parseInt(s));
+
                 } else {
                     //Duplicate Position
+
                     System.out.println("Duplicate Position of multibonds");
                     return false;
                 }

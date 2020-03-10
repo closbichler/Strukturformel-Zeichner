@@ -1,6 +1,6 @@
 public enum GreekNumbers {
     //Used for storing the greekNumbers for multiple bonds e.g. dien
-
+    None(0),
     di(2), tri(3), tetra(4), penta(5),
     hexa(6), hepta(7), okta(8), enna(9),
     deca(10), hendeka(11), dodeka(12);
