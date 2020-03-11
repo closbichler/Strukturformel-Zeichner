@@ -9,10 +9,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("page0.fxml"));
-        primaryStage.setTitle("Keko World");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("page0.fxml"));
+        Parent root = loader.load();
+        root.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        Controller controller = loader.getController();
+        controller.setStage(primaryStage);
+        primaryStage.setTitle("Strukturformel-Zeichner");
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

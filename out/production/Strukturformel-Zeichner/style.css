@@ -1,0 +1,26 @@
+#menu-bar {
+    -fx-background-color: #c2c2c2;
+}
+
+#tool-bar {
+    -fx-background-color: #c2c2c2;
+}
+
+.tool-btn {
+    -fx-background-color: #c2c2c2;
+    -fx-border-radius: 0px;
+    -fx-pref-width: 40px;
+}
+
+.tool-btn:hover {
+    -fx-background-color: #a8a8a8;
+}
+
+#btn-close:hover {
+    -fx-background-color: #f00;
+}
+
+#infobox {
+    -fx-border-width: 0px;
+    -fx-border-style: none;
+}
