@@ -7,16 +7,20 @@ public class CanvasFkt {
         row++;
         gc.fillText("C", grid.getX(col)+grid.size/6, grid.getY(row)-grid.size/7);
 
-        /*gc.fillText("-", grid.getX(col+1), grid.getY(row));
-        gc.fillText("-", grid.getX(col-1), grid.getY(row));
-        gc.fillText("|", grid.getX(col), grid.getY(row+1));
-        gc.fillText("|", grid.getX(col), grid.getY(row-1));*/
-
         switch(u){
             case "":
                 break;
             case "-":
                 gc.strokeLine(grid.getX(col)+grid.size/2, grid.getY(row-2), grid.getX(col)+grid.size/2, grid.getY(row-1));
+                break;
+            case "--":
+                gc.strokeLine(grid.getX(col)+grid.size/3, grid.getY(row-2), grid.getX(col)+grid.size/3, grid.getY(row-1));
+                gc.strokeLine(grid.getX(col)+2*grid.size/3, grid.getY(row-2), grid.getX(col)+2*grid.size/3, grid.getY(row-1));
+                break;
+            case "---":
+                gc.strokeLine(grid.getX(col)+grid.size/4, grid.getY(row-2), grid.getX(col)+grid.size/4, grid.getY(row-1));
+                gc.strokeLine(grid.getX(col)+2*grid.size/4, grid.getY(row-2), grid.getX(col)+2*grid.size/4, grid.getY(row-1));
+                gc.strokeLine(grid.getX(col)+3*grid.size/4, grid.getY(row-2), grid.getX(col)+3*grid.size/4, grid.getY(row-1));
                 break;
             default:
                 Font prev = gc.getFont();
@@ -35,6 +39,15 @@ public class CanvasFkt {
             case "-":
                 gc.strokeLine(grid.getX(col+1), grid.getY(row)-grid.size/2, grid.getX(col+2), grid.getY(row)-grid.size/2);
                 break;
+            case "--":
+                gc.strokeLine(grid.getX(col+1), grid.getY(row)-grid.size/3, grid.getX(col+2), grid.getY(row)-grid.size/3);
+                gc.strokeLine(grid.getX(col+1), grid.getY(row)-2*grid.size/3, grid.getX(col+2), grid.getY(row)-2*grid.size/3);
+                break;
+            case "---":
+                gc.strokeLine(grid.getX(col+1), grid.getY(row)-grid.size/4, grid.getX(col+2), grid.getY(row)-grid.size/4);
+                gc.strokeLine(grid.getX(col+1), grid.getY(row)-2*grid.size/4, grid.getX(col+2), grid.getY(row)-2*grid.size/4);
+                gc.strokeLine(grid.getX(col+1), grid.getY(row)-3*grid.size/4, grid.getX(col+2), grid.getY(row)-3*grid.size/4);
+                break;
             default:
                 Font prev = gc.getFont();
                 gc.setFont(Font.font("Arial", prev.getSize()/2));
@@ -52,6 +65,15 @@ public class CanvasFkt {
             case "-":
                 gc.strokeLine(grid.getX(col)+grid.size/2, grid.getY(row), grid.getX(col)+grid.size/2, grid.getY(row+1));
                 break;
+            case "--":
+                gc.strokeLine(grid.getX(col)+grid.size/3, grid.getY(row), grid.getX(col)+grid.size/3, grid.getY(row+1));
+                gc.strokeLine(grid.getX(col)+2*grid.size/3, grid.getY(row), grid.getX(col)+2*grid.size/3, grid.getY(row+1));
+                break;
+            case "---":
+                gc.strokeLine(grid.getX(col)+grid.size/4, grid.getY(row), grid.getX(col)+grid.size/4, grid.getY(row+1));
+                gc.strokeLine(grid.getX(col)+2*grid.size/4, grid.getY(row), grid.getX(col)+2*grid.size/4, grid.getY(row+1));
+                gc.strokeLine(grid.getX(col)+3*grid.size/4, grid.getY(row), grid.getX(col)+3*grid.size/4, grid.getY(row+1));
+                break;
             default:
                 Font prev = gc.getFont();
                 gc.setFont(Font.font("Arial", prev.getSize()/2));
@@ -68,6 +90,15 @@ public class CanvasFkt {
                 break;
             case "-":
                 gc.strokeLine(grid.getX(col), grid.getY(row)-grid.size/2, grid.getX(col-1), grid.getY(row)-grid.size/2);
+                break;
+            case "--":
+                gc.strokeLine(grid.getX(col), grid.getY(row)-grid.size/3, grid.getX(col-1), grid.getY(row)-grid.size/3);
+                gc.strokeLine(grid.getX(col), grid.getY(row)-2*grid.size/3, grid.getX(col-1), grid.getY(row)-2*grid.size/3);
+                break;
+            case "---":
+                gc.strokeLine(grid.getX(col), grid.getY(row)-grid.size/4, grid.getX(col-1), grid.getY(row)-grid.size/4);
+                gc.strokeLine(grid.getX(col), grid.getY(row)-2*grid.size/4, grid.getX(col-1), grid.getY(row)-2*grid.size/4);
+                gc.strokeLine(grid.getX(col), grid.getY(row)-3*grid.size/4, grid.getX(col-1), grid.getY(row)-3*grid.size/4);
                 break;
             default:
                 Font prev = gc.getFont();
