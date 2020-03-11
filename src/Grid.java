@@ -18,4 +18,20 @@ public class Grid {
             return col * size;
         throw new Exception("Index");
     }
+
+    public int getMaxRow(){
+        return wid/size;
+    }
+
+    public int getMaxCol(){
+        return len/size;
+    }
+
+    public int getMaxY(){
+        return ((int)(wid/size)) * size;
+    }
+
+    public int getMaxX(){
+        return ((int)(len/size)) * size;
+    }
 }
