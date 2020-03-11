@@ -8,7 +8,7 @@ public class Controller {
     Canvas kekvas;
 
     public void test() throws Exception{
-        int canvaslen = 300, canvaswid = 150, fontsize = 20;
+        int canvaslen = 300, canvaswid = 150, fontsize = 30;
 
         Grid grid = new Grid(canvaslen, canvaswid, fontsize);
 
@@ -21,7 +21,6 @@ public class Controller {
         for(int i = 0; i<grid.getMaxRow(); i++)
             gc.strokeLine(grid.getX(0), grid.getY(i), grid.getMaxX(), grid.getY(i));
 
-        CanvasFkt.drawC(gc, grid, 1, 1, "H", "", "H", "H");
-
+        CanvasFkt.drawC(gc, grid, 1, 1, "O", "O", "O", "O");
     }
 }
