@@ -22,7 +22,7 @@ public class Model {
         }
         mainChain.regex(input.substring(end));
 
-        System.out.println(this);
+        //System.out.println(this);
 
         return true;
     }
