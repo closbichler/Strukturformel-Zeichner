@@ -11,7 +11,6 @@ public enum GreekNumbers {
     //Stores the number behind the greek number word
     private int multiple_bondings_count;
 
-
     GreekNumbers(int multiple_bondings_count) {
         this.multiple_bondings_count = multiple_bondings_count;
     }
