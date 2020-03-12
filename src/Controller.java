@@ -1,6 +1,9 @@
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -29,6 +32,9 @@ public class Controller {
     @FXML
     Button btn_minimize;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -42,8 +48,14 @@ public class Controller {
         stage.setIconified(true);
     }
 
-    public void dragWindow() {
-        System.out.println("drag");
+    public void startWindowDrag(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+    }
+
+    public void dragWindow(MouseEvent event) {
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
     }
 
     public void reset() {
