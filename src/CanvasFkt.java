@@ -139,11 +139,21 @@ public class CanvasFkt {
 
             drawC(gc, grid, col, row, c[i].substring(0, comma1), c[i].substring(comma1 + 1, comma2), c[i].substring(comma2 + 1, comma3), c[i].substring(comma3 + 1));
 
-            col+=2;
+            col += 2;
         }
+
+        grid.getX(col);
     }
 
     public static void drawChainHor(GraphicsContext gc, Grid grid, int col, int row, String... c) throws Exception{
+        int chainlen = c.length;
 
+        for(int i=0; i<chainlen; i++){
+            int comma1 = c[i].indexOf(","), comma2 = c[i].indexOf(",", comma1 + 1), comma3 = c[i].indexOf(",", comma2 + 1);
+
+            drawC(gc, grid, col, row, c[i].substring(0, comma1), c[i].substring(comma1 + 1, comma2), c[i].substring(comma2 + 1, comma3), c[i].substring(comma3 + 1));
+
+            row += 2;
+        }
     }
 }

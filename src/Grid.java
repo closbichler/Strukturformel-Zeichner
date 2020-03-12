@@ -8,13 +8,13 @@ public class Grid {
     }
 
     public int getY(int row) throws Exception{
-        if(row * size <= wid)
+        if(row * size <= wid && row >= 0)
             return row * size;
         throw new Exception("Index");
     }
 
     public int getX(int col) throws Exception{
-        if(col * size <= len)
+        if(col * size <= len && col >= 0)
             return col * size;
         throw new Exception("Index");
     }
