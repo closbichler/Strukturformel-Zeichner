@@ -1,3 +1,5 @@
+import javafx.scene.canvas.GraphicsContext;
+
 class Grid {
     private int len, wid, size;
 
@@ -33,6 +35,14 @@ class Grid {
 
     int getMaxX(){
         return (len/size) * size;
+    }
+
+    void drawGrid(GraphicsContext gc) throws Exception{
+        for (int i = 0; i < getMaxCol(); i++)
+            gc.strokeLine(getX(i), getY(0), getX(i), getMaxY());
+
+        for (int i = 0; i < getMaxRow(); i++)
+            gc.strokeLine(getX(0), getY(i), getMaxX(), getY(i));
     }
 
     int getSize(){

@@ -18,11 +18,7 @@ public class Controller {
 
                 gc.setFont(Font.font("Arial", fontsize));
 
-                for (int i = 0; i < grid.getMaxCol(); i++)
-                    gc.strokeLine(grid.getX(i), grid.getY(0), grid.getX(i), grid.getMaxY());
-
-                for (int i = 0; i < grid.getMaxRow(); i++)
-                    gc.strokeLine(grid.getX(0), grid.getY(i), grid.getMaxX(), grid.getY(i));
+                grid.drawGrid(gc);
 
                 //CanvasFkt.drawC(gc, grid, 1, 1, "H", "H", "H", "H");
 
