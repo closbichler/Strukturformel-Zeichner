@@ -7,7 +7,7 @@ public class Controller {
     @FXML
     Canvas kekvas;
 
-    public void test() throws Exception{
+    public void test(){
         boolean sizeunfit = true;
         int canvaslen = (int)kekvas.getWidth(), canvaswid = (int)kekvas.getHeight(), fontsize = 150;
         GraphicsContext gc = kekvas.getGraphicsContext2D();
