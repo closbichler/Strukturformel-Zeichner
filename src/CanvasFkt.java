@@ -324,7 +324,7 @@ public class CanvasFkt {
         }
     }
 
-    public static void drawChainVertWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChain... s) throws Exception{
+    public static void drawChainVertWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChainInput... s) throws Exception{
         int colc = col;
         for (String[] i : c) {
             drawC(gc, grid, colc, row, i[0], i[1], i[2], i[3]);
@@ -334,7 +334,7 @@ public class CanvasFkt {
 
         grid.getX(colc);
 
-        for (SideChain i : s){
+        for (SideChainInput i : s){
             if(i.orientation == Orientation.Down){
                 drawChainHor(gc, grid, col+2*(i.pos-1), row+2, i.chain);
             }
@@ -344,7 +344,7 @@ public class CanvasFkt {
         }
     }
 
-    public static void drawChainHorWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChain... s) throws Exception{
+    public static void drawChainHorWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChainInput... s) throws Exception{
         int rowc = row;
         for (String[] i : c) {
             drawC(gc, grid, col, rowc, i[0], i[1], i[2], i[3]);
@@ -352,7 +352,7 @@ public class CanvasFkt {
             rowc += 2;
         }
 
-        for (SideChain i : s){
+        for (SideChainInput i : s){
             if(i.orientation == Orientation.Right){
                 drawChainVert(gc, grid, col+2, row+2*(i.pos-1), i.chain);
             }

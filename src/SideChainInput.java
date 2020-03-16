@@ -2,12 +2,12 @@ enum Orientation{
     Up, Right, Left, Down;
 }
 
-public class SideChain {
+public class SideChainInput {
     Orientation orientation;
     int pos;
     String[][] chain;
 
-    public SideChain(Orientation or, int pos, String[][] chain){
+    public SideChainInput(Orientation or, int pos, String[][] chain){
         this.orientation = or;
         this.pos = pos;
         this.chain = chain;
