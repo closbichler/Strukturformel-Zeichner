@@ -19,8 +19,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setResizable(false);
-        System.out.println(getClass().getResource("../data/Placeholder-Icon.png"));
-        //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("Placeholder-Icon.png")));
+        primaryStage.getIcons().add(new Image(getClass().getResource("/ressources/Strukturformel-Zeichner_Icon_2.png").toExternalForm()));
         primaryStage.show();
     }
 

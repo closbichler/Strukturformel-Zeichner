@@ -23,7 +23,7 @@
    <children>
       <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
-            <Menu disable="true" mnemonicParsing="false" />
+            <Menu id="icon-menu" disable="true" mnemonicParsing="false" />
           <Menu mnemonicParsing="false" styleClass="menu" text="Datei">
             <items>
                   <Menu mnemonicParsing="false" text="Letze" />
@@ -56,11 +56,13 @@
                   <TextField id="input" fx:id="input" prefHeight="30.0" prefWidth="300.0" promptText="IUPAC-Nomenklatur">
                      <HBox.margin>
                         <Insets right="20.0" />
-                     </HBox.margin></TextField>
+                     </HBox.margin>
+                  </TextField>
                   <Button id="btn-submit" fx:id="submit" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="Zeichnen" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
-                     </font></Button>
+                     </font>
+                  </Button>
                </children>
             </HBox>
             <VBox prefHeight="200.0" prefWidth="100.0">
@@ -79,20 +81,27 @@
       </VBox>
       <AnchorPane fx:id="helppane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
          <children>
-            <Button alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#hideHelp" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Hilfe" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideHelp" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" text="Hilfe" textAlignment="CENTER" />
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="docpane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+      <AnchorPane fx:id="docpane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
          <children>
-            <Button alignment="TOP_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onMouseClicked="#hideDoc" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Documentation" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideDoc" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <VBox layoutY="32.0" prefWidth="500.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Documentation" textAlignment="CENTER" />
+                  <TextArea disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="Des is a Strukturformel-Zeichner.&#10;&#10;Bitte nicht verwenden." />
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
       <ToolBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <Button fx:id="btn_minimize" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#minimize" prefWidth="50.0" text="-" textFill="WHITE" />
-            <Button fx:id="btn_close" mnemonicParsing="false" onMouseClicked="#close" prefWidth="40.0" styleClass="btn-close" text="X" textAlignment="RIGHT" textFill="WHITE" />
+          <Button fx:id="btn_minimize" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#minimize" prefWidth="40.0" text="-" textFill="WHITE" />
+            <Button fx:id="btn_close" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#close" prefWidth="40.0" styleClass="btn-close" text="X" textAlignment="RIGHT" textFill="WHITE" />
         </items>
       </ToolBar>
    </children>
