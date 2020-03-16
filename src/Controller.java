@@ -1,15 +1,20 @@
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Slider;
 import javafx.scene.text.Font;
+
+import java.util.ArrayList;
 
 public class Controller {
     @FXML
     Canvas kekvas;
+    @FXML
+    Slider slider;
 
     public void test(){
         boolean sizeunfit = true;
-        int canvaslen = (int)kekvas.getWidth(), canvaswid = (int)kekvas.getHeight(), fontsize = 150;
+        int canvaslen = (int)kekvas.getWidth(), canvaswid = (int)kekvas.getHeight(), fontsize = 50;
         GraphicsContext gc = kekvas.getGraphicsContext2D();
 
         do {
@@ -20,11 +25,11 @@ public class Controller {
 
                 grid.drawGrid(gc);
 
-                //CanvasFkt.drawC(gc, grid, 1, 1, "H", "H", "H", "H");
+                String[] norm = {"H", "-" ,"H", ""};
+                String[][] arr = {{"H", "-", "H", "H"}, norm, norm, norm, {"H", "H", "H", ""}};
 
-                CanvasFkt.drawChainVert(gc, grid, 1, 1, ",--,,H", "H,-,,", ",---,,", ",H,,");
-
-                CanvasFkt.drawChainHor(gc, grid, 1, 3, "-,H,-,H", ",OH,-,OH", ",,---,", ",,H,");
+                CanvasFkt.drawChainVert(gc, grid, 1, 1, arr);
+                CanvasFkt.drawC(gc, grid, 3, 4, norm);
 
                 sizeunfit = false;
             } catch (Exception e) {
@@ -37,6 +42,8 @@ public class Controller {
             }
         } while(sizeunfit);
 
-        System.out.println(fontsize);
+        slider.valueProperty().addListener(event -> {
+            kekvas.setRotate(slider.getValue());
+        });
     }
 }
