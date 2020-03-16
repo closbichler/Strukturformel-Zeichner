@@ -1,26 +1,111 @@
-#menu-bar {
-    -fx-background-color: #c2c2c2;
+/*
+Color-Table:
+Blue:       #4FFFB6
+BlueGreen:  #48E888
+Green:      #5DFF81
+YellowGreen:#48E84D
+Yellow:     #6EFF4D
+*/
+
+* {
+    -fx-main-color:  #48E888;
+    -fx-hover-color: #3fcc78;
+    -fx-bg-color: #eeeeee;
+    -fx-red: #a92022;
+
+    -fx-text-fill: #fff;
+    -fx-background-radius: 0;
 }
 
-#tool-bar {
-    -fx-background-color: #c2c2c2;
+.button {
+
 }
 
-.tool-btn {
-    -fx-background-color: #c2c2c2;
-    -fx-border-radius: 0px;
-    -fx-pref-width: 40px;
+.anchor-pane {
+    -fx-background-color: -fx-bg-color;
 }
 
-.tool-btn:hover {
-    -fx-background-color: #a8a8a8;
+.menu-bar {
+    -fx-background-color: -fx-main-color;
+    -fx-text-fill: #fff;
 }
 
-#btn-close:hover {
-    -fx-background-color: #f00;
+#menu-bar .menu {
+}
+
+.menu:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+.menu-item {
+    -fx-background-color: -fx-bg-color;
+    -fx-text-fill: #000;
+}
+
+.menu-item:hover {
+    -fx-background-color: -fx-hover-color;
+    -fx-text-fill: #000;
+}
+
+.tool-bar {
+    -fx-background-color: -fx-main-color;
+}
+
+.tool-bar .button {
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0;
+}
+
+.tool-bar .button:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+.btn-close:hover {
+    -fx-background-color: -fx-red;
+}
+
+#btn-submit {
+    -fx-background-color: -fx-main-color;
+    -fx-padding: 0 15 0 15;
+    -fx-background-radius: 0;
+}
+
+#btn-submit:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+#btn-submit:pressed {
+    -fx-background-color: -fx-main-color;
+}
+
+#input {
+    -fx-start-margin: 20 20 0 0;
+    -fx-background-radius: 0;
+    -fx-font-family: "Helvetica";
+}
+
+#canvas-placeholder {
+    -fx-background-color: -fx-bg-color;
+    -fx-background-image: url("../../../data/sfz_hallo_neu.gif");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+
+#error-label {
+    -fx-text-fill: -fx-red;
 }
 
 #infobox {
-    -fx-border-width: 0px;
+    -fx-border-width: 0;
     -fx-border-style: none;
+    -fx-padding: 10;
+    -fx-background-color: -fx-bg-color;
+}
+
+#helppane {
+    -fx-background-color: -fx-main-color;
+}
+
+#docpane {
+    -fx-background-color: -fx-main-color;
 }

@@ -65,10 +65,12 @@ public class Controller {
 
     public void showHelp() {
         helppane.setVisible(true);
+        docpane.setVisible(false);
     }
 
     public void showDoc() {
         docpane.setVisible(true);
+        helppane.setVisible(false);
     }
 
     public void hideHelp() {
