@@ -25,11 +25,10 @@ public class Controller {
 
                 grid.drawGrid(gc);
 
-                String[] norm = {"H", "-" ,"H", ""};
-                String[][] arr = {{"H", "-", "H", "H"}, norm, norm, norm, {"H", "H", "H", ""}};
+                String[] norm = {"", "H" ,"-", "H"};
+                String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
 
-                CanvasFkt.drawChainVert(gc, grid, 1, 1, arr);
-                CanvasFkt.drawC(gc, grid, 3, 4, norm);
+                CanvasFkt.drawChainVertWithSideChains(gc, grid, 1, 6, arr, new SideChain(Orientation.Up, 1, sc1), new SideChain(Orientation.Down, 5, sc2));
 
                 sizeunfit = false;
             } catch (Exception e) {

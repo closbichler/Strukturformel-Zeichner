@@ -442,4 +442,42 @@ public class CanvasFkt {
             row += 2;
         }
     }
+
+    public static void drawChainVertWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChain... s) throws Exception{
+        int colc = col;
+        for (String[] i : c) {
+            drawC(gc, grid, colc, row, i[0], i[1], i[2], i[3]);
+
+            colc += 2;
+        }
+
+        grid.getX(colc);
+
+        for (SideChain i : s){
+            if(i.orientation == Orientation.Down){
+                drawChainHor(gc, grid, col+2*(i.pos-1), row+2, i.chain);
+            }
+            else if(i.orientation == Orientation.Up){
+                drawChainHor(gc, grid, col+2*(i.pos-1), row-2*i.chain.length, i.chain);
+            }
+        }
+    }
+
+    public static void drawChainHorWithSideChains(GraphicsContext gc, Grid grid, int col, int row, String[][] c, SideChain... s) throws Exception{
+        int rowc = row;
+        for (String[] i : c) {
+            drawC(gc, grid, col, rowc, i[0], i[1], i[2], i[3]);
+
+            rowc += 2;
+        }
+
+        for (SideChain i : s){
+            if(i.orientation == Orientation.Right){
+                drawChainVert(gc, grid, col+2, row+2*(i.pos-1), i.chain);
+            }
+            else if(i.orientation == Orientation.Left){
+                drawChainVert(gc, grid, col-2*i.chain.length, row+2*(i.pos-1), i.chain);
+            }
+        }
+    }
 }
