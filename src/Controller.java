@@ -26,7 +26,7 @@ public class Controller {
                 String[] norm = {"", "H" ,"-", "H"};
                 String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
 
-                CanvasFkt.drawChainVertWithSideChains(gc, grid, 1, 6, arr, new SideChainInput(Orientation.Up, 1, sc1), new SideChainInput(Orientation.Down, 5, sc2));
+                CanvasFkt.drawChainHorWithSideChains(gc, grid, 6, 1, arr, new SideChainInput(Orientation.Right, 1, sc1), new SideChainInput(Orientation.Left, 5, sc2));
 
                 sizeunfit = false;
             } catch (Exception e) {

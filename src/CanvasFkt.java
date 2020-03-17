@@ -361,4 +361,12 @@ public class CanvasFkt {
             }
         }
     }
+
+    public static void drawChainVertWithSideChains(GraphicsContext gc, Grid grid, int col, int row, ArrayList<ArrayList<String>> c, SideChainInput... s) throws Exception{
+        drawChainVertWithSideChains(gc, grid, col, row, c, s);
+    }
+
+    public static void drawChainHorWithSideChains(GraphicsContext gc, Grid grid, int col, int row, ArrayList<ArrayList<String>> c, SideChainInput... s) throws Exception{
+        drawChainHorWithSideChains(gc, grid, col, row, c, s);
+    }
 }

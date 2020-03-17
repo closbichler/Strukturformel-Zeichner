@@ -1,5 +1,5 @@
 enum Orientation{
-    Up, Right, Left, Down;
+    Up, Right, Left, Down
 }
 
 public class SideChainInput {
