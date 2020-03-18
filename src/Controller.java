@@ -1,14 +1,20 @@
-import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.*;
-import javafx.scene.input.DragEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Controller {
-    Stage stage;
+    Stage primaryStage;
     @FXML
     AnchorPane anchorpane;
     @FXML
@@ -22,8 +28,6 @@ public class Controller {
     @FXML
     Label errormsg;
     @FXML
-    TextArea infobox;
-    @FXML
     Canvas canvas;
     @FXML
     MenuBar menubar;
@@ -36,16 +40,16 @@ public class Controller {
     private double yOffset = 0;
 
     public void setStage(Stage stage) {
-        this.stage = stage;
+        this.primaryStage = stage;
     }
 
     public void close() {
-        stage.close();
+        primaryStage.close();
         System.exit(0);
     }
 
     public void minimize() {
-        stage.setIconified(true);
+        primaryStage.setIconified(true);
     }
 
     public void startWindowDrag(MouseEvent event) {
@@ -54,8 +58,8 @@ public class Controller {
     }
 
     public void dragWindow(MouseEvent event) {
-        stage.setX(event.getScreenX() - xOffset);
-        stage.setY(event.getScreenY() - yOffset);
+        primaryStage.setX(event.getScreenX() - xOffset);
+        primaryStage.setY(event.getScreenY() - yOffset);
     }
 
     public void reset() {
@@ -79,5 +83,23 @@ public class Controller {
 
     public void hideDoc() {
         docpane.setVisible(false);
+    }
+
+    public void export() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("export.fxml"));
+            Parent root = loader.load();
+
+            Stage popupWindow = new Stage();
+            popupWindow.initModality(Modality.APPLICATION_MODAL);
+            popupWindow.setTitle("Exportieren");
+            popupWindow.setResizable(false);
+            popupWindow.initStyle(StageStyle.UNDECORATED);
+            popupWindow.setScene(new Scene(root));
+
+            popupWindow.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

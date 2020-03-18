@@ -31,7 +31,7 @@ Yellow:     #6EFF4D
 }
 
 #icon-menu {
-    -fx-background-image: url("../../../src/ressources/Strukturformel-Zeichner_Icon.png");
+    -fx-background-image: url('Strukturformel-Zeichner_Icon.png');
     -fx-background-repeat: space;
     -fx-background-size: 26 26;
     -fx-pref-width: 26;
@@ -41,9 +41,6 @@ Yellow:     #6EFF4D
     -fx-background-color: -fx-main-color;
     -fx-text-fill: #fff;
     -fx-padding: 0px;
-}
-
-#menu-bar .menu {
 }
 
 .menu {
@@ -62,6 +59,10 @@ Yellow:     #6EFF4D
 .menu-item:hover {
     -fx-background-color: -fx-hover-color;
     -fx-text-fill: #000;
+}
+
+.context-menu {
+    -fx-background-color: -fx-main-color;
 }
 
 .tool-bar {
@@ -94,11 +95,20 @@ Yellow:     #6EFF4D
     -fx-start-margin: 20 20 0 0;
     -fx-background-radius: 0;
     -fx-font-family: "Helvetica";
+    -fx-font-size: 1.2em;
+    -fx-padding: 0 0 0 5;
+    -fx-text-fill: #000;
+    -fx-border-color: -fx-main-color;
+    -fx-border-width: 2px;
+}
+
+#input:focused {
+    -fx-border-color: -fx-hover-color;
 }
 
 #canvas-placeholder {
     -fx-background-color: -fx-bg-color;
-    -fx-background-image: url("../../../src/ressources/sfz_hallo_neu.gif");
+    -fx-background-image: url('sfz_hallo_neu.gif');
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
 }
@@ -107,11 +117,13 @@ Yellow:     #6EFF4D
     -fx-text-fill: -fx-red;
 }
 
-#infobox {
-    -fx-border-width: 0;
-    -fx-border-style: none;
-    -fx-padding: 10;
+.gridpane {
     -fx-background-color: -fx-bg-color;
+    -fx-padding: 10;
+}
+
+.bild-label {
+    -fx-text-fill: #000;
 }
 
 #helppane {
@@ -122,9 +134,11 @@ Yellow:     #6EFF4D
     -fx-background-color: -fx-main-color;
 }
 
-#label-title {
+.label-title {
     -fx-font-size: 3em;
+    -fx-font-familiy: "Mohave";
     -fx-text-fill: -fx-hover-color;
+    -fx-padding: 15 0 25 0;
 }
 
 .text-area {
@@ -132,4 +146,14 @@ Yellow:     #6EFF4D
     -fx-border-width: 0;
     -fx-background-radius: 0;
     -fx-text-fill: #000;
+}
+
+#struktur-beschreibung {
+    -fx-text-fill: #333;
+    -fx-font-size: 1em;
+}
+
+#struktur-name {
+    -fx-text-fill: #000;
+    -fx-font-size: 1.3em;
 }
