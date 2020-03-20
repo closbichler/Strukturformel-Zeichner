@@ -1,0 +1,159 @@
+/*
+Color-Table:
+Blue:       #4FFFB6
+BlueGreen:  #48E888
+Green:      #5DFF81
+YellowGreen:#48E84D
+Yellow:     #6EFF4D
+*/
+
+* {
+    -fx-main-color:  #48E888;
+    -fx-hover-color: #3fcc78;
+    -fx-bg-color: #eeeeee;
+    -fx-red: #a92022;
+
+    -fx-text-fill: #fff;
+    -fx-background-radius: 0;
+}
+
+.button {
+    -fx-background-color: -fx-main-color;
+    -fx-background-radius: 0;
+}
+
+.button:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+.anchor-pane {
+    -fx-background-color: -fx-bg-color;
+}
+
+#icon-menu {
+    -fx-background-image: url('../images/Strukturformel-Zeichner_Icon.png');
+    -fx-background-repeat: space;
+    -fx-background-size: 26 26;
+    -fx-pref-width: 26;
+}
+
+.menu-bar {
+    -fx-background-color: -fx-main-color;
+    -fx-text-fill: #fff;
+    -fx-padding: 0px;
+}
+
+.menu {
+    -fx-background-color: -fx-main-color;
+}
+
+.menu:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+.menu-item {
+    -fx-background-color: -fx-main-color;
+    -fx-text-fill: #000;
+}
+
+.menu-item:hover {
+    -fx-background-color: -fx-hover-color;
+    -fx-text-fill: #000;
+}
+
+.context-menu {
+    -fx-background-color: -fx-main-color;
+}
+
+.tool-bar {
+    -fx-background-color: -fx-main-color;
+    -fx-start-margin: 0;
+    -fx-end-margin: 0;
+    -fx-border-width: 0;
+    -fx-padding: 0 0 0 0;
+}
+
+.btn-close:hover {
+    -fx-background-color: -fx-red;
+}
+
+#btn-submit {
+    -fx-background-color: -fx-main-color;
+    -fx-padding: 0 15 0 15;
+    -fx-background-radius: 0;
+}
+
+#btn-submit:hover {
+    -fx-background-color: -fx-hover-color;
+}
+
+#btn-submit:pressed {
+    -fx-background-color: -fx-main-color;
+}
+
+#input {
+    -fx-start-margin: 20 20 0 0;
+    -fx-background-radius: 0;
+    -fx-font-family: "Helvetica";
+    -fx-font-size: 1.2em;
+    -fx-padding: 0 0 0 5;
+    -fx-text-fill: #000;
+    -fx-border-color: -fx-main-color;
+    -fx-border-width: 2px;
+}
+
+#input:focused {
+    -fx-border-color: -fx-hover-color;
+}
+
+#canvas-placeholder {
+    -fx-background-color: -fx-bg-color;
+    -fx-background-image: url('../images/sfz_hallo_neu.gif');
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
+
+#error-label {
+    -fx-text-fill: -fx-red;
+}
+
+.gridpane {
+    -fx-background-color: -fx-bg-color;
+    -fx-padding: 10;
+}
+
+.bild-label {
+    -fx-text-fill: #000;
+}
+
+#helppane {
+    -fx-background-color: -fx-main-color;
+}
+
+#docpane {
+    -fx-background-color: -fx-main-color;
+}
+
+.label-title {
+    -fx-font-size: 3em;
+    -fx-font-familiy: "Mohave";
+    -fx-text-fill: -fx-hover-color;
+    -fx-padding: 15 0 25 0;
+}
+
+.text-area {
+    -fx-background-color: -fx-main-color;
+    -fx-border-width: 0;
+    -fx-background-radius: 0;
+    -fx-text-fill: #000;
+}
+
+#struktur-beschreibung {
+    -fx-text-fill: #333;
+    -fx-font-size: 1em;
+}
+
+#struktur-name {
+    -fx-text-fill: #000;
+    -fx-font-size: 1.3em;
+}
