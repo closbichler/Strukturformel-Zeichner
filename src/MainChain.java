@@ -1,6 +1,3 @@
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,67 +33,86 @@ public class MainChain {
     //a or ""
     private String multibond_char;
 
+    MainChain(String input, boolean sideChain){
+        regex(input, sideChain);
+    }
+    MainChain(String input){
+        regex(input, false);
+    }
+
+    String regex = "^-?([a-z]{3,})" +
+            "((an)$|(" + //4
+            "(a)?(-?(\\d(,\\d)*)-?([a-z]{2,})?(en))$|" + //10
+            "(a)?(-?(\\d(,\\d)*)-?([a-z]{2,})?(en))?" + //16
+            "(-?(\\d(,\\d)*)-?([a-z]{2,})?(in))" + //21
+            ")$)";
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes
-    boolean regex(String input) {
+    private boolean regex(String input, boolean sideChain) {
         //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
-        String regex = "\\s?([A-Z]?[b-z]{2,})(a)?" +
-                "((an)|(\\s?-?(\\d(,\\d)*)-?\\s?([a-z]{2,})?(en))?" +
-                "(\\s?-?(\\d(,\\d)*)-?\\s?([a-z]{2,})?(in))?)";
 
+        if(sideChain){
+            if(!input.matches("[aei]n")){
+                input.concat("an");
+            }
+        }
         Pattern p = Pattern.compile(regex);
-        Matcher m = p.matcher(input);
+        Matcher m = p.matcher(input.toLowerCase());
 
         if (m.find()) {
-
             name = m.group(1);
-            multibond_char = m.group(2);
-            ending_an = m.group(4);
-            multibond_positions_en = m.group(6);
-            greek_syllable_en = m.group(8);
-            ending_en = m.group(9);
-            multibond_positions_in = m.group(11);
+            ending_an = m.group(3);
+            multibond_char = m.group(5);
 
-            greek_syllable_in = m.group(13);
-            ending_in = m.group(14);
+            multibond_positions_en = m.group(7);
+            greek_syllable_en = m.group(9);
+            ending_en = m.group(10);
+            if (ending_en == null) {
+                multibond_char = m.group(11);
+                multibond_positions_en = m.group(13);
+                greek_syllable_en = m.group(15);
+                ending_en = m.group(16);
+            }
+
+            multibond_positions_in = m.group(18);
+            greek_syllable_in = m.group(20);
+            ending_in = m.group(21);
 
             if (ending_an != null) {
-                calc_multiple_bondings(name, ending_an, multibond_positions_en);
-                calc_multiple_bondings(name, ending_an, multibond_positions_in);
+                calc_multiple_bondings(name, ending_an, multibond_positions_en, sideChain);
+                calc_multiple_bondings(name, ending_an, multibond_positions_in, sideChain);
                 calc_enums(name, greek_syllable_en, greek_syllable_in);
                 validate_input(multibond_char);
             } else {
                 if (ending_en != null) {
-                    calc_multiple_bondings(name, ending_en, multibond_positions_en);
+                    calc_multiple_bondings(name, ending_en, multibond_positions_en, false);
                     calc_enums(name, greek_syllable_en, greek_syllable_in);
                     validate_input(multibond_char);
                 }
                 if (ending_in != null) {
-                    calc_multiple_bondings(name, ending_in, multibond_positions_in);
+                    calc_multiple_bondings(name, ending_in, multibond_positions_in, false);
                     calc_enums(name, greek_syllable_en, greek_syllable_in);
                     validate_input(multibond_char);
                 }
-                if (ending_en != null && ending_in != null) {
+                if (ending_en != null && ending_in != null && sideChain!=true) {
                     //No ending
                     System.out.println("Missing ending [an, en, in]");
                     return false;
                 }
 
             }
-            System.out.println(this);
+            //System.out.println(this);
 
-
-            //If any of those methods detects a mistake it will return false
             return true;
         }
-        System.out.println(this);
+        //System.out.println(this);
         return false;
 
     }
 
     //Calculates the multibonds with the given input
     //Returns if the input was correct
-    private boolean calc_multiple_bondings(String name, String ending, String multibond_positions) {
+    private boolean calc_multiple_bondings(String name, String ending, String multibond_positions, boolean sideChain) {
 
         if ((ending.equals("en") || ending.equals("in")) && name.equals("Meth")) {
             //Meth syllable with en or in
@@ -125,7 +141,7 @@ public class MainChain {
                 System.out.println("No given Positions for \"" + ending + "\"!");
                 return false;
             }
-        } else if (ending.equals("an")) {
+        } else if (ending.equals("an")||sideChain) {
             if (multibond_positions != null && !multibond_positions.equals("")) {
                 //Ending "an" but given multibond position
                 System.out.println("An Alkane cannot have a multibond position!");
@@ -297,7 +313,14 @@ public class MainChain {
 
     @Override
     public String toString() {
-        return "name='" + name + '\'' +
+        return "MainChain{" +
+                "hydroCarbon=" + hydroCarbon +
+                ", greekNumber_en=" + greekNumber_en +
+                ", greekNumber_in=" + greekNumber_in +
+                ", double_bonds=" + double_bonds +
+                ", triple_bonds=" + triple_bonds +
+                ", bonds_per_carbon=" + bonds_per_carbon +
+                ", name='" + name + '\'' +
                 ", ending_an='" + ending_an + '\'' +
                 ", ending_en='" + ending_en + '\'' +
                 ", ending_in='" + ending_in + '\'' +

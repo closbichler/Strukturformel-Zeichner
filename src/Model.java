@@ -9,9 +9,8 @@ public class Model {
     ArrayList<SideChain> sideChains;
 
     boolean calculate(String input) {
-        mainChain = new MainChain();
         sideChains = new ArrayList<>();
-        Pattern p = Pattern.compile("-?[\\d,]+-?\\w+-?\\w+yl");
+        Pattern p = Pattern.compile("\\(?(.*)yl\\)?");
         Matcher m = p.matcher(input);
 
         int end = 0;
@@ -20,7 +19,7 @@ public class Model {
             sideChains.add(new SideChain(input.substring(m.start(), m.end())));
             end = m.end();
         }
-        mainChain.regex(input.substring(end));
+        mainChain = new MainChain(input.substring(end));
 
         //System.out.println(this);
 

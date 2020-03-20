@@ -2,20 +2,20 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SideChain {
+public class SideChain{
     //Stores carbon count and multibond count
     public HydroCarbons hydroCarbon;
     public GreekNumbers greekNumber;
 
     ArrayList<Integer> positions = new ArrayList<>();
+    MainChain mainChain;
 
     SideChain(String input) {
         regex(input);
     }
 
     private boolean regex(String input) {
-        //Stores the input String, the regex, the name (e.g. Prop)
-        String regex = "^-?([\\d,]+)-?((\\w*)-)?(\\w+)yl$";
+        String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(.*)yl\\)?$";
         String name;
 
         //Stores the multiple bond positions e.g. 3,4
@@ -27,14 +27,17 @@ public class SideChain {
         Matcher m = p.matcher(input);
 
         if (m.find()) {
+            for (int i = 1; i <= 4; i++) {
+                System.out.println(m.group(i));
+            }
             position_string = m.group(1);
             greek_syllable = m.group(3);
-            name = m.group(4);
+            mainChain = new MainChain(m.group(4),true);
 
-            calc_positions(position_string);
+            //calc_positions(position_string);
             //If any of those methods detects a mistake it will return false
-            //System.out.println(this);
-            return calc_enums(name, greek_syllable);
+            System.out.println(this);
+            //return calc_enums(name, greek_syllable);
 
 
         }
@@ -76,10 +79,11 @@ public class SideChain {
 
     @Override
     public String toString() {
-        return "\nSideChain{" +
+        return "SideChain{" +
                 "hydroCarbon=" + hydroCarbon +
                 ", greekNumber=" + greekNumber +
                 ", positions=" + positions +
+                ", mainChain=" + mainChain.toString() +
                 '}';
     }
 }
