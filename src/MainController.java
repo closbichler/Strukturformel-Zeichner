@@ -56,20 +56,26 @@ public class MainController extends Controller {
 
     public void showHelp() {
         helppane.setVisible(true);
+        helppane.setManaged(true);
         docpane.setVisible(false);
+        docpane.setManaged(false);
     }
 
     public void showDoc() {
         docpane.setVisible(true);
+        docpane.setManaged(true);
         helppane.setVisible(false);
+        helppane.setManaged(false);
     }
 
     public void hideHelp() {
         helppane.setVisible(false);
+        helppane.setManaged(false);
     }
 
     public void hideDoc() {
         docpane.setVisible(false);
+        docpane.setManaged(false);
     }
 
     public void openExportWindow() {

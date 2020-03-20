@@ -2,11 +2,23 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.input.KeyCodeCombination?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+
 <AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <children>
       <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -56,35 +68,35 @@
             </HBox>
             <VBox prefWidth="100.0">
                <children>
-                  <Label id="error-label" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" text="Bitte prüfen Sie ihre Eingabe." textAlignment="CENTER" textFill="RED" />
-                  <GridPane disable="true" prefHeight="200.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
+                  <Label id="error-label" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" textAlignment="CENTER" textFill="RED" />
+                  <HBox>
                      <children>
-                        <CheckBox mnemonicParsing="false" styleClass="bild-label" text="Strukturnamen in der Datei anzeigen" />
-                        <CheckBox mnemonicParsing="false" styleClass="bild-label" text="Strukturbeschreibung in der Datei anzeigen" GridPane.rowIndex="1" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                        <VBox>
                            <children>
-                              <Label styleClass="bild-label" text="Rotation" />
-                              <Slider majorTickUnit="45.0" max="180.0" maxWidth="-Infinity" min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0" showTickLabels="true" snapToTicks="true" />
+                              <HBox>
+                                 <children>
+                                    <Label styleClass="bild-label" text="Rotation">
+                                       <HBox.margin>
+                                          <Insets right="40.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Slider majorTickUnit="45.0" max="180.0" maxWidth="-Infinity" min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0" showTickLabels="true" snapToTicks="true" />
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <Button mnemonicParsing="false" text="Exportieren" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
                      </children>
-                  </GridPane>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
                </children>
             </VBox>
             <Pane id="canvas-placeholder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="800.0">
                <children>
-                  <Label id="struktur-name" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="10.0" prefWidth="800.0" text="Methan" textAlignment="CENTER" />
-                  <HBox id="struktur-beschreibung" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
+                  <Label id="struktur-name" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefWidth="800.0" text="Methan" textAlignment="CENTER" visible="false" />
+                  <HBox id="struktur-beschreibung" layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0" visible="false">
                      <children>
                         <VBox prefHeight="100.0" prefWidth="124.0">
                            <children>
@@ -103,26 +115,69 @@
                   <Canvas fx:id="canvas" height="350.0" visible="false" width="800.0" />
                   <ImageView id="canvas-placeholder-2" fitHeight="350.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
                </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </Pane>
          </children>
       </VBox>
-      <AnchorPane fx:id="helppane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+      <AnchorPane fx:id="helppane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideHelp" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" text="Hilfe" textAlignment="CENTER" />
+            <VBox styleClass="pane-title">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="500.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Hilfe" textAlignment="CENTER" />
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Copyright @ 2020 Georg Nestelberger, Johannes Riegler, Clemens Losbichler" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideHelp" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="docpane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
          <children>
-            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideDoc" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <VBox layoutY="32.0" prefWidth="500.0">
+            <VBox styleClass="pane-title">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Documentation" textAlignment="CENTER" />
-                  <TextArea disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" text="Des is a Strukturformel-Zeichner.&#10;&#10;Bitte nicht verwenden." />
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="500.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" />
                </children>
             </VBox>
+            <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Documentation" textAlignment="CENTER" />
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Der Strukturformel-Zeichner ist ein Projekt der HTL-Ybbs im Zuge des Fachs Inofrmationstechnische Projekte - Projektmanagement im dritten Jahrgang." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Copyright @ 2020 Georg Nestelberger, Johannes Riegler, Clemens Losbichler" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideDoc" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <ToolBar maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

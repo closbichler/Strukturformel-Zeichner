@@ -141,6 +141,25 @@ Yellow:     #6EFF4D
     -fx-padding: 15 0 25 0;
 }
 
+.pane-title {
+    -fx-background-color: -fx-main-color;
+}
+
+.pane-content {
+    -fx-background-color: #888;
+    -fx-text-fill: #bbb;
+}
+
+.normal-text {
+    -fx-text-fill: #bbb;
+    -fx-background-color: #888;
+}
+
+.bold {
+    -fx-font-weight: bold;
+    -fx-text-fill: #eee;
+}
+
 .text-area {
     -fx-background-color: -fx-main-color;
     -fx-border-width: 0;
