@@ -51,6 +51,10 @@ Yellow:     #6EFF4D
     -fx-background-color: -fx-hover-color;
 }
 
+#disabled-menu:hover {
+    -fx-background-color: -fx-main-color;
+}
+
 .menu-item {
     -fx-background-color: -fx-main-color;
     -fx-text-fill: #000;
@@ -175,4 +179,16 @@ Yellow:     #6EFF4D
 #struktur-name {
     -fx-text-fill: #000;
     -fx-font-size: 1.3em;
+}
+
+.export-pane {
+    -fx-text-fill: #000;
+}
+
+.black {
+    -fx-text-fill: #000;
+}
+
+.check-box:focused {
+    : -fx-hover-color;
 }
