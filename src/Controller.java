@@ -1,3 +1,4 @@
+
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,12 +13,13 @@ public class Controller {
 
     public void test(){
         boolean sizeunfit = true;
-        int canvaslen = (int)kekvas.getWidth(), canvaswid = (int)kekvas.getHeight(), fontsize = 50;
+        int canvaslen = (int)kekvas.getWidth(), canvaswid = (int)kekvas.getHeight(), fontsize = 50, row = 1, col = 1;
         GraphicsContext gc = kekvas.getGraphicsContext2D();
+        Grid grid = new Grid(canvaslen, canvaswid, fontsize);
 
         do {
             try {
-                Grid grid = new Grid(canvaslen, canvaswid, fontsize);
+                grid = new Grid(canvaslen, canvaswid, fontsize);
 
                 gc.setFont(Font.font("Arial", fontsize));
 
@@ -26,16 +28,25 @@ public class Controller {
                 String[] norm = {"", "H" ,"-", "H"};
                 String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
 
-                CanvasFkt.drawChainHorWithSideChains(gc, grid, 6, 1, arr, new SideChainInput(Orientation.Right, 1, sc1), new SideChainInput(Orientation.Left, 5, sc2));
+                CanvasFkt.drawChainHorWithSideChains(gc, grid, col, row, arr, new SideChainInput(Orientation.Right, 1, sc1), new SideChainInput(Orientation.Left, 5, sc2));
 
                 sizeunfit = false;
-            } catch (Exception e) {
-                fontsize -= 1;
-                gc.clearRect(0, 0, canvaslen, canvaswid);
-                if(fontsize < 1){
-                    sizeunfit = false;
-                    System.out.println("Illegally Place C[hain]");
+            } catch (ColIndexException e) {
+                if(e.getCol() < 0){
+                    col++;
                 }
+                else if(e.getCol() >= grid.getMaxCol()) {
+                    fontsize--;
+                }
+                gc.clearRect(0, 0, canvaslen, canvaswid);
+            } catch (RowIndexException e){
+                if(e.getRow() < 0){
+                    row++;
+                }
+                else if(e.getRow() >= grid.getMaxRow()) {
+                    fontsize--;
+                }
+                gc.clearRect(0, 0, canvaslen, canvaswid);
             }
         } while(sizeunfit);
 
