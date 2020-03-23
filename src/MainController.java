@@ -1,5 +1,3 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,21 +9,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class MainController extends Controller {
     @FXML
     AnchorPane anchorpane;
+    @FXML
+    MenuBar menubar;
     @FXML
     AnchorPane helppane;
     @FXML
@@ -38,8 +30,6 @@ public class MainController extends Controller {
     Label errormsg;
     @FXML
     Canvas canvas;
-    @FXML
-    MenuBar menubar;
     @FXML
     Button btn_close;
     @FXML
