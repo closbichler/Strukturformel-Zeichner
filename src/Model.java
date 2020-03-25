@@ -8,29 +8,31 @@ public class Model {
     MainChain mainChain;
     ArrayList<SideChain> sideChains;
 
-    boolean calculate(String input) {
+    void calculate(String input) {
         sideChains = new ArrayList<>();
-        Pattern p = Pattern.compile("\\(?(.*)yl\\)?");
+        Pattern p = Pattern.compile("(.*)yl\\)?");
         Matcher m = p.matcher(input);
 
         int end = 0;
         while (m.find()) {
-            System.out.println(m.group());
             sideChains.add(new SideChain(input.substring(m.start(), m.end())));
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
 
-        //System.out.println(this);
+        System.out.println(this);
+
+    }
+
+    boolean validateChains(){
 
         return true;
     }
-
     @Override
     public String toString() {
         return "Model{" +
-                "mainChain=" + mainChain +
-                ", sideChains=" + sideChains +
+                "mainChain=" + mainChain + "," +
+                "\n\t sideChains=" + sideChains +
                 '}';
     }
 }

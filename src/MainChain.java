@@ -53,7 +53,7 @@ public class MainChain {
 
         if(sideChain){
             if(!input.matches("[aei]n")){
-                input.concat("an");
+                input+="an";
             }
         }
         Pattern p = Pattern.compile(regex);
