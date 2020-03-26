@@ -4,10 +4,14 @@ import javafx.scene.text.Font;
 import java.util.ArrayList;
 
 public class CanvasFkt {
-    public static void drawC(GraphicsContext gc, Grid grid, int col, int row, String u, String r, String d, String l) throws ColIndexException, RowIndexException {
+        public static void drawC(GraphicsContext gc, Grid grid, int col, int row, String u, String r, String d, String l) throws ColIndexException, RowIndexException {
+            drawE(gc, grid, col, row, "C", u, r, d, l);
+        }
+
+        public static void drawE(GraphicsContext gc, Grid grid, int col, int row, String E, String u, String r, String d, String l) throws ColIndexException, RowIndexException {
 
         row++;
-        gc.fillText("C", grid.getX(col)+(float)grid.getSize()/6, grid.getY(row)-(float)grid.getSize()/7);
+        gc.fillText(E, grid.getX(col)+(float)grid.getSize()/6, grid.getY(row)-(float)grid.getSize()/7);
 
         switch(u){
             case "":
