@@ -79,6 +79,8 @@ public class MainController extends Controller {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
+            ExportController ec = loader.getController();
+            ec.setInitialFileNameAndCanvas("Test", canvas);
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -106,7 +108,8 @@ public class MainController extends Controller {
     public void drawCanvas() {
         canvasplaceholder.setVisible(false);
         canvasplaceholder.setDisable(true);
-
+        canvas.setVisible(true);
+        canvas.setDisable(false);
 
         boolean sizeunfit = true;
         int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
