@@ -59,7 +59,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button id="btn-submit" fx:id="submit" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefHeight="30.0" text="Zeichnen" textAlignment="CENTER">
+                  <Button id="btn-submit" fx:id="submit" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#drawCanvas" prefHeight="30.0" text="Zeichnen" textAlignment="CENTER">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -80,7 +80,7 @@
                                           <Insets right="40.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <Slider majorTickUnit="45.0" max="180.0" maxWidth="-Infinity" min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0" showTickLabels="true" snapToTicks="true" />
+                                    <Slider fx:id="slider" majorTickUnit="45.0" max="180.0" maxWidth="-Infinity" min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0" showTickLabels="true" snapToTicks="true" />
                                  </children>
                               </HBox>
                            </children>
@@ -113,7 +113,7 @@
                      </children>
                   </HBox>
                   <Canvas fx:id="canvas" height="350.0" visible="false" width="800.0" />
-                  <ImageView id="canvas-placeholder-2" fitHeight="350.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView id="canvas-placeholder-2" fx:id="canvasplaceholder" fitHeight="350.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />

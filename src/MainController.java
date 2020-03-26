@@ -3,15 +3,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainController extends Controller {
     @FXML
@@ -36,6 +39,8 @@ public class MainController extends Controller {
     Button btn_close;
     @FXML
     Button btn_minimize;
+    @FXML
+    ImageView canvasplaceholder;
 
     public void minimize() {
         stage.setIconified(true);
@@ -99,6 +104,10 @@ public class MainController extends Controller {
     }
     
     public void drawCanvas() {
+        canvasplaceholder.setVisible(false);
+        canvasplaceholder.setDisable(true);
+
+
         boolean sizeunfit = true;
         int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -143,7 +152,7 @@ public class MainController extends Controller {
         } while(sizeunfit);
 
         slider.valueProperty().addListener(event -> {
-            kekvas.setRotate(slider.getValue());
+            canvas.setRotate(slider.getValue());
         });
     }
 }
