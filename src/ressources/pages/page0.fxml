@@ -162,7 +162,7 @@
             <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Documentation" textAlignment="CENTER" />
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Der Strukturformel-Zeichner ist ein Projekt der HTL-Ybbs im Zuge des Fachs Inofrmationstechnische Projekte - Projektmanagement im dritten Jahrgang." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>
