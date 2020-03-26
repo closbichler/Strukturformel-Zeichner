@@ -7,8 +7,9 @@ import java.util.regex.Pattern;
 public class Model {
     MainChain mainChain;
     ArrayList<SideChain> sideChains;
+    String errors ="";
 
-    void calculate(String input) {
+    boolean calculate(String input) {
         sideChains = new ArrayList<>();
         Pattern p = Pattern.compile("(.*)yl\\)?");
         Matcher m = p.matcher(input);
@@ -22,10 +23,16 @@ public class Model {
         System.out.println(this);
         validateChains();
 
+        errors+="\nMainchain:"+mainChain.errors;
+        for (SideChain sideChain : sideChains) {
+            errors+="\nSideChain:"+sideChain.toString() + sideChain.errors;
+        }
+
+        return errors.equals("");
 
     }
 
-    boolean validateChains(){
+    void validateChains(){
 
         for (SideChain sideChain : sideChains) {
             for (Integer position : sideChain.positions) {
@@ -33,21 +40,20 @@ public class Model {
                 mainChain.bonds_per_carbon.remove(position);
                 mainChain.bonds_per_carbon.add(position, bonds+1);
                 if(bonds+1 > 4){
-                    System.out.println("Wrong Sidechain on position " + position);
-                    return false;
+                    errors+="\nWrong Sidechain on position " + position;
+                    return;
                 }
                 if(position <= sideChain.mainChain.hydroCarbon.getValue()){
-                    System.out.println("Sidechain on " + position + " would be longer than the mainchain");
-                    return false;
+                    errors+="\nSidechain on " + position + " would be longer than the mainchain";
+                    return;
                 }
                 else if(position + sideChain.mainChain.hydroCarbon.getValue() > mainChain.hydroCarbon.getValue() ){
-                    System.out.println("Sidechain on " + position + " would be longer than the mainchain");
-                    return false;
+                    errors+="\nSidechain on " + position + " would be longer than the mainchain";
+                    return;
                 }
             }
         }
 
-        return true;
     }
     @Override
     public String toString() {

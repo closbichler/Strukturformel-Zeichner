@@ -7,12 +7,13 @@ public class SideChain {
 
     ArrayList<Integer> positions = new ArrayList<>();
     MainChain mainChain;
+    String errors="";
 
     SideChain(String input) {
         regex(input);
     }
 
-    private boolean regex(String input) {
+    private void regex(String input) {
         String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(.*)yl\\)?$";
         String name;
 
@@ -34,8 +35,11 @@ public class SideChain {
             mainchain = calc_syllable(greek_syllable, mainchain);
             mainChain = new MainChain(mainchain, true);
             validateChains();
+            if(!mainChain.errors.equals("")){
+                errors += mainChain.errors;
+            }
         }
-        return false;
+
     }
 
     void calc_positions(String position_string) {
@@ -83,7 +87,7 @@ public class SideChain {
     boolean validateChains() {
 
         if (greekNumber != null && greekNumber.getValue() != positions.size()) {
-            System.out.println("Wrong Greeksyllable in the sidechain");
+            errors+="Wrong Greeksyllable in the sidechain";
             return false;
         }
 

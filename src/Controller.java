@@ -1,5 +1,6 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class Controller {
@@ -9,6 +10,9 @@ public class Controller {
 
     @FXML
     protected Button but;
+
+    @FXML
+    protected TextArea errors;
 
     @FXML
     public void input(){

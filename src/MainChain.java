@@ -12,6 +12,7 @@ public class MainChain {
     public HydroCarbons hydroCarbon;
     public GreekNumbers greekNumber_en;
     public GreekNumbers greekNumber_in;
+    public String errors = "";
 
     //Stores the position of the double and triple bonds
     public ArrayList<Integer> double_bonds = new ArrayList<>();
@@ -33,10 +34,11 @@ public class MainChain {
     //a or ""
     private String multibond_char;
 
-    MainChain(String input, boolean sideChain){
+    MainChain(String input, boolean sideChain) {
         regex(input, sideChain);
     }
-    MainChain(String input){
+
+    MainChain(String input) {
         regex(input, false);
     }
 
@@ -46,14 +48,15 @@ public class MainChain {
             "(a)?(-?(\\d(,\\d)*)-?([a-z]{2,})?(en))?" + //16
             "(-?(\\d(,\\d)*)-?([a-z]{2,})?(in))" + //21
             ")$)";
+
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes
-    private boolean regex(String input, boolean sideChain) {
+    private void regex(String input, boolean sideChain) {
         //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
-        input = input.replace(" ","");
-        if(sideChain){
-            if(!input.matches("[aei]n")){
-                input+="an";
+        input = input.replace(" ", "");
+        if (sideChain) {
+            if (!input.matches("[aei]n")) {
+                input += "an";
             }
         }
         Pattern p = Pattern.compile(regex);
@@ -96,28 +99,24 @@ public class MainChain {
                 }
                 if (ending_en != null && ending_in != null && !sideChain) {
                     //No ending
-                    System.out.println("Missing ending [an, en, in]");
-                    return false;
+                    errors += "\nMissing ending [an, en, in]";
                 }
 
             }
-            //System.out.println(this);
 
-            return true;
         }
-        //System.out.println(this);
-        return false;
+
 
     }
 
     //Calculates the multibonds with the given input
     //Returns if the input was correct
-    private boolean calc_multiple_bondings(String name, String ending, String multibond_positions, boolean sideChain) {
+    private void calc_multiple_bondings(String name, String ending, String multibond_positions, boolean sideChain) {
 
         if ((ending.equals("en") || ending.equals("in")) && name.equals("Meth")) {
             //Meth syllable with en or in
-            System.out.println("Meth" + ending + " doesn't exist!");
-            return false;
+            errors += "\nMeth" + ending + " doesn't exist!";
+            return;
         }
         //Getting the positions into the arrays double_bonds and triple_bonds
         if (ending.equals("en") || ending.equals("in")) {
@@ -132,29 +131,27 @@ public class MainChain {
 
                 } else {
                     //Duplicate Position
-                    System.out.println("Duplicate Position of multibonds");
-                    return false;
+                    errors += "\nDuplicate Position of multibonds";
+                    return;
                 }
             }
             if (pos_string.length == 0) {
                 //Ending en or in but no position given
-                System.out.println("No given Positions for \"" + ending + "\"!");
-                return false;
+                errors += "\nNo given Positions for \"" + ending + "\"!";
+                return;
             }
-        } else if (ending.equals("an")||sideChain) {
+        } else if (ending.equals("an") || sideChain) {
             if (multibond_positions != null && !multibond_positions.equals("")) {
                 //Ending "an" but given multibond position
-                System.out.println("An Alkane cannot have a multibond position!");
-                return false;
+                errors += "\nAn Alkane cannot have a multibond position!";
+                return;
             }
         }
-        //Either all positions given or no multibond and ending an
-        return true;
     }
 
     //Creates the enum values from the input name and the greek_syllable
     //Returns if the transition was successfull
-    private boolean calc_enums(String name, String greek_syllable_en, String greek_syllable_in) {
+    private void calc_enums(String name, String greek_syllable_en, String greek_syllable_in) {
 
         //Setting hydroCarbon to the given Value
         try {
@@ -162,8 +159,8 @@ public class MainChain {
         } catch (Exception e) {
             //No HydroCarbon or Wrong HydroCarbon name
             hydroCarbon = HydroCarbons.none;
-            System.out.println("Wrong HydroCarbon name!");
-            return false;
+            errors += "\nWrong HydroCarbon name!";
+            return;
         }
 
         //setting greekNumber to the given syllable e.g. di
@@ -173,14 +170,14 @@ public class MainChain {
             } catch (Exception e) {
                 greekNumber_en = GreekNumbers.none;
                 //No Greek Syllable or Wrong Greek Syllable name
-                System.out.println("Wrong or no Greek Syllable!");
-                return false;
+                errors += "\nWrong or no Greek Syllable!";
+                return;
             }
 
             if (double_bonds.size() != greekNumber_en.getValue()) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                System.out.println("Wrong or no Greek Syllable!");
-                return false;
+                errors += "\nWrong or no Greek Syllable!";
+                return;
             }
         } else if (triple_bonds.size() >= 2) {
             try {
@@ -188,30 +185,28 @@ public class MainChain {
             } catch (Exception e) {
                 greekNumber_in = GreekNumbers.none;
                 //No Greek Syllable or Wrong Greek Syllable name
-                System.out.println("Wrong or no Greek Syllable!");
-                return false;
+                errors += "\nWrong or no Greek Syllable!";
+                return;
             }
             if (triple_bonds.size() != greekNumber_in.getValue()) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                System.out.println("Wrong or no Greek Syllable!");
-                return false;
+                errors += "\nWrong or no Greek Syllable!";
+                return;
             }
         } else {
-            if (greek_syllable_en != null || greek_syllable_in != null) {
+            if (greek_syllable_en.equals("an")) {
                 //Greek_syllable even tho the ending is an
-                System.out.println();
+                errors += "\nGreeksyllable is not needed for an Alkane";
             }
             greekNumber_en = GreekNumbers.none;
             greekNumber_in = GreekNumbers.none;
         }
-        return true;
-
 
     }
 
     //Validates the input
     //Returns if the input was correct
-    private boolean validate_input(String multibond_char) {
+    private void validate_input(String multibond_char) {
         boolean correct_input = true;
 
         //Checking if there was an "a" input
@@ -219,8 +214,8 @@ public class MainChain {
             if (multibond_char == null) {
                 //missing a after carbon counting syllable
                 //e.g Prop2,3dien
-                System.out.println("Missing a after carbon counting syllable");
-                return false;
+                errors += "\nMissing a after carbon counting syllable";
+                return;
             }
         }
 
@@ -229,87 +224,74 @@ public class MainChain {
             for (Integer double_bond : double_bonds) {
                 if (double_bond <= 0 || double_bond >= hydroCarbon.getValue()) {
                     //Illegal Positions
-                    System.out.println("Wrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct");
-                    return false;
+                    errors += "\nWrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct";
+                    return;
                 }
             }
 
             for (Integer triple_bond : triple_bonds) {
                 if (triple_bond <= 0 || triple_bond >= hydroCarbon.getValue()) {
                     //Illegal Positions
-                    System.out.println("Wrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct");
-                    return false;
+                    errors += "\nWrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct";
+                    return;
                 }
             }
         } else {
             if (multibond_char != null && multibond_char.equals("a")) {
                 //Incorrect a after Carbon syllable
                 //e.g. Propa1en
-                System.out.println("Incorrect a after carbon counting syllable");
-                return false;
+                errors += "\nIncorrect a after carbon counting syllable";
+                return;
             }
         }
 
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
         for (int i = 1; i <= hydroCarbon.getValue(); i++) {
             if (i == 1) {
-                if(double_bonds.contains(i)){
+                if (double_bonds.contains(i)) {
                     bonds_per_carbon.add(2);
-                }
-                else if(triple_bonds.contains(i)){
+                } else if (triple_bonds.contains(i)) {
                     bonds_per_carbon.add(3);
-                }
-                else {
+                } else {
                     bonds_per_carbon.add(1);
                 }
 
-            }
-            else if(i == hydroCarbon.getValue()){
-                if(double_bonds.contains(i-1)){
+            } else if (i == hydroCarbon.getValue()) {
+                if (double_bonds.contains(i - 1)) {
                     bonds_per_carbon.add(2);
-                }
-                else if(triple_bonds.contains(i-1)){
+                } else if (triple_bonds.contains(i - 1)) {
                     bonds_per_carbon.add(3);
-                }
-                else {
+                } else {
                     bonds_per_carbon.add(1);
                 }
-            }
-            else {
+            } else {
                 int bonds = 0;
-                if(double_bonds.contains(i-1)){
-                    bonds +=2;
+                if (double_bonds.contains(i - 1)) {
+                    bonds += 2;
+                } else if (triple_bonds.contains(i - 1)) {
+                    bonds += 3;
+                } else {
+                    bonds += 1;
                 }
-                else if(triple_bonds.contains(i-1)){
-                    bonds +=3;
-                }
-                else {
-                    bonds +=1;
-                }
-                if(double_bonds.contains(i)){
-                    bonds +=2;
-                }
-                else if(triple_bonds.contains(i)){
-                    bonds +=3;
-                }
-                else {
-                    bonds +=1;
+                if (double_bonds.contains(i)) {
+                    bonds += 2;
+                } else if (triple_bonds.contains(i)) {
+                    bonds += 3;
+                } else {
+                    bonds += 1;
                 }
 
-                if(bonds > 4){
+                if (bonds > 4) {
                     //the user has given a wrong bond position
                     //e.g. Hexa 2,3 diin
-                    System.out.println("Wrong bond positions [more than 4 bonds at] "+i+". C - Atom");
-                    return false;
+                    errors += "\nWrong bond positions [more than 4 bonds]  at" + i + ". C - Atom";
+                    return;
                 }
                 bonds_per_carbon.add(bonds);
             }
 
         }
-
-
-        return true;
-}
+    }
 
     @Override
     public String toString() {
