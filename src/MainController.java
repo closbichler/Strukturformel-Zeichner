@@ -106,7 +106,7 @@ public class MainController extends Controller {
     public void drawCanvas() {
         canvasplaceholder.setVisible(false);
         canvasplaceholder.setDisable(true);
-
+        canvas.setVisible(true);
 
         boolean sizeunfit = true;
         int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
@@ -117,7 +117,7 @@ public class MainController extends Controller {
             try {
                 grid = new Grid(canvaslen, canvaswid, fontsize);
                 gc.setFont(Font.font("Arial", fontsize));
-                grid.drawGrid(gc);
+                //grid.drawGrid(gc);
 
                 String[] norm = {"", "H" ,"-", "H"};
                 String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
