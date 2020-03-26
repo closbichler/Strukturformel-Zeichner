@@ -13,7 +13,7 @@ public class SideChain {
     }
 
     private boolean regex(String input) {
-        String regex = "^(\\d(,\\d)*)-?\\s*?([A-Za-z]{2,})?\\(?(.*)yl\\)?$";
+        String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(.*)yl\\)?$";
         String name;
 
         //Stores the multiple bond positions e.g. 3,4
@@ -22,6 +22,7 @@ public class SideChain {
         String greek_syllable;
         String mainchain;
 
+        input = input.replace(" ", "");
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
 
@@ -32,7 +33,7 @@ public class SideChain {
             calc_positions(position_string);
             mainchain = calc_syllable(greek_syllable, mainchain);
             mainChain = new MainChain(mainchain, true);
-
+            validateChains();
         }
         return false;
     }
@@ -47,7 +48,20 @@ public class SideChain {
     }
 
     String calc_syllable(String greek_syllable, String mainchain) {
-        if (greek_syllable == null) {
+        if (greek_syllable != null) {
+            try {
+                greekNumber = GreekNumbers.valueOf(greek_syllable);
+                if (greekNumber.getValue() != positions.size()) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+
+                mainchain = greek_syllable + mainchain;
+                greek_syllable = null;
+                calc_syllable(greek_syllable, mainchain);
+            }
+
+        } else {
             int i;
             for (i = 0; i < mainchain.length(); i++) {
                 try {
@@ -62,18 +76,19 @@ public class SideChain {
                 mainchain = mainchain.substring(i);
 
             }
-        } else if (greek_syllable != null) {
-            try {
-                greekNumber = GreekNumbers.valueOf(greek_syllable);
-                if (greekNumber.getValue() != positions.size()) {
-                    throw new Exception();
-                }
-            } catch (Exception e) {
-                System.out.println("Wrong Greek Syllable");
-            }
-
         }
         return mainchain;
+    }
+
+    boolean validateChains() {
+
+        if (greekNumber != null && greekNumber.getValue() != positions.size()) {
+            System.out.println("Wrong Greeksyllable in the sidechain");
+            return false;
+        }
+
+
+        return true;
     }
 
     @Override

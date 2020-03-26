@@ -19,12 +19,33 @@ public class Model {
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
-
         System.out.println(this);
+        validateChains();
+
 
     }
 
     boolean validateChains(){
+
+        for (SideChain sideChain : sideChains) {
+            for (Integer position : sideChain.positions) {
+                Integer bonds = mainChain.bonds_per_carbon.get(position);
+                mainChain.bonds_per_carbon.remove(position);
+                mainChain.bonds_per_carbon.add(position, bonds+1);
+                if(bonds+1 > 4){
+                    System.out.println("Wrong Sidechain on position " + position);
+                    return false;
+                }
+                if(position <= sideChain.mainChain.hydroCarbon.getValue()){
+                    System.out.println("Sidechain on " + position + " would be longer than the mainchain");
+                    return false;
+                }
+                else if(position + sideChain.mainChain.hydroCarbon.getValue() > mainChain.hydroCarbon.getValue() ){
+                    System.out.println("Sidechain on " + position + " would be longer than the mainchain");
+                    return false;
+                }
+            }
+        }
 
         return true;
     }

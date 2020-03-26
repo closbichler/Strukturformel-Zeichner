@@ -50,7 +50,7 @@ public class MainChain {
     //Returns if the input was correct or if there were any mistakes
     private boolean regex(String input, boolean sideChain) {
         //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
-
+        input = input.replace(" ","");
         if(sideChain){
             if(!input.matches("[aei]n")){
                 input+="an";
@@ -94,7 +94,7 @@ public class MainChain {
                     calc_enums(name, greek_syllable_en, greek_syllable_in);
                     validate_input(multibond_char);
                 }
-                if (ending_en != null && ending_in != null && sideChain!=true) {
+                if (ending_en != null && ending_in != null && !sideChain) {
                     //No ending
                     System.out.println("Missing ending [an, en, in]");
                     return false;
