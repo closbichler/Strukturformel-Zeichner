@@ -115,20 +115,7 @@ public class MainController extends Controller {
 
         do {
             try {
-                grid = new Grid(canvaslen, canvaswid, fontsize);
-                gc.setFont(Font.font("Arial", fontsize));
-                grid.drawGrid(gc);
 
-                String[] norm = {"", "H" ,"-", "H"};
-                String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
-                ArrayList<ArrayList<String>> sc3 = new ArrayList<>();
-                sc3.add(new ArrayList<>());
-                sc3.add(new ArrayList<>());
-                sc3.get(0).addAll(Arrays.asList(sc2[0]));
-                sc3.get(1).addAll(Arrays.asList(sc2[1]));
-
-                CanvasFkt.drawChainHorWithSideChains(gc, grid, col, row, arr, new SideChainInput(Orientation.Right, 2, sc1), new SideChainInput(Orientation.Left, 5, sc2));
-                CanvasFkt.drawE(gc, grid, 8, 6, "O", "H", "HO", "H", "HO");
                 //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
 
                 sizeunfit = false;
@@ -151,8 +138,6 @@ public class MainController extends Controller {
             }
         } while(sizeunfit);
 
-        slider.valueProperty().addListener(event -> {
-            canvas.setRotate(slider.getValue());
-        });
+        slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
     }
 }
