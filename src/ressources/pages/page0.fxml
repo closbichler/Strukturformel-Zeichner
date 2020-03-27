@@ -134,7 +134,7 @@
             <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Hilfe" textAlignment="CENTER" />
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label alignment="TOP_LEFT" fx:id="help" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>
@@ -161,8 +161,8 @@
             </VBox>
             <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Documentation" textAlignment="CENTER" />
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Dokumentation" textAlignment="CENTER" />
+                  <Label alignment="TOP_LEFT" fx:id="doc" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>

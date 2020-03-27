@@ -13,8 +13,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainController extends Controller {
     @FXML
@@ -41,6 +47,24 @@ public class MainController extends Controller {
     Button btn_minimize;
     @FXML
     ImageView canvasplaceholder;
+    @FXML
+    Label doc;
+    @FXML
+    Label help;
+
+    public void readFiles() {
+        String path = System.getProperty("user.dir");
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/documentation.txt"));
+            String text = "";
+            for (String l : lines) {
+                text += l + "\n";
+            }
+            doc.setText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void minimize() {
         stage.setIconified(true);

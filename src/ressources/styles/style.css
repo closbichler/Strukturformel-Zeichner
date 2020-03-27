@@ -108,6 +108,7 @@ Yellow:     #6EFF4D
 
 #input:focused {
     -fx-border-color: -fx-hover-color;
+    -fx-prompt-text-fill: #777;
 }
 
 #canvas-placeholder {
