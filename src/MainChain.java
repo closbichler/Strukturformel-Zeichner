@@ -42,7 +42,7 @@ public class MainChain {
         regex(input, false);
     }
 
-    String regex = "^-?([a-z]{3,})" +
+    String regex = "^-?([a-z]{2,}[b-z])" +
             "((an)$|(" + //4
             "(a)?(-?(\\d(,\\d)*)-?([a-z]{2,})?(en))$|" + //10
             "(a)?(-?(\\d(,\\d)*)-?([a-z]{2,})?(en))?" + //16
@@ -104,6 +104,9 @@ public class MainChain {
 
             }
 
+        }
+        else{
+            errors += "Falsche Eingabe!";
         }
 
 
@@ -194,7 +197,7 @@ public class MainChain {
                 return;
             }
         } else {
-            if (greek_syllable_en.equals("an")) {
+            if (greek_syllable_en != null && greek_syllable_en.equals("an")) {
                 //Greek_syllable even tho the ending is an
                 errors += "\nGreeksyllable is not needed for an Alkane";
             }
@@ -247,7 +250,10 @@ public class MainChain {
 
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
         for (int i = 1; i <= hydroCarbon.getValue(); i++) {
-            if (i == 1) {
+            if (hydroCarbon.getValue() == 1) {
+                bonds_per_carbon.add(0);
+                break;
+            }else if (i == 1) {
                 if (double_bonds.contains(i)) {
                     bonds_per_carbon.add(2);
                 } else if (triple_bonds.contains(i)) {

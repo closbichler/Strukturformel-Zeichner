@@ -102,42 +102,126 @@ public class MainController extends Controller {
 
         return popupWindow;
     }
-    
+
     public void drawCanvas() {
-        canvasplaceholder.setVisible(false);
-        canvasplaceholder.setDisable(true);
 
 
-        boolean sizeunfit = true;
-        int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Grid grid = new Grid(canvaslen, canvaswid, fontsize);
+        canvas.setVisible(true);
+        canvas.setDisable(false);
+        Model model = new Model();
+        model.calculate(input.getText());
 
-        do {
-            try {
+        if (model.errors.equals("")) {
 
-                //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
+            boolean sizeunfit = true;
+            int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            Grid grid = new Grid(canvaslen, canvaswid, fontsize);
 
-                sizeunfit = false;
-            } catch (ColIndexException e) {
-                if(e.getCol() < 0){
-                    col++;
+            ArrayList<ArrayList<String>> mainChainString = new ArrayList<>();
+            for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
+                ArrayList<String> bonds = new ArrayList<>();
+                for (int j = 0; j < 4; j++) {
+                    bonds.add(null);
                 }
-                else if(e.getCol() >= grid.getMaxCol()) {
-                    fontsize--;
+                for (SideChain sideChain : model.sideChains) {
+                    for (Integer position : sideChain.positions) {
+                        if (position == i) {
+                            if (bonds.get(0) == null) {
+                                bonds.remove(0);
+                                bonds.add(0, "-");
+                            } else {
+                                bonds.remove(2);
+                                bonds.add(2, "-");
+                            }
+                        }
+                    }
+
                 }
-                gc.clearRect(0, 0, canvaslen, canvaswid);
-            } catch (RowIndexException e){
-                if(e.getRow() < 0){
-                    row++;
+                if (model.mainChain.double_bonds.contains(i)) {
+                    bonds.remove(1);
+                    bonds.add(1, "--");
+                } else if (model.mainChain.triple_bonds.contains(i)) {
+                    bonds.remove(1);
+                    bonds.add(1, "---");
+
+                } else {
+                    if (i != model.mainChain.hydroCarbon.getValue()) {
+                        bonds.remove(1);
+                        bonds.add(1, "-");
+                    }
                 }
-                else if(e.getRow() >= grid.getMaxRow()) {
-                    fontsize--;
+                int integer = model.mainChain.bonds_per_carbon.get(i - 1);
+                while (integer != 4) {
+
+                    if (bonds.get(0) == null) {
+                        bonds.remove(0);
+                        bonds.add(0, "H");
+                        integer++;
+                    } else if (bonds.get(2) == null) {
+                        bonds.remove(2);
+                        bonds.add(2, "H");
+                        integer++;
+
+                    } else if (i == 1 && bonds.get(3) == null) {
+                        bonds.remove(3);
+                        bonds.add(3, "H");
+                        integer++;
+                    } else if (i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null) {
+                        bonds.remove(1);
+                        bonds.add(1, "H");
+                        integer++;
+                    } else {
+                        //System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
+                    }
+
                 }
-                gc.clearRect(0, 0, canvaslen, canvaswid);
+
+
+
+                for (int j = 0; j < 4; j++) {
+                    if (bonds.get(j) == null) {
+                        bonds.remove(j);
+                        bonds.add(j, "");
+                    }
+
+                }
+
+                mainChainString.add(bonds);
+
             }
-        } while(sizeunfit);
+            gc.clearRect(0, 0, canvaslen, canvaswid);
+            do {
+                try {
+                    grid = new Grid(canvaslen, canvaswid, fontsize);
+                    gc.setFont(Font.font("Arial", fontsize));
+                    //grid.drawGrid(gc);
+                    CanvasFkt.drawChainVert(gc, grid, col, row, mainChainString);
 
-        slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
+                    //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
+
+                    sizeunfit = false;
+                } catch (ColIndexException e) {
+                    if (e.getCol() < 0) {
+                        col++;
+                    } else if (e.getCol() >= grid.getMaxCol()) {
+                        fontsize--;
+                    }
+                    gc.clearRect(0, 0, canvaslen, canvaswid);
+                } catch (RowIndexException e) {
+                    if (e.getRow() < 0) {
+                        row++;
+                    } else if (e.getRow() >= grid.getMaxRow()) {
+                        fontsize--;
+                    }
+                    gc.clearRect(0, 0, canvaslen, canvaswid);
+                }
+            } while (sizeunfit);
+
+            slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
+        } else {
+            System.out.println(model.errors);
+            errormsg.setText(model.errors);
+        }
     }
 }

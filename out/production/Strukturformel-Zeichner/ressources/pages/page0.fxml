@@ -68,7 +68,7 @@
             </HBox>
             <VBox prefWidth="100.0">
                <children>
-                  <Label id="error-label" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" textAlignment="CENTER" textFill="RED" />
+                  <Label id="error-label" wrapText="true" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" textAlignment="CENTER" textFill="RED" />
                   <HBox>
                      <children>
                         <VBox>
@@ -113,8 +113,7 @@
                      </children>
                   </HBox>
                   <Canvas fx:id="canvas" height="350.0" visible="false" width="800.0" />
-                  <ImageView id="canvas-placeholder-2" fx:id="canvasplaceholder" fitHeight="350.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
+                   </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>

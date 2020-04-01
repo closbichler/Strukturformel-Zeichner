@@ -22,8 +22,8 @@ public class Model {
         mainChain = new MainChain(input.substring(end));
         System.out.println(this);
         validateChains();
-
-        errors+="\nMainchain:"+mainChain.errors;
+        if(!mainChain.errors.equals(""))
+            errors+="\nMainchain:"+mainChain.errors;
         for (SideChain sideChain : sideChains) {
             errors+="\nSideChain:"+sideChain.toString() + sideChain.errors;
         }
