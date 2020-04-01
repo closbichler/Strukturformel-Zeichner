@@ -37,8 +37,8 @@
                   <ComboBox prefWidth="150.0" />
                </children>
             </HBox>
-            <CheckBox mnemonicParsing="false" styleClass="black" text="Transparenter Hintergrund" />
-            <CheckBox mnemonicParsing="false" styleClass="black" text="Strukturbeschreibung anzeigen" />
+            <CheckBox fx:id="cbt" mnemonicParsing="false" styleClass="black" text="Transparenter Hintergrund" />
+            <CheckBox fx:id="cbs" mnemonicParsing="false" styleClass="black" text="Strukturbeschreibung anzeigen" />
             <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#export" text="Exportieren" textAlignment="CENTER" />
          </children>
          <padding>
