@@ -314,15 +314,15 @@ public class MainController extends Controller {
                     try {
                         grid = new Grid(canvaslen, canvaswid, fontsize);
                         gc.setFont(Font.font("Arial", fontsize));
-                        grid.drawGrid(gc);
+                        //grid.drawGrid(gc);
+
+                        //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 348)
                         if (model.sideChains == null) {
-                            CanvasFkt.drawChainVert(gc, grid, col, row, mainChainString);
+                            CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                         } else {
 
                             CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
                         }
-
-                        //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
 
                         sizeunfit = false;
                     } catch (ColIndexException e) {
@@ -341,6 +341,21 @@ public class MainController extends Controller {
                         gc.clearRect(0, 0, canvaslen, canvaswid);
                     }
                 } while (sizeunfit);
+
+                try {
+                    col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue()*2)/2;
+                    gc.clearRect(0, 0, canvaslen, canvaswid);
+                    //Hier Änderungen vom if-Block aus (derzeit) Zeile 320 einfügen
+                    if (model.sideChains == null) {
+                        CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
+                    } else {
+                        CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
+                    }
+
+                }
+                catch (Exception e){
+                    System.out.println("Fehler beim Zentrieren!");
+                }
 
                 slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
             } else {
