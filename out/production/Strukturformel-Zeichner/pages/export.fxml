@@ -12,6 +12,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" styleClass="export-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ExportController">
     <children>
         <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -34,11 +36,17 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox prefWidth="150.0" />
+                  <ComboBox prefWidth="150.0">
+                    <items>
+                            <String fx:value="nicht anzeigen"></String>
+                            <String fx:value="oben anzeigen"></String>
+                            <String fx:value="unten anzeigen"></String>
+                    </items>
+                  </ComboBox>
                </children>
             </HBox>
-            <CheckBox mnemonicParsing="false" styleClass="black" text="Transparenter Hintergrund" />
-            <CheckBox mnemonicParsing="false" styleClass="black" text="Strukturbeschreibung anzeigen" />
+            <CheckBox fx:id="cbt" mnemonicParsing="false" styleClass="black" text="Transparenter Hintergrund" />
+            <CheckBox fx:id="cbs" mnemonicParsing="false" styleClass="black" text="Strukturbeschreibung anzeigen" />
             <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#export" text="Exportieren" textAlignment="CENTER" />
          </children>
          <padding>
