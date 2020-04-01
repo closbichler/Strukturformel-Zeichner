@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,13 +38,15 @@ public class ExportController extends Controller {
 
         stage.close();
         File out = fileChooser.showSaveDialog(window);
+        String extension = out.toString().substring(out.toString().length() - 3);
 
-        if(out != null) {
+        if(out != null && (extension.toLowerCase().equals("gif") || extension.toLowerCase().equals("png") || extension.toLowerCase().equals("jpg"))) {
             try {
                 WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
                 canvas.snapshot(null, writableImage);
-                RenderedImage renderedImage = SwingFXUtils.fromFXImage(writableImage, null);
-                ImageIO.write(renderedImage, out.toString().substring(out.toString().length() - 3), out);
+                BufferedImage bufferedImage = new BufferedImage((int)canvas.getWidth(), (int)canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+                SwingFXUtils.fromFXImage(writableImage, bufferedImage);
+                ImageIO.write(bufferedImage, extension, out);
             } catch (IOException e) {
                 e.printStackTrace();
             }
