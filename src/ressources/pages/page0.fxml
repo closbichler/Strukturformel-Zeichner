@@ -54,7 +54,7 @@
             <Label styleClass="label-title" text="Strukturformel-Zeichner" />
             <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="800.0">
                <children>
-                  <TextField id="input" fx:id="input" prefHeight="30.0" prefWidth="300.0" promptText="IUPAC-Nomenklatur">
+                  <TextField id="input" fx:id="input" onKeyPressed="#enter" prefHeight="30.0" prefWidth="300.0" promptText="IUPAC-Nomenklatur">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
@@ -95,7 +95,7 @@
             </VBox>
             <Pane id="canvas-placeholder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="800.0">
                <children>
-                  <Label id="struktur-name" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefWidth="800.0" text="Methan" textAlignment="CENTER" visible="false" />
+                  <Label id="struktur-name" fx:id="strukturname" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefWidth="800.0" textAlignment="CENTER" visible="false" />
                   <HBox id="struktur-beschreibung" layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0" visible="false">
                      <children>
                         <VBox prefHeight="100.0" prefWidth="124.0">
@@ -106,8 +106,8 @@
                         </VBox>
                         <VBox>
                            <children>
-                              <Label alignment="TOP_LEFT" text="C2H6" />
-                              <Label alignment="TOP_LEFT" text="10 g mol-1" />
+                              <Label fx:id="summenformel" alignment="TOP_LEFT" />
+                              <Label fx:id="molmasse" alignment="TOP_LEFT" />
                            </children>
                         </VBox>
                      </children>
@@ -134,7 +134,7 @@
             <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Hilfe" textAlignment="CENTER" />
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label fx:id="help" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>
@@ -161,8 +161,8 @@
             </VBox>
             <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Documentation" textAlignment="CENTER" />
-                  <Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Der Strukturformel-Zeichner ist ein Projekt der HTL-Ybbs im Zuge des Fachs Inofrmationstechnische Projekte - Projektmanagement im dritten Jahrgang." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Dokumentation" textAlignment="CENTER" />
+                  <Label fx:id="doc" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
                      <VBox.margin>
                         <Insets bottom="20.0" top="20.0" />
                      </VBox.margin>

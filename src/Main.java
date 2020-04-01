@@ -16,6 +16,7 @@ public class Main extends Application {
 
         MainController controller = loader.getController();
         controller.setStage(primaryStage);
+        controller.readFiles();
 
         primaryStage.setTitle("Strukturformel-Zeichner");
         primaryStage.setScene(new Scene(root));

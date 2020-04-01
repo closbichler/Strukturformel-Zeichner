@@ -108,11 +108,12 @@ Yellow:     #6EFF4D
 
 #input:focused {
     -fx-border-color: -fx-hover-color;
+    -fx-prompt-text-fill: #777;
 }
 
 #canvas-placeholder {
     -fx-background-color: -fx-bg-color;
-    -fx-background-image: url('../images/sfz_hallo_neu.gif');
+    //-fx-background-image: url('../images/sfz_hallo_neu.gif');
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
 }

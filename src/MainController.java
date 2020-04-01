@@ -7,14 +7,22 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainController extends Controller {
     @FXML
@@ -41,6 +49,37 @@ public class MainController extends Controller {
     Button btn_minimize;
     @FXML
     ImageView canvasplaceholder;
+    @FXML
+    Label doc;
+    @FXML
+    Label help;
+    @FXML
+    Label strukturname;
+    @FXML
+    Label molmasse;
+    @FXML
+    Label summenformel;
+
+    public void readFiles() {
+        String path = System.getProperty("user.dir");
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/documentation.txt"));
+            String text = "";
+            for (String l : lines) {
+                text += l + "\n";
+            }
+            doc.setText(text);
+
+            lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/help.txt"));
+            text = "";
+            for (String l : lines) {
+                text += l + "\n";
+            }
+            help.setText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void minimize() {
         stage.setIconified(true);
@@ -102,11 +141,19 @@ public class MainController extends Controller {
 
         return popupWindow;
     }
+
+    public void enter(javafx.scene.input.KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER)
+            drawCanvas();
+    }
     
     public void drawCanvas() {
         canvasplaceholder.setVisible(false);
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
+        summenformel.setVisible(true);
+        strukturname.setVisible(true);
+        molmasse.setVisible(true);
 
         boolean sizeunfit = true;
         int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
