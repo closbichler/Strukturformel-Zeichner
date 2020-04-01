@@ -20,12 +20,14 @@ public class Model {
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
-        System.out.println(this);
+        //System.out.println(this);
         validateChains();
-
-        errors+="\nMainchain:"+mainChain.errors;
+        if(!mainChain.errors.equals(""))
+            errors+="\nMainchain:"+mainChain.errors;
         for (SideChain sideChain : sideChains) {
-            errors+="\nSideChain:"+sideChain.toString() + sideChain.errors;
+            if(!sideChain.errors.equals("")) {
+                errors += "\nSideChain:" + sideChain.toString() + sideChain.errors;
+            }
         }
 
         return errors.equals("");
@@ -36,9 +38,9 @@ public class Model {
 
         for (SideChain sideChain : sideChains) {
             for (Integer position : sideChain.positions) {
-                Integer bonds = mainChain.bonds_per_carbon.get(position);
-                mainChain.bonds_per_carbon.remove(position);
-                mainChain.bonds_per_carbon.add(position, bonds+1);
+                Integer bonds = mainChain.bonds_per_carbon.get(position-1);
+                mainChain.bonds_per_carbon.remove(position-1);
+                mainChain.bonds_per_carbon.add(position-1, bonds+1);
                 if(bonds+1 > 4){
                     errors+="\nWrong Sidechain on position " + position;
                     return;

@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MainController extends Controller {
     @FXML
@@ -102,58 +101,251 @@ public class MainController extends Controller {
 
         return popupWindow;
     }
-    
-    public void drawCanvas() {
-        canvasplaceholder.setVisible(false);
-        canvasplaceholder.setDisable(true);
-        canvas.setVisible(true);
-        canvas.setDisable(false);
 
-        boolean sizeunfit = true;
-        int canvaslen = (int)canvas.getWidth(), canvaswid = (int)canvas.getHeight(), fontsize = 150, row = 1, col = 1;
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Grid grid = new Grid(canvaslen, canvaswid, fontsize);
-
-        do {
-            try {
-                grid = new Grid(canvaslen, canvaswid, fontsize);
-                gc.setFont(Font.font("Arial", fontsize));
-                grid.drawGrid(gc);
-
-                String[] norm = {"", "H" ,"-", "H"};
-                String[][] arr = {{"H", "-", "-", "H"}, norm, norm, norm, {"", "H", "H", "-"}}, sc1 =  {{"H", "H", "H", ""}}, sc2 = {{"H", "-", "H", "H"}, {"H", "", "H", ""}};
-                ArrayList<ArrayList<String>> sc3 = new ArrayList<>();
-                sc3.add(new ArrayList<>());
-                sc3.add(new ArrayList<>());
-                sc3.get(0).addAll(Arrays.asList(sc2[0]));
-                sc3.get(1).addAll(Arrays.asList(sc2[1]));
-
-                CanvasFkt.drawChainHorWithSideChains(gc, grid, col, row, arr, new SideChainInput(Orientation.Right, 2, sc1), new SideChainInput(Orientation.Left, 5, sc2));
-                CanvasFkt.drawE(gc, grid, 8, 6, "O", "H", "HO", "H", "HO");
-                //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
-
-                sizeunfit = false;
-            } catch (ColIndexException e) {
-                if(e.getCol() < 0){
-                    col++;
-                }
-                else if(e.getCol() >= grid.getMaxCol()) {
-                    fontsize--;
-                }
-                gc.clearRect(0, 0, canvaslen, canvaswid);
-            } catch (RowIndexException e){
-                if(e.getRow() < 0){
-                    row++;
-                }
-                else if(e.getRow() >= grid.getMaxRow()) {
-                    fontsize--;
-                }
-                gc.clearRect(0, 0, canvaslen, canvaswid);
+    public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
+        for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
+            ArrayList<String> bonds = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                bonds.add(null);
             }
-        } while(sizeunfit);
+            for (SideChain sideChain : model.sideChains) {
+                for (Integer position : sideChain.positions) {
+                    if (position == i) {
+                        if (bonds.get(0) == null) {
+                            bonds.remove(0);
+                            bonds.add(0, "-");
+                        } else {
+                            bonds.remove(2);
+                            bonds.add(2, "-");
+                        }
+                    }
+                }
 
-        slider.valueProperty().addListener(event -> {
-            canvas.setRotate(slider.getValue());
-        });
+            }
+            if (model.mainChain.double_bonds.contains(i)) {
+                bonds.remove(1);
+                bonds.add(1, "--");
+            } else if (model.mainChain.triple_bonds.contains(i)) {
+                bonds.remove(1);
+                bonds.add(1, "---");
+
+            } else {
+                if (i != model.mainChain.hydroCarbon.getValue()) {
+                    bonds.remove(1);
+                    bonds.add(1, "-");
+                }
+            }
+            int integer = model.mainChain.bonds_per_carbon.get(i - 1);
+            while (integer != 4) {
+
+                if (bonds.get(0) == null) {
+                    bonds.remove(0);
+                    bonds.add(0, "H");
+                    integer++;
+                } else if (bonds.get(2) == null) {
+                    bonds.remove(2);
+                    bonds.add(2, "H");
+                    integer++;
+
+                } else if (i == 1 && bonds.get(3) == null) {
+                    bonds.remove(3);
+                    bonds.add(3, "H");
+                    integer++;
+                } else if (i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null) {
+                    bonds.remove(1);
+                    bonds.add(1, "H");
+                    integer++;
+                } else {
+                    integer++;
+                    System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
+                }
+
+            }
+
+            for (int j = 0; j < 4; j++) {
+                if (bonds.get(j) == null) {
+                    bonds.remove(j);
+                    bonds.add(j, "");
+                }
+
+            }
+
+            mainChainString.add(bonds);
+
+        }
     }
-}
+
+    public void calcSideChains(ArrayList<ArrayList<String>> sideChainString, Orientation orientation, SideChain sideChain) {
+        int up, down, left, right;
+        if (orientation == Orientation.Down) {
+            up = 3;
+            down = 1;
+            left = 2;
+            right = 0;
+        } else {
+            up = 1;
+            down = 3;
+            left = 0;
+            right = 2;
+        }
+        for (int i = 1; i <= sideChain.mainChain.hydroCarbon.getValue(); i++) {
+            ArrayList<String> bonds = new ArrayList<>();
+            for (int j = 0; j < 4; j++) {
+                bonds.add(null);
+            }
+
+            if (sideChain.mainChain.double_bonds.contains(i)) {
+                bonds.remove(right);
+                bonds.add(right, "--");
+            } else if (sideChain.mainChain.triple_bonds.contains(i)) {
+                bonds.remove(right);
+                bonds.add(right, "---");
+
+            } else {
+                if (i != sideChain.mainChain.hydroCarbon.getValue()) {
+                    bonds.remove(right);
+                    bonds.add(right, "-");
+                }
+            }
+            int integer = sideChain.mainChain.bonds_per_carbon.get(i - 1);
+
+            while (integer != 4) {
+
+                if (bonds.get(up) == null) {
+                    bonds.remove(up);
+                    bonds.add(up, "H");
+                    integer++;
+                } else if (bonds.get(down) == null) {
+                    bonds.remove(down);
+                    bonds.add(down, "H");
+                    integer++;
+
+                } else if (i == 1 && bonds.get(left) == null) {
+                    bonds.remove(left);
+                    bonds.add(left, "H");
+                    integer++;
+                } else if (i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(right) == null) {
+                    bonds.remove(right);
+                    bonds.add(right, "");
+                    integer++;
+                }else{
+                        System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
+                    }
+
+                }
+
+                for (int j = 0; j < 4; j++) {
+                    if (bonds.get(j) == null) {
+                        bonds.remove(j);
+                        bonds.add(j, "");
+                    }
+
+                }
+
+                sideChainString.add(bonds);
+
+            }
+            if(orientation == Orientation.Down){
+                for (int i = 0; i < sideChainString.size()/2; i++) {
+                    ArrayList<String> tmp1 = sideChainString.remove(i);
+                    ArrayList<String> tmp2 = sideChainString.remove(sideChainString.size()-1-i);
+                    sideChainString.add(i, tmp2);
+                    sideChainString.add(sideChainString.size()-i, tmp1);
+                }
+            }
+        }
+
+        public void drawCanvas () {
+
+            canvas.setVisible(true);
+            canvas.setDisable(false);
+            Model model = new Model();
+            model.calculate(input.getText());
+
+            if (model.errors.equals("")) {
+
+                boolean sizeunfit = true;
+                int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                Grid grid = new Grid(canvaslen, canvaswid, fontsize);
+
+                ArrayList<ArrayList<String>> mainChainString = new ArrayList<>();
+                calcMainChain(mainChainString, model);
+
+                int size = 0;
+                for (SideChain sideChain : model.sideChains) {
+                    size += sideChain.positions.size();
+                }
+                SideChainInput[] sideChainInputs = new SideChainInput[size];
+                int i = 0;
+                for (SideChain sideChain : model.sideChains) {
+
+                    for (Integer position : sideChain.positions) {
+                        ArrayList<ArrayList<String>> sideChainString = new ArrayList<>();
+
+                        boolean orientation = true;
+                        for (SideChainInput sideChainInput : sideChainInputs) {
+                            if (sideChainInput != null && sideChainInput.equals(position)) {
+                                calcSideChains(sideChainString, Orientation.Down, sideChain);
+                                SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
+                                sideChainInputs[i] = down;
+                                i++;
+                                orientation = false;
+                                break;
+                            }
+                        }
+                        if (orientation) {
+                            calcSideChains(sideChainString, Orientation.Up, sideChain);
+                            SideChainInput up = new SideChainInput(Orientation.Up, position, sideChainString);
+                            sideChainInputs[i] = up;
+                            i++;
+                        }
+                    }
+
+                }
+
+                /*for (SideChainInput sideChainInput : sideChainInputs) {
+                    System.out.println(sideChainInput);
+                }*/
+
+                gc.clearRect(0, 0, canvaslen, canvaswid);
+                do {
+
+                    try {
+                        grid = new Grid(canvaslen, canvaswid, fontsize);
+                        gc.setFont(Font.font("Arial", fontsize));
+                        grid.drawGrid(gc);
+                        if (model.sideChains == null) {
+                            CanvasFkt.drawChainVert(gc, grid, col, row, mainChainString);
+                        } else {
+
+                            CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
+                        }
+
+                        //CanvasFkt.drawChainVert(gc, grid, col ,row, "H,-,H,H", "H,H,H,");
+
+                        sizeunfit = false;
+                    } catch (ColIndexException e) {
+                        if (e.getCol() < 0) {
+                            col++;
+                        } else if (e.getCol() >= grid.getMaxCol()) {
+                            fontsize--;
+                        }
+                        gc.clearRect(0, 0, canvaslen, canvaswid);
+                    } catch (RowIndexException e) {
+                        if (e.getRow() < 0) {
+                            row++;
+                        } else if (e.getRow() >= grid.getMaxRow()) {
+                            fontsize--;
+                        }
+                        gc.clearRect(0, 0, canvaslen, canvaswid);
+                    }
+                } while (sizeunfit);
+
+                slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
+            } else {
+                System.out.println("|" + model.errors + "|");
+                errormsg.setText(model.errors);
+            }
+        }
+    }

@@ -55,14 +55,13 @@ public class SideChain {
         if (greek_syllable != null) {
             try {
                 greekNumber = GreekNumbers.valueOf(greek_syllable);
-                if (greekNumber.getValue() != positions.size()) {
-                    throw new Exception();
+                if (greekNumber.getValue() != positions.size() && positions.size() != 1) {
+                    errors+="\nGreekNumber "+greek_syllable+" doesn't match with given positions.";
                 }
             } catch (Exception e) {
 
                 mainchain = greek_syllable + mainchain;
-                greek_syllable = null;
-                calc_syllable(greek_syllable, mainchain);
+                return calc_syllable(null, mainchain);
             }
 
         } else {
@@ -76,17 +75,21 @@ public class SideChain {
                 }
 
             }
-            if (i != mainchain.length()) {
-                mainchain = mainchain.substring(i);
 
+            if (i != mainchain.length()) {
+
+                return mainchain.substring(i);
             }
+        }
+        if(greekNumber == null){
+            greekNumber = GreekNumbers.none;
         }
         return mainchain;
     }
 
     boolean validateChains() {
 
-        if (greekNumber != null && greekNumber.getValue() != positions.size()) {
+        if (greekNumber != null && greekNumber.getValue() != positions.size() && positions.size()!= 1) {
             errors+="Wrong Greeksyllable in the sidechain";
             return false;
         }
