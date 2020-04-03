@@ -136,7 +136,7 @@ public class MainController extends Controller {
         popupWindow.setResizable(false);
         popupWindow.initStyle(StageStyle.UNDECORATED);
         popupWindow.setScene(new Scene(root));
-        popupWindow.getIcons().add(new Image(getClass().getResource("images/Strukturformel-Zeichner_Icon_2.png").toExternalForm()));
+        popupWindow.getIcons().add(new Image(getClass().getResource("ressources/images/taskbar-icon.png").toExternalForm()));
 
         return popupWindow;
     }
