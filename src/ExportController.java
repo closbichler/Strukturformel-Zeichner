@@ -1,5 +1,6 @@
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -11,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class ExportController extends Controller {
+    private int txtlinks;
     private String mol, sum, struktur;
     private Canvas canvas;
     private String initialFileName;
@@ -33,9 +36,10 @@ public class ExportController extends Controller {
     public void setInitialFileNameAndCanvas(String name, Canvas canvas) {
         initialFileName = name;
         this.canvas = canvas;
-        mol = "69";
-        sum = "C5H4";
-        struktur = "Methin";
+        mol = "Molmasse: " + "69";
+        sum = "Summenformel: " + "C5H4";
+        struktur = "Methinini";
+        txtlinks = Math.min((400-(int)(struktur.length()*4.3)), Math.min((400-(int)(sum.length()*2.9)), (400-(int)(mol.length()*2.9))));
     }
 
     public void hideDescription() {
@@ -61,15 +65,16 @@ public class ExportController extends Controller {
         fileChooser.setInitialFileName(initialFileName);
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF files (*.gif)", "*.gif"));
-        if(!transparenz.isSelected())
+        if(!transparenz.isSelected()) {
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF files (*.gif)", "*.gif"));
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg"));
+        }
 
         if(summenformel.isSelected() && molmasse.isSelected() && !radio1.isSelected() && radio2.isSelected()){
             Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
             GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.fillText("Molmasse: " + mol, 10, 20);
-            gc.fillText("Summenformel: " + sum, 10, 40);
+            gc.fillText(mol, txtlinks, 20);
+            gc.fillText(sum, txtlinks, 40);
             if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 45);
             else
@@ -80,37 +85,13 @@ public class ExportController extends Controller {
             Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
             GraphicsContext gc = canvas.getGraphicsContext2D();
             if(molmasse.isSelected())
-                gc.fillText("Molmasse: " + mol, 10, 20);
+                gc.fillText(mol, txtlinks, 20);
             else
-                gc.fillText("Summenformel: " + sum, 10, 20);
+                gc.fillText(sum, txtlinks, 20);
             if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 25);
             else
                 gc.drawImage(this.canvas.snapshot(null, null), 0, 25);
-            this.canvas = canvas;
-        }
-        else if(summenformel.isSelected() && molmasse.isSelected() && !radio1.isSelected() && radio3.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.fillText("Molmasse: " + mol, 10, this.canvas.getHeight()+20);
-            gc.fillText("Summenformel: " + sum, 10, this.canvas.getHeight()+40);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
-            this.canvas = canvas;
-        }
-        else if((summenformel.isSelected() || molmasse.isSelected()) && !radio1.isSelected() && radio3.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            if(molmasse.isSelected())
-                gc.fillText("Molmasse: " + mol, 10, this.canvas.getHeight()+20);
-            else
-                gc.fillText("Summenformel: " + sum, 10, this.canvas.getHeight()+20);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
             this.canvas = canvas;
         }
 
@@ -119,7 +100,7 @@ public class ExportController extends Controller {
             GraphicsContext gc = canvas.getGraphicsContext2D();
             Font prev = gc.getFont();
             gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-            gc.fillText(struktur, 10, 20);
+            gc.fillText(struktur, txtlinks, 20);
             gc.setFont(prev);
             if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 25);
@@ -132,8 +113,33 @@ public class ExportController extends Controller {
             GraphicsContext gc = canvas.getGraphicsContext2D();
             Font prev = gc.getFont();
             gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-            gc.fillText(struktur, 10, this.canvas.getHeight()+20);
+            gc.fillText(struktur, txtlinks, this.canvas.getHeight()+20);
             gc.setFont(prev);
+            if(transparenz.isSelected())
+                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
+            else
+                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
+            this.canvas = canvas;
+        }
+
+        if(summenformel.isSelected() && molmasse.isSelected() && !radio1.isSelected() && radio3.isSelected()){
+            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            gc.fillText(mol, txtlinks, this.canvas.getHeight()+20);
+            gc.fillText(sum, txtlinks, this.canvas.getHeight()+40);
+            if(transparenz.isSelected())
+                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
+            else
+                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
+            this.canvas = canvas;
+        }
+        else if((summenformel.isSelected() || molmasse.isSelected()) && !radio1.isSelected() && radio3.isSelected()){
+            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            if(molmasse.isSelected())
+                gc.fillText(mol, txtlinks, this.canvas.getHeight()+20);
+            else
+                gc.fillText(sum, txtlinks, this.canvas.getHeight()+20);
             if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
             else
