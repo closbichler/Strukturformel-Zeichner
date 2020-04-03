@@ -22,7 +22,7 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image(getClass().getResource("images/Strukturformel-Zeichner_Icon_2.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(getClass().getResource("images/taskbar-icon.png").toExternalForm()));
         primaryStage.show();
     }
 
