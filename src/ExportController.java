@@ -6,6 +6,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.FileChooser;
@@ -23,13 +24,25 @@ public class ExportController extends Controller {
     private String initialFileName;
 
     @FXML
-    CheckBox cbt, cbs;
+    CheckBox molmasse, summenformel, transparenz;
+    @FXML
+    RadioButton radio1, radio2, radio3;
 
     public void setInitialFileNameAndCanvas(String name, Canvas canvas) {
         initialFileName = name;
         this.canvas = canvas;
         mol = "69";
         sum = "C5H4";
+    }
+
+    public void hideDescription() {
+        molmasse.setDisable(true);
+        summenformel.setDisable(true);
+    }
+
+    public void showDescription() {
+        molmasse.setDisable(false);
+        summenformel.setDisable(false);
     }
 
     public void export() {
@@ -46,15 +59,15 @@ public class ExportController extends Controller {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("GIF files (*.gif)", "*.gif"));
-        if(!cbt.isSelected())
+        if(!transparenz.isSelected())
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg"));
 
-        if(cbs.isSelected()){
+        if(summenformel.isSelected()){
             Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.fillText("Molmasse: " + mol, 10, 20);
             gc.fillText("Summenformel: " + sum, 10, 40);
-            if(cbt.isSelected())
+            if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 45);
             else
                 gc.drawImage(this.canvas.snapshot(null, null), 0, 45);
@@ -68,7 +81,7 @@ public class ExportController extends Controller {
 
         String extension = out.toString().substring(out.toString().length() - 3);
 
-        if(cbt.isSelected()){
+        if(transparenz.isSelected()){
             try {
                 WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
                 ImageIO.write(SwingFXUtils.fromFXImage(canvas.snapshot(sp, writableImage), null), extension, out);

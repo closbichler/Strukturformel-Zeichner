@@ -3,18 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="350.0" styleClass="export-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ExportController">
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="350.0" styleClass="export-pane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ExportController">
     <children>
         <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <menus>
@@ -27,26 +25,26 @@
                 <Button fx:id="btn_close" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#close" prefWidth="40.0" styleClass="btn-close" text="X" textAlignment="RIGHT" textFill="WHITE" />
             </items>
         </ToolBar>
-      <VBox id="export-pane" layoutY="26.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
+      <VBox id="export-pane" layoutY="26.0" prefHeight="200.0" prefWidth="350.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
          <children>
             <HBox>
                <children>
-                  <Label prefHeight="25.0" styleClass="black" text="Strukturnamen">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <ComboBox prefWidth="150.0">
-                    <items>
-                            <String fx:value="nicht anzeigen"></String>
-                            <String fx:value="oben anzeigen"></String>
-                            <String fx:value="unten anzeigen"></String>
-                    </items>
-                  </ComboBox>
+                  <VBox prefHeight="53.0" prefWidth="315.0">
+                     <children>
+                        <RadioButton fx:id="radio1" mnemonicParsing="false" onMouseClicked="#hideDescription" text="Strukturbeschreibung nicht anzeigen">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="anzeigen" />
+                           </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="radio2" mnemonicParsing="false" onMouseClicked="#showDescription" selected="true" text="Strukturbeschreibung oberhalb anzeigen" toggleGroup="$anzeigen" />
+                        <RadioButton fx:id="radio3" mnemonicParsing="false" onMouseClicked="#showDescription" text="Strukturbeschreibung unterhalb anzeigen" toggleGroup="$anzeigen" />
+                     </children>
+                  </VBox>
                </children>
             </HBox>
-            <CheckBox fx:id="cbt" mnemonicParsing="false" styleClass="black" text="Transparenter Hintergrund" />
-            <CheckBox fx:id="cbs" mnemonicParsing="false" styleClass="black" text="Strukturbeschreibung anzeigen" />
+            <CheckBox fx:id="molmasse" mnemonicParsing="false" selected="true" styleClass="black" text="Molmasse anzeigen" />
+            <CheckBox fx:id="summenformel" mnemonicParsing="false" selected="true" styleClass="black" text="Summenformel anzeigen" />
+            <CheckBox fx:id="transparenz" mnemonicParsing="false" selected="true" styleClass="black" text="Transparenter Hintergrund" />
             <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#export" text="Exportieren" textAlignment="CENTER" />
          </children>
          <padding>
