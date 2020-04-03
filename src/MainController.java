@@ -159,19 +159,14 @@ public class MainController extends Controller {
                     integer++;
                     System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
                 }
-
             }
-
             for (int j = 0; j < 4; j++) {
                 if (bonds.get(j) == null) {
                     bonds.remove(j);
                     bonds.add(j, "");
                 }
-
             }
-
             mainChainString.add(bonds);
-
         }
     }
 
@@ -208,10 +203,16 @@ public class MainController extends Controller {
                 }
             }
             int integer = sideChain.mainChain.bonds_per_carbon.get(i - 1);
-
             while (integer != 4) {
-
-                if (bonds.get(up) == null) {
+                if (i == 1 && bonds.get(left) == null) {
+                    bonds.remove(left);
+                    bonds.add(left, "H");
+                    integer++;
+                } else if (i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(right) == null) {
+                    bonds.remove(right);
+                    bonds.add(right, "");
+                    integer++;
+                } else if (bonds.get(up) == null) {
                     bonds.remove(up);
                     bonds.add(up, "H");
                     integer++;
@@ -220,147 +221,138 @@ public class MainController extends Controller {
                     bonds.add(down, "H");
                     integer++;
 
-                } else if (i == 1 && bonds.get(left) == null) {
-                    bonds.remove(left);
-                    bonds.add(left, "H");
-                    integer++;
-                } else if (i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(right) == null) {
-                    bonds.remove(right);
-                    bonds.add(right, "");
-                    integer++;
-                }else{
-                        System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
-                    }
-
+                } else {
+                    System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
                 }
-
-                for (int j = 0; j < 4; j++) {
-                    if (bonds.get(j) == null) {
-                        bonds.remove(j);
-                        bonds.add(j, "");
-                    }
-
-                }
-
-                sideChainString.add(bonds);
 
             }
-            if(orientation == Orientation.Down){
-                for (int i = 0; i < sideChainString.size()/2; i++) {
-                    ArrayList<String> tmp1 = sideChainString.remove(i);
-                    ArrayList<String> tmp2 = sideChainString.remove(sideChainString.size()-1-i);
-                    sideChainString.add(i, tmp2);
-                    sideChainString.add(sideChainString.size()-i, tmp1);
+
+            for (int j = 0; j < 4; j++) {
+                if (bonds.get(j) == null) {
+                    bonds.remove(j);
+                    bonds.add(j, "");
                 }
+
+            }
+
+            sideChainString.add(bonds);
+
+        }
+        if (orientation == Orientation.Down) {
+            for (int i = 0; i < sideChainString.size() / 2; i++) {
+                ArrayList<String> tmp1 = sideChainString.remove(i);
+                ArrayList<String> tmp2 = sideChainString.remove(sideChainString.size() - 1 - i);
+                sideChainString.add(i, tmp2);
+                sideChainString.add(sideChainString.size() - i, tmp1);
             }
         }
+    }
 
-        public void drawCanvas () {
+    public void drawCanvas() {
 
-            canvas.setVisible(true);
-            canvas.setDisable(false);
-            Model model = new Model();
-            model.calculate(input.getText());
+        canvas.setVisible(true);
+        canvas.setDisable(false);
+        Model model = new Model();
+        model.calculate(input.getText());
 
-            if (model.errors.equals("")) {
+        if (model.errors.equals("")) {
+            errormsg.setText("");
+            boolean sizeunfit = true;
+            int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            Grid grid = new Grid(canvaslen, canvaswid, fontsize);
 
-                boolean sizeunfit = true;
-                int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                Grid grid = new Grid(canvaslen, canvaswid, fontsize);
+            ArrayList<ArrayList<String>> mainChainString = new ArrayList<>();
+            calcMainChain(mainChainString, model);
 
-                ArrayList<ArrayList<String>> mainChainString = new ArrayList<>();
-                calcMainChain(mainChainString, model);
+            int size = 0;
+            for (SideChain sideChain : model.sideChains) {
+                size += sideChain.positions.size();
+            }
+            SideChainInput[] sideChainInputs = new SideChainInput[size];
+            int i = 0;
+            for (SideChain sideChain : model.sideChains) {
 
-                int size = 0;
-                for (SideChain sideChain : model.sideChains) {
-                    size += sideChain.positions.size();
-                }
-                SideChainInput[] sideChainInputs = new SideChainInput[size];
-                int i = 0;
-                for (SideChain sideChain : model.sideChains) {
+                for (Integer position : sideChain.positions) {
+                    ArrayList<ArrayList<String>> sideChainString = new ArrayList<>();
 
-                    for (Integer position : sideChain.positions) {
-                        ArrayList<ArrayList<String>> sideChainString = new ArrayList<>();
-
-                        boolean orientation = true;
-                        for (SideChainInput sideChainInput : sideChainInputs) {
-                            if (sideChainInput != null && sideChainInput.equals(position)) {
-                                calcSideChains(sideChainString, Orientation.Down, sideChain);
-                                SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
-                                sideChainInputs[i] = down;
-                                i++;
-                                orientation = false;
-                                break;
-                            }
-                        }
-                        if (orientation) {
-                            calcSideChains(sideChainString, Orientation.Up, sideChain);
-                            SideChainInput up = new SideChainInput(Orientation.Up, position, sideChainString);
-                            sideChainInputs[i] = up;
+                    boolean orientation = true;
+                    for (SideChainInput sideChainInput : sideChainInputs) {
+                        if (sideChainInput != null && sideChainInput.equals(position)) {
+                            calcSideChains(sideChainString, Orientation.Down, sideChain);
+                            SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
+                            sideChainInputs[i] = down;
                             i++;
+                            orientation = false;
+                            break;
                         }
                     }
-
+                    if (orientation) {
+                        calcSideChains(sideChainString, Orientation.Up, sideChain);
+                        SideChainInput up = new SideChainInput(Orientation.Up, position, sideChainString);
+                        sideChainInputs[i] = up;
+                        i++;
+                    }
                 }
+
+            }
 
                 /*for (SideChainInput sideChainInput : sideChainInputs) {
                     System.out.println(sideChainInput);
                 }*/
 
-                gc.clearRect(0, 0, canvaslen, canvaswid);
-                do {
-
-                    try {
-                        grid = new Grid(canvaslen, canvaswid, fontsize);
-                        gc.setFont(Font.font("Arial", fontsize));
-                        //grid.drawGrid(gc);
-
-                        //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 348)
-                        if (model.sideChains == null) {
-                            CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
-                        } else {
-
-                            CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
-                        }
-
-                        sizeunfit = false;
-                    } catch (ColIndexException e) {
-                        if (e.getCol() < 0) {
-                            col++;
-                        } else if (e.getCol() >= grid.getMaxCol()) {
-                            fontsize--;
-                        }
-                        gc.clearRect(0, 0, canvaslen, canvaswid);
-                    } catch (RowIndexException e) {
-                        if (e.getRow() < 0) {
-                            row++;
-                        } else if (e.getRow() >= grid.getMaxRow()) {
-                            fontsize--;
-                        }
-                        gc.clearRect(0, 0, canvaslen, canvaswid);
-                    }
-                } while (sizeunfit);
+            gc.clearRect(0, 0, canvaslen, canvaswid);
+            do {
 
                 try {
-                    col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue()*2)/2;
-                    gc.clearRect(0, 0, canvaslen, canvaswid);
-                    //Hier Änderungen vom if-Block aus (derzeit) Zeile 320 einfügen
+                    grid = new Grid(canvaslen, canvaswid, fontsize);
+                    gc.setFont(Font.font("Arial", fontsize));
+                    //grid.drawGrid(gc);
+
+                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 348)
                     if (model.sideChains == null) {
                         CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                     } else {
+
                         CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
                     }
 
+                    sizeunfit = false;
+                } catch (ColIndexException e) {
+                    if (e.getCol() < 0) {
+                        col++;
+                    } else if (e.getCol() >= grid.getMaxCol()) {
+                        fontsize--;
+                    }
+                    gc.clearRect(0, 0, canvaslen, canvaswid);
+                } catch (RowIndexException e) {
+                    if (e.getRow() < 0) {
+                        row++;
+                    } else if (e.getRow() >= grid.getMaxRow()) {
+                        fontsize--;
+                    }
+                    gc.clearRect(0, 0, canvaslen, canvaswid);
                 }
-                catch (Exception e){
-                    System.out.println("Fehler beim Zentrieren!");
+            } while (sizeunfit);
+
+            try {
+                col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue() * 2) / 2;
+                gc.clearRect(0, 0, canvaslen, canvaswid);
+                //Hier Änderungen vom if-Block aus (derzeit) Zeile 320 einfügen
+                if (model.sideChains == null) {
+                    CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
+                } else {
+                    CanvasFkt.drawChainVertWithSideChains(gc, grid, col, row, mainChainString, sideChainInputs);
                 }
 
-                slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
-            } else {
-                System.out.println("|" + model.errors + "|");
-                errormsg.setText(model.errors);
+            } catch (Exception e) {
+                System.out.println("Fehler beim Zentrieren!");
             }
+
+            slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
+        } else {
+            System.out.println("|" + model.errors + "|");
+            errormsg.setText(model.errors);
         }
     }
+}

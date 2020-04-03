@@ -14,8 +14,12 @@ public class SideChain {
     }
 
     private void regex(String input) {
-        String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(.*)yl\\)?$";
-        String name;
+        String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(([a-z]{2,})" +
+                "(|("+
+                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" +
+                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" +
+                "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" +
+                ")))yl\\)?$";
 
         //Stores the multiple bond positions e.g. 3,4
         String position_string;
@@ -23,21 +27,22 @@ public class SideChain {
         String greek_syllable;
         String mainchain;
 
-        input = input.replace(" ", "");
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(input);
 
         if (m.find()) {
             position_string = m.group(1);
             greek_syllable = m.group(3);
-            mainchain = m.group(4).trim();
             calc_positions(position_string);
-            mainchain = calc_syllable(greek_syllable, mainchain);
+            mainchain = calc_syllable(greek_syllable, m.group(4));
             mainChain = new MainChain(mainchain, true);
             validateChains();
             if(!mainChain.errors.equals("")){
                 errors += mainChain.errors;
             }
+        }
+        else{
+            errors += "Falsche Eingabe";
         }
 
     }

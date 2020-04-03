@@ -11,16 +11,22 @@ public class Model {
 
     boolean calculate(String input) {
         sideChains = new ArrayList<>();
-        Pattern p = Pattern.compile("(.*)yl\\)?");
+        input = input.toLowerCase().replace(" ","");
+        Pattern p = Pattern.compile("(\\d(,\\d)*)-?([a-z]{2,})?\\(?(([a-z]{2,})" +
+                "(|("+
+                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" +
+                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" +
+                "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" +
+                ")))yl\\)?");
         Matcher m = p.matcher(input);
 
         int end = 0;
         while (m.find()) {
-            sideChains.add(new SideChain(input.substring(m.start(), m.end())));
+            sideChains.add(new SideChain(m.group(0)));
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
-        //System.out.println(this);
+
         validateChains();
         if(!mainChain.errors.equals(""))
             errors+="\nMainchain:"+mainChain.errors;
@@ -29,7 +35,9 @@ public class Model {
                 errors += "\nSideChain:" + sideChain.toString() + sideChain.errors;
             }
         }
-
+        if(!errors.equals("")){
+            System.out.println(this);
+        }
         return errors.equals("");
 
     }
