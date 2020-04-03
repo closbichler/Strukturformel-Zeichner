@@ -194,3 +194,7 @@ Yellow:     #6EFF4D
 .check-box:focused {
     : -fx-hover-color;
 }
+
+.radio-button {
+    -fx-text-fill: #000;
+}
