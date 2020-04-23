@@ -19,7 +19,9 @@ public class MainChain {
     public ArrayList<Integer> triple_bonds = new ArrayList<>();
     public ArrayList<Integer> bonds_per_carbon = new ArrayList<>();
 
-    //String regex1 = "\\s?([A-Z]?[b-z]{3,10})(a)?(\\s?-?(\\d[\\d,]*)-?\\s?)?([a-z]{2,})?([ai]n)$";
+    public ArrayList<Integer> alcohol_positions = new ArrayList<>();
+    public GreekNumbers greekNumber_alcohol;
+
     private String name;
     private Integer i;
     private String ending_an;
@@ -34,6 +36,9 @@ public class MainChain {
     private String greek_syllable_in;
     //a or ""
     private String multibond_char;
+    private boolean isAlcohol;
+    private String alcohol_positions_string;
+    private String greek_syllable_alcohol;
 
     MainChain(String input, boolean sideChain) {
         regex(input, sideChain);
@@ -44,11 +49,11 @@ public class MainChain {
     }
 
     String regex = "^-?([a-z]{2,})" +
-            "((an)|("+ //4
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|"+ //10
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?"+ //16
-            "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))"+ //21
-            "))$";
+            "((an)|(" + //4
+            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
+            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
+            "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
+            "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$";
 
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes3e
@@ -70,14 +75,18 @@ public class MainChain {
                         "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
                         "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
                         "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
-                        "))$");
+                        "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
-                if(!m.find()){
+                if (!m.find()) {
                     errors += "Falsche Eingabe!";
                     return;
                 }
             }
-
+            if (m.group(26) != null) {
+                isAlcohol = true;
+                alcohol_positions_string = m.group(23);
+                greek_syllable_alcohol = m.group(25);
+            }
             ending_an = m.group(3);
             multibond_char = m.group(5);
 
@@ -99,19 +108,20 @@ public class MainChain {
             if (ending_an != null) {
                 calc_multiple_bondings(name, ending_an, multibond_positions_en);
                 calc_multiple_bondings(name, ending_an, multibond_positions_in);
-                calc_enums(name, greek_syllable_en, greek_syllable_in);
+                calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
+                if(isAlcohol){calc_alcohol(alcohol_positions_string);}
                 validate_input(multibond_char, ending_an);
             } else {
 
                 if (ending_en != null) {
                     calc_multiple_bondings(name, ending_en, multibond_positions_en);
-                    calc_enums(name, greek_syllable_en, greek_syllable_in);
+                    calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
                     findPositions(ending_en, ending_in);
                     validate_input(multibond_char, ending_en);
                 }
                 if (ending_in != null) {
                     calc_multiple_bondings(name, ending_in, multibond_positions_in);
-                    calc_enums(name, greek_syllable_en, greek_syllable_in);
+                    calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
                     findPositions(ending_en, ending_in);
                     validate_input(multibond_char, ending_in);
                 }
@@ -129,12 +139,34 @@ public class MainChain {
 
     }
 
+    private void calc_alcohol(String alcohol_positions_string) {
+        String[] split = alcohol_positions_string.split(",");
+        for (String s : split) {
+            alcohol_positions.add(Integer.parseInt(s));
+        }
+        if (alcohol_positions.size() == 0) {
+            if (greekNumber_alcohol.getValue() > hydroCarbon.getValue()  ||
+                    (hydroCarbon.getValue() <= 2 && greekNumber_alcohol.getValue() == 0)) {
+                for (int i = 1; i < hydroCarbon.getValue(); i++) {
+                    alcohol_positions.add(i);
+                }
+            }
+        }
+        else {
+            if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
+
+                errors+="\nWrong Greeksyllabe "+greek_syllable_alcohol+ " for "+alcohol_positions.size() + " alcohol-groups";
+            }
+        }
+
+    }
+
     private boolean findName() {
 
         for (i = 2; i < name.length(); i++) {
             try {
                 HydroCarbons.valueOf(name.substring(0, i));
-                name = name.substring(0,i);
+                name = name.substring(0, i);
                 break;
             } catch (Exception e) {
 
@@ -159,6 +191,7 @@ public class MainChain {
                 }
             }
         }
+
     }
 
     //Calculates the multibonds with the given input
@@ -199,7 +232,7 @@ public class MainChain {
 
     //Creates the enum values from the input name and the greek_syllable
     //Returns if the transition was successfull
-    private void calc_enums(String name, String greek_syllable_en, String greek_syllable_in) {
+    private void calc_enums(String name, String greek_syllable_en, String greek_syllable_in, String alcohol_positions_string, boolean isAlcohol) {
 
         //Setting hydroCarbon to the given Value
         try {
@@ -248,6 +281,14 @@ public class MainChain {
         }
         if (greekNumber_in == null) {
             greekNumber_in = GreekNumbers.none;
+        }
+
+        if (isAlcohol) {
+            try {
+                greekNumber_alcohol = GreekNumbers.valueOf(greek_syllable_alcohol);
+            } catch (Exception e) {
+                greekNumber_alcohol = GreekNumbers.none;
+            }
         }
     }
 
