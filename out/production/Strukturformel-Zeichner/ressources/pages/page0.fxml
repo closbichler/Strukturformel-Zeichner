@@ -26,7 +26,7 @@
             <Menu id="icon-menu" disable="true" mnemonicParsing="false" />
           <Menu mnemonicParsing="false" styleClass="menu" text="Datei">
             <items>
-                  <Menu mnemonicParsing="false" text="Letze" />
+                  <Menu fx:id="history" mnemonicParsing="false" text="Letze" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#openExportWindow" text="Exportieren" />
                   <SeparatorMenuItem mnemonicParsing="false" onAction="#openExportWindow" />
