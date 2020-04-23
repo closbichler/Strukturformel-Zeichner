@@ -11,23 +11,33 @@ public class Model {
 
     boolean calculate(String input) {
         sideChains = new ArrayList<>();
-        Pattern p = Pattern.compile("(.*)yl\\)?");
+        input = input.toLowerCase().replace(" ","").replace("-","");
+        Pattern p = Pattern.compile("(\\d(,\\d)*)([a-z]{2,})?\\(?(([a-z]{2,})" +
+                "(|("+
+                "(a)?((\\d(,\\d)*)?([a-z]{2,})?(en))|" +
+                "(a)?((\\d(,\\d)*)?([a-z]{2,})?(en))?" +
+                "((\\d(,\\d)*)?([a-z]{2,})?(in))" +
+                ")))yl\\)?");
         Matcher m = p.matcher(input);
 
         int end = 0;
         while (m.find()) {
-            sideChains.add(new SideChain(input.substring(m.start(), m.end())));
+            sideChains.add(new SideChain(m.group(0)));
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
-        System.out.println(this);
+
         validateChains();
-
-        errors+="\nMainchain:"+mainChain.errors;
+        if(!mainChain.errors.equals(""))
+            errors+="\nMainchain:"+mainChain.errors;
         for (SideChain sideChain : sideChains) {
-            errors+="\nSideChain:"+sideChain.toString() + sideChain.errors;
+            if(!sideChain.errors.equals("")) {
+                errors += "\nSideChain:" + sideChain.toString() + sideChain.errors;
+            }
         }
-
+        if(!errors.equals("")){
+            System.out.println(this);
+        }
         return errors.equals("");
 
     }
@@ -36,9 +46,9 @@ public class Model {
 
         for (SideChain sideChain : sideChains) {
             for (Integer position : sideChain.positions) {
-                Integer bonds = mainChain.bonds_per_carbon.get(position);
-                mainChain.bonds_per_carbon.remove(position);
-                mainChain.bonds_per_carbon.add(position, bonds+1);
+                Integer bonds = mainChain.bonds_per_carbon.get(position-1);
+                mainChain.bonds_per_carbon.remove(position-1);
+                mainChain.bonds_per_carbon.add(position-1, bonds+1);
                 if(bonds+1 > 4){
                     errors+="\nWrong Sidechain on position " + position;
                     return;
