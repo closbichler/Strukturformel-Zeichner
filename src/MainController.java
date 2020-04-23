@@ -117,6 +117,8 @@ public class MainController extends Controller {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
+            ExportController ec = loader.getController();
+            ec.setInitialFileNameAndCanvas("Test", canvas);
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -136,7 +138,7 @@ public class MainController extends Controller {
         popupWindow.setResizable(false);
         popupWindow.initStyle(StageStyle.UNDECORATED);
         popupWindow.setScene(new Scene(root));
-        popupWindow.getIcons().add(new Image(getClass().getResource("images/Strukturformel-Zeichner_Icon_2.png").toExternalForm()));
+        popupWindow.getIcons().add(new Image(getClass().getResource("ressources/images/taskbar-icon.png").toExternalForm()));
 
         return popupWindow;
     }
@@ -167,6 +169,7 @@ public class MainController extends Controller {
         canvasplaceholder.setVisible(false);
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
+        canvas.setDisable(false);
         summenformel.setVisible(true);
         strukturname.setVisible(true);
         molmasse.setVisible(true);

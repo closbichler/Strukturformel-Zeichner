@@ -1,2 +1,6 @@
 # Strukturformel-Zeichner
 _SZ-YBBS_
+
+Der Strukturformel-Zeichner ist ein Projekt der HTL-Ybbs im Zuge des Fachs Inofrmationstechnische Projekte - Projektmanagement im dritten Jahrgang.
+
+Er ist ein Tool zum Zeichnen von Kohlenstoffverbindungen als Pixelgrafiken und dem anschließenden Exportieren der Grafiken für den weiteren Gebrauch.
