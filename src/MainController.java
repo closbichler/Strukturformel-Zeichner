@@ -56,6 +56,8 @@ public class MainController extends Controller {
     Label molmasse;
     @FXML
     Label summenformel;
+    @FXML
+    Menu history;
 
     public void readFiles() {
         String path = System.getProperty("user.dir");
@@ -141,12 +143,29 @@ public class MainController extends Controller {
         return popupWindow;
     }
 
+    public void addToHistory(String struktur) {
+        MenuItem menuItem = new MenuItem(struktur);
+        menuItem.setOnAction(e -> {
+            input.setText(menuItem.getText());
+            drawCanvas();
+        });
+        if(history.getItems().size() > 10) {
+            history.getItems().remove(0);
+        }
+        history.getItems().add(menuItem);
+    }
+
     public void enter(javafx.scene.input.KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.ENTER)
             drawCanvas();
     }
     
     public void drawCanvas() {
+        if(input.getText().trim() == "")
+            return;
+
+        addToHistory(input.getText());
+
         canvasplaceholder.setVisible(false);
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
