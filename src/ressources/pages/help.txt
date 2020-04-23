@@ -1,0 +1,6 @@
+Um eine Struktur zu zeichnen, muss im Textfeld "IUPAC-Nomenklatur" die IUPAC-Nomenklatur eingegeben werden.
+Dann kann über den Knopf "Zeichnen" die Struktur unterhalb angezeigt werden.
+
+Über den Slider "Rotation" kann die Ausrichtung der Zeichnung verändert werden.
+
+Um die Grafik zu exportieren kann man unter dem Menüpunkt "Datei" auf "Exportieren" drücken und die gewünschten Einstellungen auswählen.

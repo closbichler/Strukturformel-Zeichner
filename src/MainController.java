@@ -7,13 +7,20 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainController extends Controller {
     @FXML
@@ -40,6 +47,39 @@ public class MainController extends Controller {
     Button btn_minimize;
     @FXML
     ImageView canvasplaceholder;
+    @FXML
+    Label doc;
+    @FXML
+    Label help;
+    @FXML
+    Label strukturname;
+    @FXML
+    Label molmasse;
+    @FXML
+    Label summenformel;
+    @FXML
+    Menu history;
+
+    public void readFiles() {
+        String path = System.getProperty("user.dir");
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/documentation.txt"));
+            String text = "";
+            for (String l : lines) {
+                text += l + "\n";
+            }
+            doc.setText(text);
+
+            lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/help.txt"));
+            text = "";
+            for (String l : lines) {
+                text += l + "\n";
+            }
+            help.setText(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void minimize() {
         stage.setIconified(true);
@@ -78,6 +118,8 @@ public class MainController extends Controller {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
+            ExportController ec = loader.getController();
+            ec.setInitialFileNameAndCanvas("Test", canvas);
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -97,11 +139,28 @@ public class MainController extends Controller {
         popupWindow.setResizable(false);
         popupWindow.initStyle(StageStyle.UNDECORATED);
         popupWindow.setScene(new Scene(root));
-        popupWindow.getIcons().add(new Image(getClass().getResource("images/Strukturformel-Zeichner_Icon_2.png").toExternalForm()));
+        popupWindow.getIcons().add(new Image(getClass().getResource("ressources/images/taskbar-icon.png").toExternalForm()));
 
         return popupWindow;
     }
+  
+    public void addToHistory(String struktur) {
+        MenuItem menuItem = new MenuItem(struktur);
+        menuItem.setOnAction(e -> {
+            input.setText(menuItem.getText());
+            drawCanvas();
+        });
+        if(history.getItems().size() > 10) {
+            history.getItems().remove(0);
+        }
+        history.getItems().add(menuItem);
+    }
 
+    public void enter(javafx.scene.input.KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER)
+            drawCanvas();
+    }
+  
     public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
         for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
             ArrayList<String> bonds = new ArrayList<>();
@@ -120,7 +179,6 @@ public class MainController extends Controller {
                         }
                     }
                 }
-
             }
             if (model.mainChain.double_bonds.contains(i)) {
                 bonds.remove(1);
@@ -249,9 +307,19 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
+        if(input.getText().trim() == "")
+            return;
 
+        addToHistory(input.getText());
+
+        canvasplaceholder.setVisible(false);
+        canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
         canvas.setDisable(false);
+        summenformel.setVisible(true);
+        strukturname.setVisible(true);
+        molmasse.setVisible(true);
+      
         Model model = new Model();
         model.calculate(input.getText());
 

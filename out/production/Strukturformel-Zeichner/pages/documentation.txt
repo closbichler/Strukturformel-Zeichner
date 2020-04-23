@@ -1,0 +1,5 @@
+Der Strukturformel-Zeichner ist ein Projekt einer Klasse der HTL-Ybbs im Zuge des Fachs Inofrmationstechnische Projekte - Projektmanagement im dritten Jahrgang.
+
+Er ist ein Tool zum Zeichnen von Kohlenstoffverbindungen* als Pixelgrafiken und dem anschließenden Exportieren der Grafiken für den weiteren Gebrauch.
+
+*Gezeichnet werden können nur einfache Kohlenstoffverbindungen welche durch die IUPAC-Nomenklatur beschrieben werden können. Funktionelle Gruppen werden bis auf Alkoholgruppen nicht unterstützt.

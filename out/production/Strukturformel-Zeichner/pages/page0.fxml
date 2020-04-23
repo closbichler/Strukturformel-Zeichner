@@ -6,64 +6,164 @@
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
-   <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0"
-            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-      <Menu id="icon-menu" disable="true" mnemonicParsing="false"/>
-      <Menu mnemonicParsing="false" styleClass="menu" text="Datei">
-      <items>
-         <Menu mnemonicParsing="false" text="Letze"/>
-         <SeparatorMenuItem mnemonicParsing="false"/>
-         <MenuItem mnemonicParsing="false" onAction="#openExportWindow" text="Exportieren"/>
-         <SeparatorMenuItem mnemonicParsing="false" onAction="#openExportWindow"/>
-         <MenuItem mnemonicParsing="false" onAction="#close" text="Schließen"/>
-      </items>
-      </Menu>
-      <Menu mnemonicParsing="false" styleClass="menu" text="Bearbeiten">
-         <MenuItem mnemonicParsing="false" onAction="#reset" text="Löschen"/>
-      </Menu>
-      <Menu mnemonicParsing="false" styleClass="menu" text="Hilfe">
-         <accelerator>
-            <KeyCodeCombination alt="ANY" code="H" control="UP" meta="UP" shift="UP" shortcut="UP"/>
-         </accelerator>
-         <MenuItem mnemonicParsing="false" onAction="#showHelp" text="Hilfe anzeigen"/>
-         <MenuItem mnemonicParsing="false" onAction="#showDoc" text="Strukturformel-Zeichner"/>
-      </Menu>
-   </MenuBar>
-   <VBox alignment="CENTER" layoutY="22.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="568.0"
-         prefWidth="800.0" AnchorPane.topAnchor="32.0">
-      <Label styleClass="label-title" text="Strukturformel-Zeichner"/>
-      <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-            minWidth="-Infinity" prefWidth="800.0">
-         <TextField id="input" fx:id="input" prefHeight="30.0" prefWidth="300.0" promptText="IUPAC-Nomenklatur">
-            <HBox.margin>
-               <Insets right="20.0"/>
-            </HBox.margin>
-         </TextField>
-         <Button id="btn-submit" fx:id="submit" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity"
-                 minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#drawCanvas" prefHeight="30.0"
-                 text="Zeichnen" textAlignment="CENTER">
-            <font>
-               <Font size="16.0"/>
-            </font>
-         </Button>
-      </HBox>
-      <VBox prefWidth="100.0">
-         <Label id="error-label" wrapText="true" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER"
-                prefWidth="800.0" textAlignment="CENTER" textFill="RED"/>
-         <HBox>
-            <padding>
-               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-            </padding>
-            <VBox>
-               <HBox>
-                  <Label styleClass="bild-label" text="Rotation">
+
+
+<AnchorPane fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
+   <children>
+      <MenuBar fx:id="menubar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#dragWindow" onMousePressed="#startWindowDrag" prefHeight="26.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+            <Menu id="icon-menu" disable="true" mnemonicParsing="false" />
+          <Menu mnemonicParsing="false" styleClass="menu" text="Datei">
+            <items>
+                  <Menu fx:id="history" mnemonicParsing="false" text="Letze" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#openExportWindow" text="Exportieren" />
+                  <SeparatorMenuItem mnemonicParsing="false" onAction="#openExportWindow" />
+              <MenuItem mnemonicParsing="false" onAction="#close" text="Schließen" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" styleClass="menu" text="Bearbeiten">
+            <items>
+                  <MenuItem mnemonicParsing="false" onAction="#reset" text="Löschen" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" styleClass="menu" text="Hilfe">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#showHelp" text="Hilfe anzeigen" />
+                  <MenuItem mnemonicParsing="false" onAction="#showDoc" text="Strukturformel-Zeichner" />
+               </items>
+               <accelerator>
+                  <KeyCodeCombination alt="ANY" code="H" control="UP" meta="UP" shift="UP" shortcut="UP" />
+               </accelerator>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <VBox alignment="CENTER" layoutY="22.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="568.0" prefWidth="800.0" AnchorPane.topAnchor="32.0">
+         <children>
+            <Label styleClass="label-title" text="Strukturformel-Zeichner" />
+            <HBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="800.0">
+               <children>
+                  <TextField id="input" fx:id="input" onKeyPressed="#enter" prefHeight="30.0" prefWidth="300.0" promptText="IUPAC-Nomenklatur">
+
                      <HBox.margin>
                         <Insets right="40.0"/>
                      </HBox.margin>
+
+
+                  </TextField>
+                  <Button id="btn-submit" fx:id="submit" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onMouseClicked="#drawCanvas" prefHeight="30.0" text="Zeichnen" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+            <VBox prefWidth="100.0">
+               <children>
+                  <Label id="error-label" fx:id="errormsg" alignment="CENTER" contentDisplay="CENTER" prefWidth="800.0" textAlignment="CENTER" textFill="RED" />
+                  <HBox>
+                     <children>
+                        <VBox>
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label styleClass="bild-label" text="Rotation">
+                                       <HBox.margin>
+                                          <Insets right="40.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Slider fx:id="slider" majorTickUnit="45.0" max="180.0" maxWidth="-Infinity" min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0" showTickLabels="true" snapToTicks="true" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+            <Pane id="canvas-placeholder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="800.0">
+               <children>
+                  <Label id="struktur-name" fx:id="strukturname" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="20.0" prefWidth="800.0" textAlignment="CENTER" visible="false" />
+                  <HBox id="struktur-beschreibung" layoutX="20.0" layoutY="20.0" prefHeight="100.0" prefWidth="200.0" visible="false">
+                     <children>
+                        <VBox prefHeight="100.0" prefWidth="124.0">
+                           <children>
+                              <Label alignment="TOP_LEFT" text="Summenformel: " />
+                              <Label alignment="TOP_LEFT" text="Molmasse: " />
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label fx:id="summenformel" alignment="TOP_LEFT" />
+                              <Label fx:id="molmasse" alignment="TOP_LEFT" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Canvas fx:id="canvas" height="350.0" visible="false" width="800.0" />
+                  <ImageView id="canvas-placeholder-2" fx:id="canvasplaceholder" fitHeight="350.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Pane>
+         </children>
+      </VBox>
+      <AnchorPane fx:id="helppane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <VBox styleClass="pane-title">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="500.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Hilfe" textAlignment="CENTER" />
+                  <Label fx:id="help" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Copyright @ 2020 Georg Nestelberger, Johannes Riegler, Clemens Losbichler" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+            <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#hideHelp" prefWidth="40.0" styleClass="btn-close" text="X" AnchorPane.rightAnchor="0.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="docpane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" visible="false" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <VBox styleClass="pane-title">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="500.0" styleClass="label-title" text="Strukturformel-Zeichner" textAlignment="CENTER" />
+               </children>
+            </VBox>
+            <VBox layoutY="100.0" prefHeight="300.0" prefWidth="500.0" styleClass="pane-content">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Dokumentation" textAlignment="CENTER" />
+                  <Label fx:id="doc" alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="250.0" styleClass="normal-text" text="" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <VBox.margin>
+                        <Insets bottom="20.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="bold" text="Copyright @ 2020 Georg Nestelberger, Johannes Riegler, Clemens Losbichler" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+>>>>>>> master
                   </Label>
                   <Slider fx:id="slider" majorTickUnit="45.0" max="180.0" maxWidth="-Infinity"
                           min="-180.0" minHeight="-Infinity" minorTickCount="5" prefWidth="300.0"

@@ -31,9 +31,10 @@ Yellow:     #6EFF4D
 }
 
 #icon-menu {
-    -fx-background-image: url('../images/Strukturformel-Zeichner_Icon.png');
+    -fx-background-image: url('../images/icon.png');
     -fx-background-repeat: space;
     -fx-background-size: 26 26;
+    -fx-background-position: 2 0.5;
     -fx-pref-width: 26;
 }
 
@@ -108,11 +109,12 @@ Yellow:     #6EFF4D
 
 #input:focused {
     -fx-border-color: -fx-hover-color;
+    -fx-prompt-text-fill: #777;
 }
 
 #canvas-placeholder {
     -fx-background-color: -fx-bg-color;
-    /*-fx-background-image: url('../images/sfz_hallo_neu.gif');*/
+    //-fx-background-image: url('../images/sfz_hallo_neu.gif');
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
 }
@@ -191,4 +193,8 @@ Yellow:     #6EFF4D
 
 .check-box:focused {
     : -fx-hover-color;
+}
+
+.radio-button {
+    -fx-text-fill: #000;
 }
