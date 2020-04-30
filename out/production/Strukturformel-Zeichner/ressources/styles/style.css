@@ -114,9 +114,7 @@ Yellow:     #6EFF4D
 
 #canvas-placeholder {
     -fx-background-color: -fx-bg-color;
-
     //-fx-background-image: url('../images/sfz_hallo_neu.gif');
-
     -fx-background-repeat: stretch;
     -fx-background-position: center center;
 }

@@ -32,7 +32,7 @@ public class Model {
             errors+="\nMainchain:"+mainChain.errors;
         for (SideChain sideChain : sideChains) {
             if(!sideChain.errors.equals("")) {
-                errors += "\nSideChain:" + sideChain.toString() + sideChain.errors;
+                errors += "\nSideChain:" + sideChain.errors;
             }
         }
         if(!errors.equals("")){
