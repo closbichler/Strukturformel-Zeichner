@@ -40,8 +40,6 @@ public class MainController extends Controller {
     @FXML
     Canvas canvas;
     @FXML
-    Slider slider;
-    @FXML
     Button btn_close;
     @FXML
     Button btn_minimize;
@@ -51,8 +49,6 @@ public class MainController extends Controller {
     Label doc;
     @FXML
     Label help;
-    @FXML
-    Label strukturname;
     @FXML
     Label molmasse;
     @FXML
@@ -316,9 +312,6 @@ public class MainController extends Controller {
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
         canvas.setDisable(false);
-        summenformel.setVisible(true);
-        strukturname.setVisible(true);
-        molmasse.setVisible(true);
       
         Model model = new Model();
         model.calculate(input.getText());
@@ -416,8 +409,6 @@ public class MainController extends Controller {
             } catch (Exception e) {
                 System.out.println("Fehler beim Zentrieren!");
             }
-
-            slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
         } else {
             System.out.println("|" + model.errors + "|");
             errormsg.setText(model.errors);
