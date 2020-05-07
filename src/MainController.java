@@ -117,11 +117,13 @@ public class MainController extends Controller {
     }
 
     public void openExportWindow() {
+        if(struktur.length() < 3)
+            return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
             ExportController ec = loader.getController();
-            ec.setInitialFileNameAndCanvas("Test", canvas, struktur, molmasse.getText(), summenformel.getText());
+            ec.setInitialFileNameAndCanvas(struktur, canvas, struktur, molmasse.getText(), summenformel.getText());
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -170,7 +172,10 @@ public class MainController extends Controller {
     }
 
     public String getSummenformel(int c, int h, int oh){
-        String sum = "C" + c;
+        String sum = "C";
+
+        if(c > 1)
+            sum += c;
         if(h > 0)
             sum += "H" + h;
         if(oh == 1)
@@ -340,8 +345,6 @@ public class MainController extends Controller {
         if(input.getText().trim() == "")
             return;
 
-        struktur = input.getText();
-
         addToHistory(input.getText());
 
         canvasplaceholder.setVisible(false);
@@ -412,7 +415,7 @@ public class MainController extends Controller {
                 /*for (SideChainInput sideChainInput : sideChainInputs) {
                     System.out.println(sideChainInput);
                 }*/
-
+            struktur = input.getText();
             summenformel.setText(getSummenformel(c_atoms, h_atoms, oh_atoms));
             molmasse.setText(getMolmasse(c_atoms, h_atoms, oh_atoms));
 
@@ -424,7 +427,7 @@ public class MainController extends Controller {
                     gc.setFont(Font.font("Arial", fontsize));
                     //grid.drawGrid(gc);
 
-                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 447)
+                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 479)
                     if (model.sideChains == null) {
                         CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                     } else {
@@ -451,9 +454,29 @@ public class MainController extends Controller {
             } while (sizeunfit);
 
             try {
+                int up = 0, down = 0;
+                ArrayList<Integer> positions = new ArrayList<>();
+                for(SideChain s : model.sideChains){
+                    for(Integer j : s.positions) {
+                        if(positions.contains(j)){
+                            if(s.mainChain.hydroCarbon.getValue()*2 > down){
+                                down = s.mainChain.hydroCarbon.getValue()*2;
+                            }
+                        }
+                        else if (s.mainChain.hydroCarbon.getValue()*2 > up) {
+                            up = s.mainChain.hydroCarbon.getValue()*2;
+                        }
+                        positions.add(j);
+                    }
+                }
+
                 col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue() * 2) / 2;
+                row = (grid.getMaxRow() - (up+down+3))/2 + up+1;
+                if(((grid.getMaxRow() - (up+down+3)) % 2) == 1)
+                    row++;
+
                 gc.clearRect(0, 0, canvaslen, canvaswid);
-                //Hier Änderungen vom if-Block aus (derzeit) Zeile 418 einfügen
+                //Hier Änderungen vom if-Block aus (derzeit) Zeile 430 einfügen
                 if (model.sideChains == null) {
                     CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                 } else {
@@ -461,6 +484,7 @@ public class MainController extends Controller {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Fehler beim Zentrieren!");
             }
 
