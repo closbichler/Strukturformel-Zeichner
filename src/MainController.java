@@ -410,7 +410,6 @@ public class MainController extends Controller {
                 System.out.println("Fehler beim Zentrieren!");
             }
         } else {
-            System.out.println(ErrorMessages.getMessages());
             errormsg.setText(ErrorMessages.getFirst3Messages());
             ErrorMessages.clear();
         }
