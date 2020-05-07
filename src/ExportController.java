@@ -36,8 +36,8 @@ public class ExportController extends Controller {
     public void setInitialFileNameAndCanvas(String name, Canvas canvas, String strukturname, String molmasse, String summenformel) {
         initialFileName = name;
         this.canvas = canvas;
-        mol = molmasse;
-        sum = summenformel;
+        mol = "Molmasse: " + molmasse;
+        sum = "Summenformel: " + summenformel;
         struktur = strukturname;
         txtlinks = Math.min((400-(int)(struktur.length()*4.3)), Math.min((400-(int)(sum.length()*2.9)), (400-(int)(mol.length()*2.9))));
     }

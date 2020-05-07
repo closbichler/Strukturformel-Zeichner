@@ -121,7 +121,7 @@ public class MainController extends Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
             ExportController ec = loader.getController();
-            ec.setInitialFileNameAndCanvas("Test", canvas, struktur, summenformel.getText(), molmasse.getText());
+            ec.setInitialFileNameAndCanvas("Test", canvas, struktur, molmasse.getText(), summenformel.getText());
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -163,13 +163,22 @@ public class MainController extends Controller {
             drawCanvas();
     }
 
-    public String getMolmasse(Model model){
-        return "mOLmaSSe";
+    public String getMolmasse(int c, int h, int oh){
+        double m = c*12.01 + h*1.01 + oh*(1.01+16);
+
+        return String.format("%.2f",m) + " g/mol";
     }
 
-    public String getSummenformel(Model model){
-        int c = model.mainChain.hydroCarbon.getValue();
-        return "SUmMenfORmeL";
+    public String getSummenformel(int c, int h, int oh){
+        String sum = "C" + c;
+        if(h > 0)
+            sum += "H" + h;
+        if(oh == 1)
+            sum += "OH";
+        if(oh > 1)
+            sum += "(OH)" + oh;
+
+        return sum;
     }
   
     public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
@@ -346,9 +355,6 @@ public class MainController extends Controller {
         Model model = new Model();
         model.calculate(input.getText());
 
-        summenformel.setText(getSummenformel(model));
-        molmasse.setText(getMolmasse(model));
-
         if (model.errors.equals("")) {
             errormsg.setText("");
             boolean sizeunfit = true;
@@ -396,7 +402,7 @@ public class MainController extends Controller {
 
             for (SideChain sideChain : model.sideChains) {
                 h_atoms += sideChain.mainChain.h_atoms;
-                c_atoms += sideChain.mainChain.hydroCarbon.getValue();
+                c_atoms += sideChain.mainChain.hydroCarbon.getValue() * sideChain.positions.size();
                 oh_atoms += sideChain.mainChain.oh_atoms;
             }
             h_atoms += model.mainChain.h_atoms;
@@ -407,6 +413,9 @@ public class MainController extends Controller {
                     System.out.println(sideChainInput);
                 }*/
 
+            summenformel.setText(getSummenformel(c_atoms, h_atoms, oh_atoms));
+            molmasse.setText(getMolmasse(c_atoms, h_atoms, oh_atoms));
+
             gc.clearRect(0, 0, canvaslen, canvaswid);
             do {
 
@@ -415,7 +424,7 @@ public class MainController extends Controller {
                     gc.setFont(Font.font("Arial", fontsize));
                     //grid.drawGrid(gc);
 
-                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 348)
+                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 447)
                     if (model.sideChains == null) {
                         CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                     } else {
@@ -444,7 +453,7 @@ public class MainController extends Controller {
             try {
                 col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue() * 2) / 2;
                 gc.clearRect(0, 0, canvaslen, canvaswid);
-                //Hier Änderungen vom if-Block aus (derzeit) Zeile 320 einfügen
+                //Hier Änderungen vom if-Block aus (derzeit) Zeile 418 einfügen
                 if (model.sideChains == null) {
                     CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                 } else {
