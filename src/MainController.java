@@ -205,24 +205,31 @@ public class MainController extends Controller {
                 }
             }
             int integer = model.mainChain.bonds_per_carbon.get(i - 1);
+
+
             while (integer != 4) {
+
 
                 if (bonds.get(0) == null) {
                     bonds.remove(0);
                     bonds.add(0, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else if (bonds.get(2) == null) {
                     bonds.remove(2);
                     bonds.add(2, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
 
                 } else if (i == 1 && bonds.get(3) == null) {
                     bonds.remove(3);
                     bonds.add(3, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else if (i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null) {
                     bonds.remove(1);
                     bonds.add(1, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else {
                     integer++;
@@ -276,6 +283,7 @@ public class MainController extends Controller {
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
                     bonds.add(left, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
                 } else if (i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(right) == null) {
                     bonds.remove(right);
@@ -284,10 +292,12 @@ public class MainController extends Controller {
                 } else if (bonds.get(up) == null) {
                     bonds.remove(up);
                     bonds.add(up, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
                 } else if (bonds.get(down) == null) {
                     bonds.remove(down);
                     bonds.add(down, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
 
                 } else {
@@ -380,6 +390,18 @@ public class MainController extends Controller {
                 }
 
             }
+            int h_atoms = 0;
+            int c_atoms = 0;
+            int oh_atoms = 0;
+
+            for (SideChain sideChain : model.sideChains) {
+                h_atoms += sideChain.mainChain.h_atoms;
+                c_atoms += sideChain.mainChain.hydroCarbon.getValue();
+                oh_atoms += sideChain.mainChain.oh_atoms;
+            }
+            h_atoms += model.mainChain.h_atoms;
+            c_atoms += model.mainChain.hydroCarbon.getValue();
+            oh_atoms += model.mainChain.oh_atoms;
 
                 /*for (SideChainInput sideChainInput : sideChainInputs) {
                     System.out.println(sideChainInput);

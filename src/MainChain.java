@@ -39,6 +39,8 @@ public class MainChain {
     private boolean isAlcohol;
     private String alcohol_positions_string;
     private String greek_syllable_alcohol;
+    public int h_atoms = 0;
+    public int oh_atoms;
 
     MainChain(String input, boolean sideChain) {
         regex(input, sideChain);
@@ -129,6 +131,7 @@ public class MainChain {
                     //No ending
                     errors += "\nMissing ending [an, en, in]";
                 }
+                oh_atoms = alcohol_positions.size();
 
             }
 
