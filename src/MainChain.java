@@ -77,7 +77,7 @@ public class MainChain {
                         "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
                 if (!m.find()) {
-                    ErrorMessages.throwUndifinedError();
+                    ErrorMessages.throwUndefinedError();
                     return;
                 }
             }
@@ -132,7 +132,7 @@ public class MainChain {
             }
 
         } else {
-            ErrorMessages.throwUndifinedError();
+            ErrorMessages.throwUndefinedError();
         }
 
 
@@ -176,7 +176,6 @@ public class MainChain {
 
     private void findPositions(String ending_en, String ending_in) {
         if (ending_en != null && ending_en.equals("en") && double_bonds.size() == 0) {
-            System.out.println(hydroCarbon + " " + greekNumber_en);
             if (hydroCarbon.getValue() - 1 == greekNumber_en.getValue() || (hydroCarbon.getValue() == 2 && greekNumber_en.getValue() == 0)) {
                 for (int i = 1; i < hydroCarbon.getValue(); i++) {
                     double_bonds.add(i);
@@ -242,7 +241,7 @@ public class MainChain {
             //No HydroCarbon or Wrong HydroCarbon name
             hydroCarbon = HydroCarbons.none;
             ErrorMessages.addMessage("Der Name der Hauptkette ist inkorrekt");
-            return;
+
         }
 
         //setting greekNumber to the given syllable e.g. di
@@ -253,7 +252,6 @@ public class MainChain {
                 greekNumber_en = GreekNumbers.none;
                 //No Greek Syllable or Wrong Greek Syllable name
                 ErrorMessages.addMessage("Die Vorsilbe ist inkorrekt");
-                return;
             }
 
 
@@ -343,23 +341,23 @@ public class MainChain {
         if (greekNumber_en.getValue() == 0) {
             if (double_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
+                ErrorMessages.addMessage("Die multiplizierende Vorsilbe ist nicht korrekt");
                 return;
             }
         } else if (double_bonds.size() != greekNumber_en.getValue()) {
             //No Greek Syllable or Wrong Greek Syllable name
-            ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
+            ErrorMessages.addMessage("Die multiplizierende Vorsilbe ist nicht korrekt");
             return;
         }
         if (greekNumber_in.getValue() == 0) {
             if (triple_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
+                ErrorMessages.addMessage("Die multiplizierende Vorsilbe ist nicht korrekt");
                 return;
             }
         } else if (triple_bonds.size() != greekNumber_in.getValue()) {
             //No Greek Syllable or Wrong Greek Syllable name
-            ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
+            ErrorMessages.addMessage("Die multiplizierende Vorsilbe ist nicht korrekt");
             return;
         }
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds

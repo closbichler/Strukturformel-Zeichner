@@ -316,7 +316,7 @@ public class MainController extends Controller {
         Model model = new Model();
         model.calculate(input.getText());
 
-        if (model.errors.equals("")) {
+        if (!ErrorMessages.anyErrorsThrown()) {
             errormsg.setText("");
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
@@ -410,8 +410,9 @@ public class MainController extends Controller {
                 System.out.println("Fehler beim Zentrieren!");
             }
         } else {
-            System.out.println("|" + model.errors + "|");
-            errormsg.setText(model.errors);
+            System.out.println(ErrorMessages.getMessages());
+            errormsg.setText(ErrorMessages.getFirst3Messages());
+            ErrorMessages.clear();
         }
     }
 }

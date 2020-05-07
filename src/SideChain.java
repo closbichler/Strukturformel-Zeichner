@@ -7,7 +7,6 @@ public class SideChain {
 
     ArrayList<Integer> positions = new ArrayList<>();
     MainChain mainChain;
-    String errors="";
 
     SideChain(String input) {
         regex(input);
@@ -37,12 +36,9 @@ public class SideChain {
             mainchain = calc_syllable(greek_syllable, m.group(4));
             mainChain = new MainChain(mainchain, true);
             validateChains();
-            if(!mainChain.errors.equals("")){
-                errors += mainChain.errors;
-            }
         }
-        else{
-            errors += "Falsche Eingabe";
+        else {
+            ErrorMessages.throwUndefinedError();
         }
 
     }
@@ -61,7 +57,7 @@ public class SideChain {
             try {
                 greekNumber = GreekNumbers.valueOf(greek_syllable);
                 if (greekNumber.getValue() != positions.size() && positions.size() != 1) {
-                    errors+="\nGreekNumber "+greek_syllable+" doesn't match with given positions.";
+                    ErrorMessages.addMessage("Die multiplizierende Vorsilbe ist nicht korrekt");
                 }
             } catch (Exception e) {
 
@@ -95,7 +91,7 @@ public class SideChain {
     boolean validateChains() {
 
         if (greekNumber != null && greekNumber.getValue() != positions.size() && positions.size()!= 1) {
-            errors+="Wrong Greeksyllable in the sidechain";
+            ErrorMessages.addMessage("Die multiplizierende Vorsilbe der Seitenkette ist inkorrekt");
             return false;
         }
 
