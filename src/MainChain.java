@@ -12,7 +12,6 @@ public class MainChain {
     public HydroCarbons hydroCarbon;
     public GreekNumbers greekNumber_en;
     public GreekNumbers greekNumber_in;
-    public String errors = "";
 
     //Stores the position of the double and triple bonds
     public ArrayList<Integer> double_bonds = new ArrayList<>();
@@ -78,7 +77,7 @@ public class MainChain {
                         "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
                 if (!m.find()) {
-                    errors += "Bitte überprüfen Sie Ihre Eingabe!";
+                    ErrorMessages.throwUndifinedError();
                     return;
                 }
             }
@@ -127,13 +126,13 @@ public class MainChain {
                 }
                 if (ending_en == null && ending_in == null && ending_an == null) {
                     //No ending
-                    errors += "\nEs fehlt eine Endsilbe (z.B.: an, en, in)";
+                    ErrorMessages.addMessage("\nEs fehlt eine Endsilbe (z.B.: an, en, in)");
                 }
 
             }
 
         } else {
-            errors += "Bitte überprüfen Sie Ihre Eingabe!";
+            ErrorMessages.throwUndifinedError();
         }
 
 
@@ -155,7 +154,7 @@ public class MainChain {
         else {
             if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
 
-                errors += "\nWrong Greeksyllabe " + greek_syllable_alcohol+ " for " + alcohol_positions.size() + " alcohol-groups";
+                ErrorMessages.addMessage("\nWrong Greeksyllabe " + greek_syllable_alcohol+ " for " + alcohol_positions.size() + " alcohol-groups");
             }
         }
 
@@ -200,7 +199,8 @@ public class MainChain {
 
         if ((ending.equals("en") || ending.equals("in")) && name.equals("Meth")) {
             //Meth syllable with en or in
-            errors += "\nMeth" + ending + " doesn't exist!";
+            ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
+            ErrorMessages.addMessage("Bei Verbindungen mit der Länge 1 (Methan) können keine -en oder -in Endsilben vorkommen");
             return;
         }
         //Getting the positions into the arrays double_bonds and triple_bonds
@@ -216,7 +216,7 @@ public class MainChain {
 
                 } else {
                     //Duplicate Position
-                    errors += "\nDuplicate Position of multibonds";
+                    ErrorMessages.addMessage("Die Positionen der Mehrfachbindungen kommen doppelt vor");
                     return;
                 }
             }
@@ -224,7 +224,8 @@ public class MainChain {
         } else if (ending.equals("an")) {
             if (multibond_positions != null && !multibond_positions.equals("")) {
                 //Ending "an" but given multibond position
-                errors += "\nAn Alkane cannot have a multibond position!";
+                ErrorMessages.addMessage("Die Position der Mehrfachbindung ist überflüssig");
+                ErrorMessages.addMessage("Ein Alkan hat keine Mehrfachbindungen");
                 return;
             }
         }
@@ -240,7 +241,7 @@ public class MainChain {
         } catch (Exception e) {
             //No HydroCarbon or Wrong HydroCarbon name
             hydroCarbon = HydroCarbons.none;
-            errors += "\nWrong HydroCarbon name!";
+            ErrorMessages.addMessage("Der Name der Hauptkette ist inkorrekt");
             return;
         }
 
@@ -251,7 +252,7 @@ public class MainChain {
             } catch (Exception e) {
                 greekNumber_en = GreekNumbers.none;
                 //No Greek Syllable or Wrong Greek Syllable name
-                errors += "\nWrong or no Greek Syllable!";
+                ErrorMessages.addMessage("Die Vorsilbe ist inkorrekt");
                 return;
             }
 
@@ -263,7 +264,7 @@ public class MainChain {
             } catch (Exception e) {
                 greekNumber_in = GreekNumbers.none;
                 //No Greek Syllable or Wrong Greek Syllable name
-                errors += "\nWrong or no Greek Syllable!";
+                ErrorMessages.addMessage("Die Vorsilbe ist inkorrekt");
                 return;
             }
 
@@ -271,7 +272,7 @@ public class MainChain {
         if (greek_syllable_en == null && greek_syllable_in == null) {
             if (greek_syllable_en != null && greek_syllable_en.equals("an")) {
                 //Greek_syllable even tho the ending is an
-                errors += "\nGreeksyllable is not needed for an Alkane";
+                ErrorMessages.addMessage("Die Vorsilbe ist bei der Endsilbe -an überflüssig");
             }
             greekNumber_en = GreekNumbers.none;
             greekNumber_in = GreekNumbers.none;
@@ -301,17 +302,17 @@ public class MainChain {
             if (multibond_char == null) {
                 //missing a after carbon counting syllable
                 //e.g Prop2,3dien
-                errors += "\nMissing a after carbon counting syllable";
+                ErrorMessages.addMessage("Nach dem Zahlwort fehlt ein -a (z.B.: Propa 2,3 dien)");
                 return;
             }
         }
         if (ending.equals("en") && double_bonds.size() == 0) {
             //Ending en or in but no position given
-            errors += "\nNo given Positions for \"" + ending + "\"!";
+            ErrorMessages.addMessage("Es werden keine Positionen der Mehrfachbindungen mitgegeben");
             return;
         } else if (ending.equals("in") && triple_bonds.size() == 0) {
             //Ending en or in but no position given
-            errors += "\nNo given Positions for \"" + ending + "\"!";
+            ErrorMessages.addMessage("Es werden keine Positionen der Mehrfachbindungen mitgegeben");
             return;
         }
         //Checking the positions of the multibonds
@@ -319,7 +320,7 @@ public class MainChain {
             for (Integer double_bond : double_bonds) {
                 if (double_bond <= 0 || double_bond >= hydroCarbon.getValue()) {
                     //Illegal Positions
-                    errors += "\nWrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct";
+                    ErrorMessages.addMessage("Die Positionen der Doppelbindungen sind nicht korrekt");
                     return;
                 }
             }
@@ -327,7 +328,7 @@ public class MainChain {
             for (Integer triple_bond : triple_bonds) {
                 if (triple_bond <= 0 || triple_bond >= hydroCarbon.getValue()) {
                     //Illegal Positions
-                    errors += "\nWrong Positions [1 - " + (hydroCarbon.getValue() - 1) + "] would be correct";
+                    ErrorMessages.addMessage("Die Positionen der Dreifachbindungen sind nicht korrekt");
                     return;
                 }
             }
@@ -335,30 +336,30 @@ public class MainChain {
             if (multibond_char != null && multibond_char.equals("a")) {
                 //Incorrect a after Carbon syllable
                 //e.g. Propa1en
-                errors += "\nIncorrect a after carbon counting syllable";
+                ErrorMessages.addMessage("Bei einzelnen Mehrfachbindungen ist ein -a nach dem Zahlwort überflüssig (z.B.: Prop 1 en)");
                 return;
             }
         }
         if (greekNumber_en.getValue() == 0) {
             if (double_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                errors += "\nWrong or no Greek Syllable!";
+                ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
                 return;
             }
         } else if (double_bonds.size() != greekNumber_en.getValue()) {
             //No Greek Syllable or Wrong Greek Syllable name
-            errors += "\nWrong or no Greek Syllable!";
+            ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
             return;
         }
         if (greekNumber_in.getValue() == 0) {
             if (triple_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
-                errors += "\nWrong or no Greek Syllable!";
+                ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
                 return;
             }
         } else if (triple_bonds.size() != greekNumber_in.getValue()) {
             //No Greek Syllable or Wrong Greek Syllable name
-            errors += "\nWrong or no Greek Syllable!";
+            ErrorMessages.addMessage("Die Endsilbe ist nicht korrekt");
             return;
         }
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
@@ -403,7 +404,7 @@ public class MainChain {
                 if (bonds > 4) {
                     //the user has given a wrong bond position
                     //e.g. Hexa 2,3 diin
-                    errors += "\nWrong bond positions [more than 4 bonds]  at" + i + ". C - Atom";
+                    ErrorMessages.addMessage("Die Positionen der Mehrfachbindungen sind nicht korrekt");
                     return;
                 }
                 bonds_per_carbon.add(bonds);
