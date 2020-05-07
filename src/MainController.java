@@ -1,3 +1,4 @@
+import com.sun.webkit.Timer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -59,6 +60,7 @@ public class MainController extends Controller {
     Label summenformel;
     @FXML
     Menu history;
+    String struktur = "";
 
     public void readFiles() {
         String path = System.getProperty("user.dir");
@@ -119,7 +121,7 @@ public class MainController extends Controller {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
             ExportController ec = loader.getController();
-            ec.setInitialFileNameAndCanvas("Test", canvas);
+            ec.setInitialFileNameAndCanvas("Test", canvas, struktur, summenformel.getText(), molmasse.getText());
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -159,6 +161,15 @@ public class MainController extends Controller {
     public void enter(javafx.scene.input.KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.ENTER)
             drawCanvas();
+    }
+
+    public String getMolmasse(Model model){
+        return "mOLmaSSe";
+    }
+
+    public String getSummenformel(Model model){
+        int c = model.mainChain.hydroCarbon.getValue();
+        return "SUmMenfORmeL";
     }
   
     public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
@@ -310,6 +321,8 @@ public class MainController extends Controller {
         if(input.getText().trim() == "")
             return;
 
+        struktur = input.getText();
+
         addToHistory(input.getText());
 
         canvasplaceholder.setVisible(false);
@@ -322,6 +335,9 @@ public class MainController extends Controller {
       
         Model model = new Model();
         model.calculate(input.getText());
+
+        summenformel.setText(getSummenformel(model));
+        molmasse.setText(getMolmasse(model));
 
         if (model.errors.equals("")) {
             errormsg.setText("");

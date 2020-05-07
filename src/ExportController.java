@@ -33,12 +33,12 @@ public class ExportController extends Controller {
     @FXML
     RadioButton radio1, radio2, radio3;
 
-    public void setInitialFileNameAndCanvas(String name, Canvas canvas) {
+    public void setInitialFileNameAndCanvas(String name, Canvas canvas, String strukturname, String molmasse, String summenformel) {
         initialFileName = name;
         this.canvas = canvas;
-        mol = "Molmasse: " + "69";
-        sum = "Summenformel: " + "C5H4";
-        struktur = "Methinini";
+        mol = molmasse;
+        sum = summenformel;
+        struktur = strukturname;
         txtlinks = Math.min((400-(int)(struktur.length()*4.3)), Math.min((400-(int)(sum.length()*2.9)), (400-(int)(mol.length()*2.9))));
     }
 
