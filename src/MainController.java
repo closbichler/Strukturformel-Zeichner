@@ -145,6 +145,10 @@ public class MainController extends Controller {
     }
   
     public void addToHistory(String struktur) {
+        for(MenuItem m : history.getItems()) {
+            if(m.getText().equals(struktur))
+                return;
+        }
         MenuItem menuItem = new MenuItem(struktur);
         menuItem.setOnAction(e -> {
             input.setText(menuItem.getText());
@@ -307,7 +311,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if(input.getText().trim() == "")
+        if(input.getText().isBlank())
             return;
 
         addToHistory(input.getText());
@@ -425,6 +429,7 @@ public class MainController extends Controller {
 
         WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
         canvas.snapshot(null, writableImage);
+        content.putImage(writableImage);
         clipboard.setContent(content);
     }
 }
