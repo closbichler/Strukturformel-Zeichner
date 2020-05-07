@@ -34,6 +34,7 @@
             </Menu>
             <Menu mnemonicParsing="false" styleClass="menu" text="Bearbeiten">
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#copyToClipboard" text="In Zwischenablage kopieren" />
                   <MenuItem mnemonicParsing="false" onAction="#reset" text="Löschen" />
                </items>
             </Menu>
