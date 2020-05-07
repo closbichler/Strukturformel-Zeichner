@@ -143,24 +143,24 @@ public class MainController extends Controller {
 
         return popupWindow;
     }
-  
+
     public void addToHistory(String struktur) {
         MenuItem menuItem = new MenuItem(struktur);
         menuItem.setOnAction(e -> {
             input.setText(menuItem.getText());
             drawCanvas();
         });
-        if(history.getItems().size() > 10) {
+        if (history.getItems().size() > 10) {
             history.getItems().remove(0);
         }
         history.getItems().add(menuItem);
     }
 
     public void enter(javafx.scene.input.KeyEvent keyEvent) {
-        if(keyEvent.getCode() == KeyCode.ENTER)
+        if (keyEvent.getCode() == KeyCode.ENTER)
             drawCanvas();
     }
-  
+
     public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
         for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
             ArrayList<String> bonds = new ArrayList<>();
@@ -193,28 +193,32 @@ public class MainController extends Controller {
                     bonds.add(1, "-");
                 }
             }
+            boolean alcohol = false;
             int integer = model.mainChain.bonds_per_carbon.get(i - 1);
-            while (integer != 4) {
-                boolean alcohol = false;
-                for (Integer alcohol_position : model.mainChain.alcohol_positions) {
-                    if(alcohol_position == i){
-                        if(bonds.get(0) == null){
-                            bonds.remove(0);
-                            bonds.add(0, "OH");
-                            integer++;
-                            alcohol = true;
-                        }
-                        else if (bonds.get(2) == null){
-                            bonds.remove(2);
-                            bonds.add(2, "OH");
-                            integer++;
-                            alcohol = true;
+            while (integer < 4) {
+
+                if (!alcohol) {
+                    for (Integer alcohol_position : model.mainChain.alcohol_positions) {
+                        if (alcohol_position == i) {
+                            if (bonds.get(2) == null ) {
+
+                                bonds.remove(0);
+                                bonds.add(0, "OH");
+                                integer++;
+                                alcohol = true;
+                            } else if (bonds.get(0) == null && integer < 4) {
+                                bonds.remove(2);
+                                bonds.add(2, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
                         }
                     }
+                    if (alcohol) {
+                        continue;
+                    }
                 }
-                if(alcohol){
-                    continue;
-                }
+
                 if (bonds.get(0) == null) {
                     bonds.remove(0);
                     bonds.add(0, "H");
@@ -280,7 +284,28 @@ public class MainController extends Controller {
                 }
             }
             int integer = sideChain.mainChain.bonds_per_carbon.get(i - 1);
+            boolean alcohol = false;
             while (integer != 4) {
+                if (!alcohol) {
+                    for (Integer alcohol_position : sideChain.mainChain.alcohol_positions) {
+                        if (alcohol_position == i) {
+                            if (bonds.get(down) == null ) {
+                                bonds.remove(0);
+                                bonds.add(0, "OH");
+                                integer++;
+                                alcohol = true;
+                            } else if (bonds.get(up) == null && integer < 4) {
+                                bonds.remove(2);
+                                bonds.add(2, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                        }
+                    }
+                    if (alcohol) {
+                        continue;
+                    }
+                }
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
                     bonds.add(left, "H");
@@ -326,7 +351,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if(input.getText().trim() == "")
+        if (input.getText().trim() == "")
             return;
 
         addToHistory(input.getText());
@@ -338,7 +363,7 @@ public class MainController extends Controller {
         summenformel.setVisible(true);
         strukturname.setVisible(true);
         molmasse.setVisible(true);
-      
+
         Model model = new Model();
         model.calculate(input.getText());
 

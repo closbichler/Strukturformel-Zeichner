@@ -109,7 +109,10 @@ public class MainChain {
                 calc_multiple_bondings(name, ending_an, multibond_positions_en);
                 calc_multiple_bondings(name, ending_an, multibond_positions_in);
                 calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
-                if(isAlcohol){calc_alcohol(alcohol_positions_string);}
+                calc_bonds_per_carbon();
+                if (isAlcohol) {
+                    calc_alcohol(alcohol_positions_string, sideChain);
+                }
                 validate_input(multibond_char, ending_an);
             } else {
 
@@ -117,12 +120,20 @@ public class MainChain {
                     calc_multiple_bondings(name, ending_en, multibond_positions_en);
                     calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
                     findPositions(ending_en, ending_in);
+                    calc_bonds_per_carbon();
+                    if (isAlcohol) {
+                        calc_alcohol(alcohol_positions_string, sideChain);
+                    }
                     validate_input(multibond_char, ending_en);
                 }
                 if (ending_in != null) {
                     calc_multiple_bondings(name, ending_in, multibond_positions_in);
                     calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
                     findPositions(ending_en, ending_in);
+                    calc_bonds_per_carbon();
+                    if (isAlcohol) {
+                        calc_alcohol(alcohol_positions_string, sideChain);
+                    }
                     validate_input(multibond_char, ending_in);
                 }
                 if (ending_en == null && ending_in == null && ending_an == null) {
@@ -139,8 +150,8 @@ public class MainChain {
 
     }
 
-    private void calc_alcohol(String alcohol_positions_string) {
-        if(alcohol_positions_string!=null) {
+    private void calc_alcohol(String alcohol_positions_string, boolean sidechain) {
+        if (alcohol_positions_string != null) {
             String[] split = alcohol_positions_string.split(",");
             for (String s : split) {
                 alcohol_positions.add(Integer.parseInt(s));
@@ -148,26 +159,41 @@ public class MainChain {
         }
         if (alcohol_positions.size() == 0) {
             System.out.println(greekNumber_alcohol);
-            if(greekNumber_alcohol.getValue() == 0){
+            if (greekNumber_alcohol.getValue() == 0) {
                 alcohol_positions.add(1);
-            }
-            else if (greekNumber_alcohol.getValue() < hydroCarbon.getValue()) {
+            } else if (greekNumber_alcohol.getValue() <= hydroCarbon.getValue()) {
                 for (int i = 1; i <= greekNumber_alcohol.getValue(); i++) {
                     alcohol_positions.add(i);
                 }
-            }
-            else{
-                for(int i = 1; i<= greekNumber_alcohol.getValue();i++){
-                    alcohol_positions.add(i);
-                    alcohol_positions.add(i);
+            } else {
+                for (int i = 1; i <= hydroCarbon.getValue(); i++) {
+                    int bonds = bonds_per_carbon.get(i - 1);
+
+                    if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
+                        alcohol_positions.add(i);
+                        bonds++;
+                    }
+                    if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
+                        alcohol_positions.add(i);
+                        bonds++;
+                    }
+
+                    if (i == 1 && !sidechain && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                        alcohol_positions.add(i);
+                        bonds++;
+                    }
+                    if (i == hydroCarbon.getValue() && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                        alcohol_positions.add(i);
+                        bonds++;
+                    }
+
                 }
             }
 
-        }
-        else {
-            if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
+        } else {
+            if (alcohol_positions.size() != greekNumber_alcohol.getValue()) {
 
-                errors+="\nWrong Greeksyllabe "+greek_syllable_alcohol+ " for "+alcohol_positions.size() + " alcohol-groups";
+                errors += "\nWrong Greeksyllabe " + greek_syllable_alcohol + " for " + alcohol_positions.size() + " alcohol-groups";
             }
         }
 
@@ -375,6 +401,10 @@ public class MainChain {
             return;
         }
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
+
+    }
+
+    private void calc_bonds_per_carbon() {
         for (int i = 1; i <= hydroCarbon.getValue(); i++) {
             if (hydroCarbon.getValue() == 1) {
                 bonds_per_carbon.add(0);
