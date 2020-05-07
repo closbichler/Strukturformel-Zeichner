@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -316,7 +320,7 @@ public class MainController extends Controller {
         Model model = new Model();
         model.calculate(input.getText());
 
-        if (model.errors.equals("")) {
+        if (!ErrorMessages.anyErrorsThrown()) {
             errormsg.setText("");
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
@@ -410,8 +414,17 @@ public class MainController extends Controller {
                 System.out.println("Fehler beim Zentrieren!");
             }
         } else {
-            System.out.println("|" + model.errors + "|");
-            errormsg.setText(model.errors);
+            errormsg.setText(ErrorMessages.getFirst3Messages());
+            ErrorMessages.clear();
         }
+    }
+
+    public void copyToClipboard(ActionEvent actionEvent) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+
+        WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+        canvas.snapshot(null, writableImage);
+        clipboard.setContent(content);
     }
 }
