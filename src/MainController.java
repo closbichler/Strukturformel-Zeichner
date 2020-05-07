@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController extends Controller {
@@ -200,13 +199,25 @@ public class MainController extends Controller {
                 if (!alcohol) {
                     for (Integer alcohol_position : model.mainChain.alcohol_positions) {
                         if (alcohol_position == i) {
-                            if (bonds.get(2) == null ) {
+                            if(i == 1 && bonds.get(3) == null ){
+                                bonds.remove(3);
+                                bonds.add(3, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if(i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null ){
+                                bonds.remove(1);
+                                bonds.add(1, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if (bonds.get(0) == null ) {
 
                                 bonds.remove(0);
                                 bonds.add(0, "OH");
                                 integer++;
                                 alcohol = true;
-                            } else if (bonds.get(0) == null && integer < 4) {
+                            } else if (bonds.get(2) == null) {
                                 bonds.remove(2);
                                 bonds.add(2, "OH");
                                 integer++;
@@ -289,12 +300,25 @@ public class MainController extends Controller {
                 if (!alcohol) {
                     for (Integer alcohol_position : sideChain.mainChain.alcohol_positions) {
                         if (alcohol_position == i) {
-                            if (bonds.get(down) == null ) {
+                            if(i == 1 && bonds.get(3) == null ){
+                                bonds.remove(3);
+                                bonds.add(3, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if(i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(1) == null ){
+                                bonds.remove(1);
+                                bonds.add(1, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if (bonds.get(0) == null ) {
+
                                 bonds.remove(0);
                                 bonds.add(0, "OH");
                                 integer++;
                                 alcohol = true;
-                            } else if (bonds.get(up) == null && integer < 4) {
+                            } else if (bonds.get(2) == null) {
                                 bonds.remove(2);
                                 bonds.add(2, "OH");
                                 integer++;
@@ -351,7 +375,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if (input.getText().trim() == "")
+        if (input.getText().trim().equals(""))
             return;
 
         addToHistory(input.getText());
@@ -369,6 +393,7 @@ public class MainController extends Controller {
 
         if (model.errors.equals("")) {
             errormsg.setText("");
+            System.out.println(model.mainChain.bonds_per_carbon);
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
             GraphicsContext gc = canvas.getGraphicsContext2D();

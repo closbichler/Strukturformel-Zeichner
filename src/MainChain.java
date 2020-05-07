@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,10 +51,10 @@ public class MainChain {
 
     String regex = "^-?([a-z]{2,})" +
             "((an)|(" + //4
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
-            "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
-            "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$";
+            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" + //10
+            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" + //16
+            "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" + //21
+            "))((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(ol))?$";
 
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes3e
@@ -72,10 +73,10 @@ public class MainChain {
             if (!findName()) {
                 p = Pattern.compile("^()" +
                         "((an)|(" + //4
-                        "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
-                        "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
-                        "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
-                        "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
+                        "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" + //10
+                        "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" + //16
+                        "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" + //21
+                        "))((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
                 if (!m.find()) {
                     errors += "Falsche Eingabe!";
@@ -166,27 +167,36 @@ public class MainChain {
                     alcohol_positions.add(i);
                 }
             } else {
-                for (int i = 1; i <= hydroCarbon.getValue(); i++) {
-                    int bonds = bonds_per_carbon.get(i - 1);
+                int available_bonds = 0;
+                for (Integer integer : bonds_per_carbon) {
+                    available_bonds += 4 - integer;
+                }
+                if(greekNumber_alcohol.getValue() <= available_bonds) {
+                    for (int i = 1; i <= hydroCarbon.getValue(); i++) {
+                        int bonds = bonds_per_carbon.get(i - 1);
 
-                    if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
-                        alcohol_positions.add(i);
-                        bonds++;
-                    }
-                    if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
-                        alcohol_positions.add(i);
-                        bonds++;
-                    }
+                        if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
+                            alcohol_positions.add(i);
+                            bonds++;
+                        }
+                        if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < 4) {
+                            alcohol_positions.add(i);
+                            bonds++;
+                        }
 
-                    if (i == 1 && !sidechain && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
-                        alcohol_positions.add(i);
-                        bonds++;
-                    }
-                    if (i == hydroCarbon.getValue() && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
-                        alcohol_positions.add(i);
-                        bonds++;
-                    }
+                        if (i == 1 && !sidechain && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                            alcohol_positions.add(i);
+                            bonds++;
+                        }
+                        if (i == hydroCarbon.getValue() && bonds < 4 && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                            alcohol_positions.add(i);
+                            bonds++;
+                        }
 
+                    }
+                }
+                else{
+                    //System.out.println("KEKO");
                 }
             }
 
@@ -263,7 +273,6 @@ public class MainChain {
             if (multibond_positions != null && !multibond_positions.equals("")) {
                 //Ending "an" but given multibond position
                 errors += "\nAn Alkane cannot have a multibond position!";
-                return;
             }
         }
     }
@@ -393,12 +402,10 @@ public class MainChain {
             if (triple_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
                 errors += "\nWrong or no Greek Syllable!";
-                return;
             }
         } else if (triple_bonds.size() != greekNumber_in.getValue()) {
             //No Greek Syllable or Wrong Greek Syllable name
             errors += "\nWrong or no Greek Syllable!";
-            return;
         }
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
 

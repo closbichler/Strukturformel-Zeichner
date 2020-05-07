@@ -14,11 +14,11 @@ public class SideChain {
     }
 
     private void regex(String input) {
-        String regex = "^(\\d(,\\d)*)-?([A-Za-z]{2,})?\\(?(([a-z]{2,})" +
+        String regex = "^(\\d\\d?(,\\d\\d?)*)-?([A-Za-z]{2,})?\\(?(([a-z]{2,})" +
                 "(|("+
-                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" +
-                "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" +
-                "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" +
+                "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" +
+                "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" +
+                "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" +
                 ")))yl\\)?$";
 
         //Stores the multiple bond positions e.g. 3,4
