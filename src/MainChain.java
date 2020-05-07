@@ -78,7 +78,7 @@ public class MainChain {
                         "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
                 if (!m.find()) {
-                    errors += "Falsche Eingabe!";
+                    errors += "Bitte überprüfen Sie Ihre Eingabe!";
                     return;
                 }
             }
@@ -127,13 +127,13 @@ public class MainChain {
                 }
                 if (ending_en == null && ending_in == null && ending_an == null) {
                     //No ending
-                    errors += "\nMissing ending [an, en, in]";
+                    errors += "\nEs fehlt eine Endsilbe (z.B.: an, en, in)";
                 }
 
             }
 
         } else {
-            errors += "Falsche Eingabe!";
+            errors += "Bitte überprüfen Sie Ihre Eingabe!";
         }
 
 
@@ -155,7 +155,7 @@ public class MainChain {
         else {
             if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
 
-                errors+="\nWrong Greeksyllabe "+greek_syllable_alcohol+ " for "+alcohol_positions.size() + " alcohol-groups";
+                errors += "\nWrong Greeksyllabe " + greek_syllable_alcohol+ " for " + alcohol_positions.size() + " alcohol-groups";
             }
         }
 
