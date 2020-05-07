@@ -140,17 +140,29 @@ public class MainChain {
     }
 
     private void calc_alcohol(String alcohol_positions_string) {
-        String[] split = alcohol_positions_string.split(",");
-        for (String s : split) {
-            alcohol_positions.add(Integer.parseInt(s));
+        if(alcohol_positions_string!=null) {
+            String[] split = alcohol_positions_string.split(",");
+            for (String s : split) {
+                alcohol_positions.add(Integer.parseInt(s));
+            }
         }
         if (alcohol_positions.size() == 0) {
-            if (greekNumber_alcohol.getValue() > hydroCarbon.getValue()  ||
-                    (hydroCarbon.getValue() <= 2 && greekNumber_alcohol.getValue() == 0)) {
-                for (int i = 1; i < hydroCarbon.getValue(); i++) {
+            System.out.println(greekNumber_alcohol);
+            if(greekNumber_alcohol.getValue() == 0){
+                alcohol_positions.add(1);
+            }
+            else if (greekNumber_alcohol.getValue() < hydroCarbon.getValue()) {
+                for (int i = 1; i <= greekNumber_alcohol.getValue(); i++) {
                     alcohol_positions.add(i);
                 }
             }
+            else{
+                for(int i = 1; i<= greekNumber_alcohol.getValue();i++){
+                    alcohol_positions.add(i);
+                    alcohol_positions.add(i);
+                }
+            }
+
         }
         else {
             if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
@@ -288,6 +300,7 @@ public class MainChain {
                 greekNumber_alcohol = GreekNumbers.valueOf(greek_syllable_alcohol);
             } catch (Exception e) {
                 greekNumber_alcohol = GreekNumbers.none;
+                System.out.println(greekNumber_alcohol);
             }
         }
     }

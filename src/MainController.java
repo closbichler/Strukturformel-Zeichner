@@ -195,7 +195,26 @@ public class MainController extends Controller {
             }
             int integer = model.mainChain.bonds_per_carbon.get(i - 1);
             while (integer != 4) {
-
+                boolean alcohol = false;
+                for (Integer alcohol_position : model.mainChain.alcohol_positions) {
+                    if(alcohol_position == i){
+                        if(bonds.get(0) == null){
+                            bonds.remove(0);
+                            bonds.add(0, "OH");
+                            integer++;
+                            alcohol = true;
+                        }
+                        else if (bonds.get(2) == null){
+                            bonds.remove(2);
+                            bonds.add(2, "OH");
+                            integer++;
+                            alcohol = true;
+                        }
+                    }
+                }
+                if(alcohol){
+                    continue;
+                }
                 if (bonds.get(0) == null) {
                     bonds.remove(0);
                     bonds.add(0, "H");
