@@ -1,4 +1,5 @@
 import com.sun.webkit.Timer;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +9,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
@@ -41,8 +45,6 @@ public class MainController extends Controller {
     @FXML
     Canvas canvas;
     @FXML
-    Slider slider;
-    @FXML
     Button btn_close;
     @FXML
     Button btn_minimize;
@@ -52,8 +54,6 @@ public class MainController extends Controller {
     Label doc;
     @FXML
     Label help;
-    @FXML
-    Label strukturname;
     @FXML
     Label molmasse;
     @FXML
@@ -81,6 +81,13 @@ public class MainController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Contextmenu in Canvas
+        ContextMenu c = new ContextMenu();
+        MenuItem m1 = new MenuItem("In Zwischenablage kopieren");
+        m1.setOnAction(e -> copyToClipboard(e));
+        c.getItems().add(m1);
+        canvas.setOnContextMenuRequested(e -> {c.show(stage, e.getScreenX(), e.getScreenY());});
     }
 
     public void minimize() {
@@ -149,6 +156,10 @@ public class MainController extends Controller {
     }
   
     public void addToHistory(String struktur) {
+        for(MenuItem m : history.getItems()) {
+            if(m.getText().equals(struktur))
+                return;
+        }
         MenuItem menuItem = new MenuItem(struktur);
         menuItem.setOnAction(e -> {
             input.setText(menuItem.getText());
@@ -342,7 +353,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if(input.getText().trim() == "")
+        if(input.getText().isBlank())
             return;
 
         addToHistory(input.getText());
@@ -351,14 +362,11 @@ public class MainController extends Controller {
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
         canvas.setDisable(false);
-        summenformel.setVisible(true);
-        strukturname.setVisible(true);
-        molmasse.setVisible(true);
       
         Model model = new Model();
         model.calculate(input.getText());
 
-        if (model.errors.equals("")) {
+        if (!ErrorMessages.anyErrorsThrown()) {
             errormsg.setText("");
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
@@ -487,11 +495,19 @@ public class MainController extends Controller {
                 e.printStackTrace();
                 System.out.println("Fehler beim Zentrieren!");
             }
-
-            slider.valueProperty().addListener(event -> canvas.setRotate(slider.getValue()));
         } else {
-            System.out.println("|" + model.errors + "|");
-            errormsg.setText(model.errors);
+            errormsg.setText(ErrorMessages.getFirst3Messages());
+            ErrorMessages.clear();
         }
+    }
+
+    public void copyToClipboard(ActionEvent actionEvent) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent content = new ClipboardContent();
+
+        WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+        canvas.snapshot(null, writableImage);
+        content.putImage(writableImage);
+        clipboard.setContent(content);
     }
 }
