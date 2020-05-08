@@ -1,6 +1,5 @@
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -8,11 +7,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
@@ -33,12 +30,12 @@ public class ExportController extends Controller {
     @FXML
     RadioButton radio1, radio2, radio3;
 
-    public void setInitialFileNameAndCanvas(String name, Canvas canvas) {
+    public void setInitialFileNameAndCanvas(String name, Canvas canvas, String strukturname, String molmasse, String summenformel) {
         initialFileName = name;
         this.canvas = canvas;
-        mol = "Molmasse: " + "69";
-        sum = "Summenformel: " + "C5H4";
-        struktur = "Methinini";
+        mol = "Molmasse: " + molmasse;
+        sum = "Summenformel: " + summenformel;
+        struktur = strukturname;
         txtlinks = Math.min((400-(int)(struktur.length()*4.3)), Math.min((400-(int)(sum.length()*2.9)), (400-(int)(mol.length()*2.9))));
     }
 

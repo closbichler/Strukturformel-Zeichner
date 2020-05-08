@@ -1,3 +1,4 @@
+import com.sun.webkit.Timer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +60,7 @@ public class MainController extends Controller {
     Label summenformel;
     @FXML
     Menu history;
+    String struktur = "";
 
     public void readFiles() {
         String path = System.getProperty("user.dir");
@@ -122,11 +124,13 @@ public class MainController extends Controller {
     }
 
     public void openExportWindow() {
+        if(struktur.length() < 3)
+            return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
             Stage window = createStage(loader);
             ExportController ec = loader.getController();
-            ec.setInitialFileNameAndCanvas("Test", canvas);
+            ec.setInitialFileNameAndCanvas(struktur, canvas, struktur, molmasse.getText(), summenformel.getText());
             window.setTitle("Exportieren");
             window.showAndWait();
         } catch (Exception e) {
@@ -171,6 +175,27 @@ public class MainController extends Controller {
         if(keyEvent.getCode() == KeyCode.ENTER)
             drawCanvas();
     }
+
+    public String getMolmasse(int c, int h, int oh){
+        double m = c*12.01 + h*1.01 + oh*(1.01+16);
+
+        return String.format("%.2f",m) + " g/mol";
+    }
+
+    public String getSummenformel(int c, int h, int oh){
+        String sum = "C";
+
+        if(c > 1)
+            sum += c;
+        if(h > 0)
+            sum += "H" + h;
+        if(oh == 1)
+            sum += "OH";
+        if(oh > 1)
+            sum += "(OH)" + oh;
+
+        return sum;
+    }
   
     public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
         for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
@@ -205,24 +230,31 @@ public class MainController extends Controller {
                 }
             }
             int integer = model.mainChain.bonds_per_carbon.get(i - 1);
+
+
             while (integer != 4) {
+
 
                 if (bonds.get(0) == null) {
                     bonds.remove(0);
                     bonds.add(0, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else if (bonds.get(2) == null) {
                     bonds.remove(2);
                     bonds.add(2, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
 
                 } else if (i == 1 && bonds.get(3) == null) {
                     bonds.remove(3);
                     bonds.add(3, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else if (i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null) {
                     bonds.remove(1);
                     bonds.add(1, "H");
+                    model.mainChain.h_atoms++;
                     integer++;
                 } else {
                     integer++;
@@ -276,6 +308,7 @@ public class MainController extends Controller {
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
                     bonds.add(left, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
                 } else if (i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(right) == null) {
                     bonds.remove(right);
@@ -284,10 +317,12 @@ public class MainController extends Controller {
                 } else if (bonds.get(up) == null) {
                     bonds.remove(up);
                     bonds.add(up, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
                 } else if (bonds.get(down) == null) {
                     bonds.remove(down);
                     bonds.add(down, "H");
+                    sideChain.mainChain.h_atoms++;
                     integer++;
 
                 } else {
@@ -372,10 +407,25 @@ public class MainController extends Controller {
                 }
 
             }
+            int h_atoms = 0;
+            int c_atoms = 0;
+            int oh_atoms = 0;
+
+            for (SideChain sideChain : model.sideChains) {
+                h_atoms += sideChain.mainChain.h_atoms;
+                c_atoms += sideChain.mainChain.hydroCarbon.getValue() * sideChain.positions.size();
+                oh_atoms += sideChain.mainChain.oh_atoms;
+            }
+            h_atoms += model.mainChain.h_atoms;
+            c_atoms += model.mainChain.hydroCarbon.getValue();
+            oh_atoms += model.mainChain.oh_atoms;
 
                 /*for (SideChainInput sideChainInput : sideChainInputs) {
                     System.out.println(sideChainInput);
                 }*/
+            struktur = input.getText();
+            summenformel.setText(getSummenformel(c_atoms, h_atoms, oh_atoms));
+            molmasse.setText(getMolmasse(c_atoms, h_atoms, oh_atoms));
 
             gc.clearRect(0, 0, canvaslen, canvaswid);
             do {
@@ -385,7 +435,7 @@ public class MainController extends Controller {
                     gc.setFont(Font.font("Arial", fontsize));
                     //grid.drawGrid(gc);
 
-                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 348)
+                    //Änderungen in diesem if-Zweig müssen auch im try-cath-Block unterhalb dieser do-while-Schleife vorgenommen werden (aktuell Zeile 479)
                     if (model.sideChains == null) {
                         CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                     } else {
@@ -412,9 +462,29 @@ public class MainController extends Controller {
             } while (sizeunfit);
 
             try {
+                int up = 0, down = 0;
+                ArrayList<Integer> positions = new ArrayList<>();
+                for(SideChain s : model.sideChains){
+                    for(Integer j : s.positions) {
+                        if(positions.contains(j)){
+                            if(s.mainChain.hydroCarbon.getValue()*2 > down){
+                                down = s.mainChain.hydroCarbon.getValue()*2;
+                            }
+                        }
+                        else if (s.mainChain.hydroCarbon.getValue()*2 > up) {
+                            up = s.mainChain.hydroCarbon.getValue()*2;
+                        }
+                        positions.add(j);
+                    }
+                }
+
                 col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue() * 2) / 2;
+                row = (grid.getMaxRow() - (up+down+3))/2 + up+1;
+                if(((grid.getMaxRow() - (up+down+3)) % 2) == 1)
+                    row++;
+
                 gc.clearRect(0, 0, canvaslen, canvaswid);
-                //Hier Änderungen vom if-Block aus (derzeit) Zeile 320 einfügen
+                //Hier Änderungen vom if-Block aus (derzeit) Zeile 430 einfügen
                 if (model.sideChains == null) {
                     CanvasFkt.drawChainVert(gc, grid, col, row, false, mainChainString);
                 } else {
@@ -422,6 +492,7 @@ public class MainController extends Controller {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Fehler beim Zentrieren!");
             }
         } else {
