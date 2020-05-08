@@ -502,6 +502,8 @@ public class MainController extends Controller {
     }
 
     public void copyToClipboard(ActionEvent actionEvent) {
+        if(struktur.isEmpty())
+            return;
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
 
