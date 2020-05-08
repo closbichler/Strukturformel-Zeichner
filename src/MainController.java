@@ -79,6 +79,13 @@ public class MainController extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        // Contextmenu in Canvas
+        ContextMenu c = new ContextMenu();
+        MenuItem m1 = new MenuItem("In Zwischenablage kopieren");
+        m1.setOnAction(e -> copyToClipboard(e));
+        c.getItems().add(m1);
+        canvas.setOnContextMenuRequested(e -> {c.show(stage, e.getScreenX(), e.getScreenY());});
     }
 
     public void minimize() {
