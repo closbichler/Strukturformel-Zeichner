@@ -295,41 +295,7 @@ public class MainController extends Controller {
                 }
             }
             int integer = sideChain.mainChain.bonds_per_carbon.get(i - 1);
-            boolean alcohol = false;
             while (integer != 4) {
-                if (!alcohol) {
-                    for (Integer alcohol_position : sideChain.mainChain.alcohol_positions) {
-                        if (alcohol_position == i) {
-                            if(i == 1 && bonds.get(3) == null ){
-                                bonds.remove(3);
-                                bonds.add(3, "OH");
-                                integer++;
-                                alcohol = true;
-                            }
-                            else if(i == sideChain.mainChain.hydroCarbon.getValue() && bonds.get(1) == null ){
-                                bonds.remove(1);
-                                bonds.add(1, "OH");
-                                integer++;
-                                alcohol = true;
-                            }
-                            else if (bonds.get(0) == null ) {
-
-                                bonds.remove(0);
-                                bonds.add(0, "OH");
-                                integer++;
-                                alcohol = true;
-                            } else if (bonds.get(2) == null) {
-                                bonds.remove(2);
-                                bonds.add(2, "OH");
-                                integer++;
-                                alcohol = true;
-                            }
-                        }
-                    }
-                    if (alcohol) {
-                        continue;
-                    }
-                }
 
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
@@ -393,8 +359,9 @@ public class MainController extends Controller {
         model.calculate(input.getText());
 
         if (model.errors.equals("")) {
+            System.out.println(model.sideChains);
             errormsg.setText("");
-            System.out.println(model.mainChain.bonds_per_carbon);
+            //System.out.println(model.mainChain.bonds_per_carbon);
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -416,7 +383,7 @@ public class MainController extends Controller {
 
                     boolean orientation = true;
                     for (SideChainInput sideChainInput : sideChainInputs) {
-                        if (sideChainInput != null) {
+                        if (sideChainInput != null && sideChainInput.pos == position ) {
                             calcSideChains(sideChainString, Orientation.Down, sideChain);
                             SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
                             sideChainInputs[i] = down;

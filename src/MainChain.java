@@ -193,9 +193,7 @@ public class MainChain {
                             alcohol_positions.add(i);
                             anzahl++;
                         }
-                        if(i == 2){
-                            System.out.println(bonds + " " + anzahl);
-                        }
+
                         if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < (4 - anzahl)) {
                             alcohol_positions.add(i);
 
@@ -204,8 +202,7 @@ public class MainChain {
 
 
                     }
-                    System.out.println(alcohol_positions);
-                    System.out.println(bonds_per_carbon);
+
                 } else {
                     System.out.println("NOT ENOUGH SPACE FOR " + greekNumber_alcohol.getValue() + " OH Groups");
                     //System.out.println("KEKO");
