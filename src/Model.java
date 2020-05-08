@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 public class Model {
     MainChain mainChain;
     ArrayList<SideChain> sideChains;
-    String errors ="";
 
     boolean calculate(String input) {
         sideChains = new ArrayList<>();
@@ -26,40 +25,30 @@ public class Model {
             end = m.end();
         }
         mainChain = new MainChain(input.substring(end));
-
-        validateChains();
-        if(!mainChain.errors.equals(""))
-            errors+="\nMainchain:"+mainChain.errors;
-        for (SideChain sideChain : sideChains) {
-            if(!sideChain.errors.equals("")) {
-                errors += "\nSideChain:" + sideChain.errors;
-            }
+        if (mainChain.hydroCarbon != null && mainChain.hydroCarbon != HydroCarbons.none) {
+            validateChains();
         }
-        if(!errors.equals("")){
-            System.out.println(this);
-        }
-        return errors.equals("");
 
+        return false;
     }
 
-    void validateChains(){
+    void validateChains() {
 
         for (SideChain sideChain : sideChains) {
             for (Integer position : sideChain.positions) {
-                Integer bonds = mainChain.bonds_per_carbon.get(position-1);
-                mainChain.bonds_per_carbon.remove(position-1);
-                mainChain.bonds_per_carbon.add(position-1, bonds+1);
-
-                if(bonds+1 > 4){
-                    errors+="\nWrong Sidechain on position " + position;
+                Integer bonds = mainChain.bonds_per_carbon.get(position - 1);
+                mainChain.bonds_per_carbon.remove(position - 1);
+                mainChain.bonds_per_carbon.add(position - 1, bonds + 1);
+                if (bonds + 1 > 4) {
+                    ErrorMessages.addMessage("Die Position der Seitenkette ist nicht korrekt");
                     return;
                 }
-                if(position <= sideChain.mainChain.hydroCarbon.getValue()){
-                    errors+="\nSidechain on " + position + " would be longer than the mainchain";
+                if (position <= sideChain.mainChain.hydroCarbon.getValue()) {
+                    ErrorMessages.addMessage("Die Seitenkette ist inkorrekt");
+                    ErrorMessages.addMessage("Die Seitenkette wäre länger als die Hauptkette");
                     return;
-                }
-                else if(position + sideChain.mainChain.hydroCarbon.getValue() > mainChain.hydroCarbon.getValue() ){
-                    errors+="\nSidechain on " + position + " would be longer than the mainchain";
+                } else if (position + sideChain.mainChain.hydroCarbon.getValue() > mainChain.hydroCarbon.getValue()) {
+                    ErrorMessages.addMessage("Die Seitenkette wäre länger als die Hauptkette");
                     return;
                 }
             }
@@ -69,6 +58,7 @@ public class Model {
         }
 
     }
+
     @Override
     public String toString() {
         return "Model{" +
