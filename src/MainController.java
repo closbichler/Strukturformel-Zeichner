@@ -330,6 +330,7 @@ public class MainController extends Controller {
                         continue;
                     }
                 }
+
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
                     bonds.add(left, "H");
@@ -415,7 +416,7 @@ public class MainController extends Controller {
 
                     boolean orientation = true;
                     for (SideChainInput sideChainInput : sideChainInputs) {
-                        if (sideChainInput != null && sideChainInput.equals(position)) {
+                        if (sideChainInput != null) {
                             calcSideChains(sideChainString, Orientation.Down, sideChain);
                             SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
                             sideChainInputs[i] = down;

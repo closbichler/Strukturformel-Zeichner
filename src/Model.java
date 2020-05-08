@@ -49,6 +49,7 @@ public class Model {
                 Integer bonds = mainChain.bonds_per_carbon.get(position-1);
                 mainChain.bonds_per_carbon.remove(position-1);
                 mainChain.bonds_per_carbon.add(position-1, bonds+1);
+
                 if(bonds+1 > 4){
                     errors+="\nWrong Sidechain on position " + position;
                     return;
@@ -62,6 +63,9 @@ public class Model {
                     return;
                 }
             }
+        }
+        if(mainChain.isAlcohol){
+            mainChain.calc_alcohol(mainChain.alcohol_positions_string, mainChain.sideChain);
         }
 
     }
