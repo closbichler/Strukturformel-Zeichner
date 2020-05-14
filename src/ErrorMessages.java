@@ -9,7 +9,7 @@ public class ErrorMessages {
         undefErr = true;
     }
 
-    public static void thrwoInternalError() { internalErr = true; }
+    public static void throwInternalError() { internalErr = true; }
 
     public static void addMessage(String msg) {
         messages.add(msg);
