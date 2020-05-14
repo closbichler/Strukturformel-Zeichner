@@ -399,7 +399,7 @@ public class MainController extends Controller {
             errormsg.setText("");
 
             boolean sizeunfit = true;
-            int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
+            int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 0, row = 1, col = 1;
             GraphicsContext gc = canvas.getGraphicsContext2D();
             Grid grid = new Grid(canvaslen, canvaswid, fontsize);
 
@@ -459,6 +459,9 @@ public class MainController extends Controller {
             do {
 
                 try {
+                    if(fontsize == 0) {
+                        ErrorMessages.throwInternalError();
+                    }
                     grid = new Grid(canvaslen, canvaswid, fontsize);
                     gc.setFont(Font.font("Arial", fontsize));
                     //grid.drawGrid(gc);
