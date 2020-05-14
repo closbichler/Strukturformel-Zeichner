@@ -34,9 +34,9 @@ public class CanvasFkt {
 
                 gc.strokeLine(grid.getX(col) + (float) grid.getSize() / 2, grid.getY(row - 2) + (float) grid.getSize() / 2, grid.getX(col) + (float) grid.getSize() / 2, grid.getY(row - 1));
                 if (u.length() == 1)
-                    gc.fillText(u, grid.getX(col) + (float) grid.getSize() / 3 - (float) grid.getSize() / 25, grid.getY(row - 2) + (float) grid.getSize() / 2 - (float) grid.getSize() / 12);
+                    gc.fillText(u, grid.getX(col) + (float) 16*grid.getSize() / 50, grid.getY(row - 2) + (float) grid.getSize() / 2 - (float) grid.getSize() / 12);
                 if (u.length() == 2)
-                    gc.fillText(u, grid.getX(col) + (float) grid.getSize() / 6, grid.getY(row - 2) + (float) grid.getSize() / 2 - (float) grid.getSize() / 12);
+                    gc.fillText(u, grid.getX(col) + (float) 6*grid.getSize() / 50, grid.getY(row - 2) + (float) grid.getSize() / 2 - (float) grid.getSize() / 12);
 
                 gc.setFont(prev);
                 break;
@@ -111,9 +111,9 @@ public class CanvasFkt {
 
                 gc.strokeLine(grid.getX(col) + (float) grid.getSize() / 2, grid.getY(row) + (float) grid.getSize() / 2, grid.getX(col) + (float) grid.getSize() / 2, grid.getY(row));
                 if (d.length() == 1)
-                    gc.fillText(d, grid.getX(col) + (float) grid.getSize() / 3 - (float) grid.getSize() / 25, grid.getY(row + 1) - (float) grid.getSize() / 12);
+                    gc.fillText(d, grid.getX(col) + (float) 16*grid.getSize() / 50, grid.getY(row + 1) - (float) grid.getSize() / 12);
                 if (d.length() == 2)
-                    gc.fillText(d, grid.getX(col) + (float) grid.getSize() / 6, grid.getY(row + 1) - (float) grid.getSize() / 12);
+                    gc.fillText(d, grid.getX(col) + (float) 6*grid.getSize() / 50, grid.getY(row + 1) - (float) grid.getSize() / 12);
 
                 gc.setFont(prev);
                 break;
