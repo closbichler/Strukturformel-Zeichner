@@ -1,5 +1,5 @@
 public enum HydroCarbons {
-    //Used for storing the Carbon Count of the HydroCarb
+    //Used for storing the Carbon Count of the HydroCarbon
     none(0),
     meth(1), eth(2), prop(3),
     but(4), pent(5), hex(6),
@@ -16,7 +16,7 @@ public enum HydroCarbons {
     //Found those Names for HydroCarbons from 1 to 30 on the website
     // https://www.internetchemie.info/chemie-lexikon/stoffgruppen/a/alkane.php
 
-    //Storing the carbon amout as integer
+    //Storing the carbon amount as integer
     private int carbon_count;
 
     HydroCarbons(int carbon_count) {
