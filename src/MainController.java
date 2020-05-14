@@ -266,7 +266,6 @@ public class MainController extends Controller {
                     }
                 }
 
-
                 if (bonds.get(0) == null) {
                     bonds.remove(0);
                     bonds.add(0, "H");
@@ -288,9 +287,6 @@ public class MainController extends Controller {
                     bonds.add(1, "H");
                     model.mainChain.h_atoms++;
                     integer++;
-                } else {
-                    integer++;
-                    System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
                 }
             }
             for (int j = 0; j < 4; j++) {
@@ -358,10 +354,7 @@ public class MainController extends Controller {
                     sideChain.mainChain.h_atoms++;
                     integer++;
 
-                } else {
-                    System.out.println(bonds.get(0) + bonds.get(1) + bonds.get(2) + bonds.get(3) + integer + " " + i);
                 }
-
             }
 
             for (int j = 0; j < 4; j++) {
@@ -404,7 +397,7 @@ public class MainController extends Controller {
 
         if (!ErrorMessages.anyErrorsThrown()) {
             errormsg.setText("");
-            //System.out.println(model.mainChain.bonds_per_carbon);
+
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -457,9 +450,7 @@ public class MainController extends Controller {
             c_atoms += model.mainChain.hydroCarbon.getValue();
             oh_atoms += model.mainChain.oh_atoms;
 
-                /*for (SideChainInput sideChainInput : sideChainInputs) {
-                    System.out.println(sideChainInput);
-                }*/
+
             struktur = input.getText();
             summenformel.setText(getSummenformel(c_atoms, h_atoms, oh_atoms));
             molmasse.setText(getMolmasse(c_atoms, h_atoms, oh_atoms));
@@ -530,7 +521,7 @@ public class MainController extends Controller {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Fehler beim Zentrieren!");
+                ErrorMessages.throwInternalError();
             }
         } else {
             errormsg.setText(ErrorMessages.getFirst3Messages());

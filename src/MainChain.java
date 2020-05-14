@@ -160,14 +160,15 @@ public class MainChain {
                 if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
                     alcohol_positions.add(pos);
                 } else {
-                    System.out.println("Cannot have " + (anzahl + 1) + " OH-Groups on position " + pos);
+                    ErrorMessages.addMessage("Es können nicht " + (anzahl + 1) + " OH-Gruppen an der Stelle " + pos + " geben");
                     alcohol_positions.add(pos);
                 }
 
             }
         }
         if (alcohol_positions.size() == 0) {
-            System.out.println("No Positions for Alcohol given");
+            ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
+
             if (greekNumber_alcohol.getValue() == 0) {
                 alcohol_positions.add(1);
             } else if (greekNumber_alcohol.getValue() <= hydroCarbon.getValue()) {
@@ -200,14 +201,10 @@ public class MainChain {
                             alcohol_positions.add(i);
 
                         }
-
-
-
                     }
 
                 } else {
-                    System.out.println("NOT ENOUGH SPACE FOR " + greekNumber_alcohol.getValue() + " OH Groups");
-                    //System.out.println("KEKO");
+                    ErrorMessages.addMessage("Nicht genug Platz für " + greekNumber_alcohol.getValue() + " OH-Gruppen");
                 }
             }
 
