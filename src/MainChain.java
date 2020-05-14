@@ -1,4 +1,7 @@
+import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,9 +38,10 @@ public class MainChain {
     private String greek_syllable_in;
     //a or ""
     private String multibond_char;
-    private boolean isAlcohol;
-    private String alcohol_positions_string;
+    public boolean isAlcohol;
+    public String alcohol_positions_string;
     private String greek_syllable_alcohol;
+    public boolean sideChain;
     public int h_atoms = 0;
     public int oh_atoms;
 
@@ -51,15 +55,16 @@ public class MainChain {
 
     String regex = "^-?([a-z]{2,})" +
             "((an)|(" + //4
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
-            "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
-            "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
-            "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$";
+            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" + //10
+            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" + //16
+            "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" + //21
+            "))((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(ol))?$";
 
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes3e
     private void regex(String input, boolean sideChain) {
         //Stores the input String, the regex, the name (e.g. Prop) and the ending (e.g. an)
+        this.sideChain = sideChain;
         if (sideChain) {
             if (!input.matches("^.*[aei]n$")) {
                 input += "an";
@@ -73,10 +78,10 @@ public class MainChain {
             if (!findName()) {
                 p = Pattern.compile("^()" +
                         "((an)|(" + //4
-                        "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))|" + //10
-                        "(a)?(-?(\\d(,\\d)*)?-?([a-z]{2,})?(en))?" + //16
-                        "(-?(\\d(,\\d)*)?-?([a-z]{2,})?(in))" + //21
-                        "))((\\d(,\\d)*)?([a-z]{2,})?(ol))?$");
+                        "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" + //10
+                        "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" + //16
+                        "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" + //21
+                        "))((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(ol))?$");
                 m = p.matcher(input.substring(i));
                 if (!m.find()) {
                     ErrorMessages.throwUndefinedError();
@@ -109,21 +114,26 @@ public class MainChain {
             if (ending_an != null) {
                 calc_multiple_bondings(name, ending_an, multibond_positions_en);
                 calc_multiple_bondings(name, ending_an, multibond_positions_in);
-                calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
-                if(isAlcohol){calc_alcohol(alcohol_positions_string);}
+                calc_enums(name, greek_syllable_en, greek_syllable_in, isAlcohol);
+                calc_bonds_per_carbon();
+
                 validate_input(multibond_char, ending_an);
             } else {
 
                 if (ending_en != null) {
                     calc_multiple_bondings(name, ending_en, multibond_positions_en);
-                    calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
+                    calc_enums(name, greek_syllable_en, greek_syllable_in, isAlcohol);
                     findPositions(ending_en, ending_in);
+                    calc_bonds_per_carbon();
+
                     validate_input(multibond_char, ending_en);
                 }
                 if (ending_in != null) {
                     calc_multiple_bondings(name, ending_in, multibond_positions_in);
-                    calc_enums(name, greek_syllable_en, greek_syllable_in, greek_syllable_alcohol, isAlcohol);
+                    calc_enums(name, greek_syllable_en, greek_syllable_in, isAlcohol);
                     findPositions(ending_en, ending_in);
+                    calc_bonds_per_carbon();
+
                     validate_input(multibond_char, ending_in);
                 }
                 if (ending_en == null && ending_in == null && ending_an == null) {
@@ -141,22 +151,68 @@ public class MainChain {
 
     }
 
-    private void calc_alcohol(String alcohol_positions_string) {
-        String[] split = alcohol_positions_string.split(",");
-        for (String s : split) {
-            alcohol_positions.add(Integer.parseInt(s));
-        }
-        if (alcohol_positions.size() == 0) {
-            if (greekNumber_alcohol.getValue() > hydroCarbon.getValue()  ||
-                    (hydroCarbon.getValue() <= 2 && greekNumber_alcohol.getValue() == 0)) {
-                for (int i = 1; i < hydroCarbon.getValue(); i++) {
-                    alcohol_positions.add(i);
+    public void calc_alcohol(String alcohol_positions_string, boolean sidechain) {
+        if (alcohol_positions_string != null) {
+            String[] split = alcohol_positions_string.split(",");
+            for (String s : split) {
+                int pos = Integer.parseInt(s);
+                int anzahl = Collections.frequency(alcohol_positions, pos);
+                if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
+                    alcohol_positions.add(pos);
+                } else {
+                    System.out.println("Cannot have " + (anzahl + 1) + " OH-Groups on position " + pos);
+                    alcohol_positions.add(pos);
                 }
+
             }
         }
-        else {
-            if(alcohol_positions.size() != greekNumber_alcohol.getValue()){
+        if (alcohol_positions.size() == 0) {
+            System.out.println("No Positions for Alcohol given");
+            if (greekNumber_alcohol.getValue() == 0) {
+                alcohol_positions.add(1);
+            } else if (greekNumber_alcohol.getValue() <= hydroCarbon.getValue()) {
+                for (int i = 1; i <= greekNumber_alcohol.getValue(); i++) {
+                    alcohol_positions.add(i);
+                }
+            } else {
+                int available_bonds = 0;
+                for (Integer integer : bonds_per_carbon) {
+                    available_bonds += 4 - integer;
+                }
+                if (greekNumber_alcohol.getValue() <= available_bonds) {
+                    for (int i = 1; i <= hydroCarbon.getValue(); i++) {
+                        int bonds = bonds_per_carbon.get(i - 1); //3
+                        int anzahl = 0;
+                        if (i == 1 && !sidechain && bonds < (4 - anzahl) && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                            alcohol_positions.add(i);
+                            anzahl++;
+                        }
+                        if (i == hydroCarbon.getValue() && bonds < (4 - anzahl) && alcohol_positions.size() < greekNumber_alcohol.getValue()) {
+                            alcohol_positions.add(i);
+                            anzahl++;
+                        }
+                        if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < (4 - anzahl)) {
+                            alcohol_positions.add(i);
+                            anzahl++;
+                        }
 
+                        if (alcohol_positions.size() < greekNumber_alcohol.getValue() && bonds < (4 - anzahl)) {
+                            alcohol_positions.add(i);
+
+                        }
+
+
+
+                    }
+
+                } else {
+                    System.out.println("NOT ENOUGH SPACE FOR " + greekNumber_alcohol.getValue() + " OH Groups");
+                    //System.out.println("KEKO");
+                }
+            }
+
+        } else {
+            if (alcohol_positions.size() != greekNumber_alcohol.getValue() && alcohol_positions.size() != 1) {
                 ErrorMessages.addMessage("\nWrong Greeksyllabe " + greek_syllable_alcohol+ " for " + alcohol_positions.size() + " alcohol-groups");
             }
         }
@@ -170,7 +226,7 @@ public class MainChain {
                 HydroCarbons.valueOf(name.substring(0, i));
                 name = name.substring(0, i);
                 break;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
@@ -235,7 +291,7 @@ public class MainChain {
 
     //Creates the enum values from the input name and the greek_syllable
     //Returns if the transition was successfull
-    private void calc_enums(String name, String greek_syllable_en, String greek_syllable_in, String alcohol_positions_string, boolean isAlcohol) {
+    private void calc_enums(String name, String greek_syllable_en, String greek_syllable_in, boolean isAlcohol) {
 
         //Setting hydroCarbon to the given Value
         try {
@@ -271,10 +327,6 @@ public class MainChain {
 
         }
         if (greek_syllable_en == null && greek_syllable_in == null) {
-            if (greek_syllable_en != null && greek_syllable_en.equals("an")) {
-                //Greek_syllable even tho the ending is an
-                ErrorMessages.addMessage("Die Vorsilbe ist bei der Endsilbe -an überflüssig");
-            }
             greekNumber_en = GreekNumbers.none;
             greekNumber_in = GreekNumbers.none;
         }
@@ -364,6 +416,10 @@ public class MainChain {
             return;
         }
         //Check if there are wrong positions and if every C Atom only got a max amount of 4 bonds
+
+    }
+
+    private void calc_bonds_per_carbon() {
         for (int i = 1; i <= hydroCarbon.getValue(); i++) {
             if (hydroCarbon.getValue() == 1) {
                 bonds_per_carbon.add(0);

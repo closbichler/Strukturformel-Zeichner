@@ -17,14 +17,6 @@ public class SideChainInput {
         this.chain = chain;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Integer.valueOf(2).getClass() != o.getClass()) return false;
-        Integer that = (Integer) o;
-        return pos == that;
-    }
-
     public SideChainInput(Orientation or, int pos, ArrayList<ArrayList<String>> chain){
         this.orientation = or;
         this.pos = pos;

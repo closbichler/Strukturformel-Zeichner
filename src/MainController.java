@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainController extends Controller {
@@ -154,7 +153,7 @@ public class MainController extends Controller {
 
         return popupWindow;
     }
-  
+
     public void addToHistory(String struktur) {
         for(MenuItem m : history.getItems()) {
             if(m.getText().equals(struktur))
@@ -165,14 +164,14 @@ public class MainController extends Controller {
             input.setText(menuItem.getText());
             drawCanvas();
         });
-        if(history.getItems().size() > 10) {
+        if (history.getItems().size() > 10) {
             history.getItems().remove(0);
         }
         history.getItems().add(menuItem);
     }
 
     public void enter(javafx.scene.input.KeyEvent keyEvent) {
-        if(keyEvent.getCode() == KeyCode.ENTER)
+        if (keyEvent.getCode() == KeyCode.ENTER)
             drawCanvas();
     }
 
@@ -197,7 +196,7 @@ public class MainController extends Controller {
         return sum;
     }
   
-    public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
+  public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
         for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
             ArrayList<String> bonds = new ArrayList<>();
             for (int j = 0; j < 4; j++) {
@@ -229,10 +228,43 @@ public class MainController extends Controller {
                     bonds.add(1, "-");
                 }
             }
+            boolean alcohol = false;
             int integer = model.mainChain.bonds_per_carbon.get(i - 1);
+            while (integer < 4) {
 
+                if (!alcohol) {
+                    for (Integer alcohol_position : model.mainChain.alcohol_positions) {
+                        if (alcohol_position == i) {
+                            if(i == 1 && bonds.get(3) == null ){
+                                bonds.remove(3);
+                                bonds.add(3, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if(i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null ){
+                                bonds.remove(1);
+                                bonds.add(1, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                            else if (bonds.get(0) == null ) {
 
-            while (integer != 4) {
+                                bonds.remove(0);
+                                bonds.add(0, "OH");
+                                integer++;
+                                alcohol = true;
+                            } else if (bonds.get(2) == null) {
+                                bonds.remove(2);
+                                bonds.add(2, "OH");
+                                integer++;
+                                alcohol = true;
+                            }
+                        }
+                    }
+                    if (alcohol) {
+                        continue;
+                    }
+                }
 
 
                 if (bonds.get(0) == null) {
@@ -305,6 +337,7 @@ public class MainController extends Controller {
             }
             int integer = sideChain.mainChain.bonds_per_carbon.get(i - 1);
             while (integer != 4) {
+
                 if (i == 1 && bonds.get(left) == null) {
                     bonds.remove(left);
                     bonds.add(left, "H");
@@ -362,12 +395,16 @@ public class MainController extends Controller {
         canvasplaceholder.setDisable(true);
         canvas.setVisible(true);
         canvas.setDisable(false);
-      
+        summenformel.setVisible(true);
+        strukturname.setVisible(true);
+        molmasse.setVisible(true);
+
         Model model = new Model();
         model.calculate(input.getText());
 
         if (!ErrorMessages.anyErrorsThrown()) {
             errormsg.setText("");
+            //System.out.println(model.mainChain.bonds_per_carbon);
             boolean sizeunfit = true;
             int canvaslen = (int) canvas.getWidth(), canvaswid = (int) canvas.getHeight(), fontsize = 150, row = 1, col = 1;
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -389,7 +426,7 @@ public class MainController extends Controller {
 
                     boolean orientation = true;
                     for (SideChainInput sideChainInput : sideChainInputs) {
-                        if (sideChainInput != null && sideChainInput.equals(position)) {
+                        if (sideChainInput != null && sideChainInput.pos == position ) {
                             calcSideChains(sideChainString, Orientation.Down, sideChain);
                             SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
                             sideChainInputs[i] = down;

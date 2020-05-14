@@ -10,12 +10,12 @@ public class Model {
 
     boolean calculate(String input) {
         sideChains = new ArrayList<>();
-        input = input.toLowerCase().replace(" ", "").replace("-", "");
-        Pattern p = Pattern.compile("(\\d(,\\d)*)([a-z]{2,})?\\(?(([a-z]{2,})" +
-                "(|(" +
-                "(a)?((\\d(,\\d)*)?([a-z]{2,})?(en))|" +
-                "(a)?((\\d(,\\d)*)?([a-z]{2,})?(en))?" +
-                "((\\d(,\\d)*)?([a-z]{2,})?(in))" +
+        input = input.toLowerCase().replace(" ","").replace("-","");
+        Pattern p = Pattern.compile("(\\d\\d?(,\\d\\d?)*)([a-z]{2,})?\\(?(([a-z]{2,})" +
+                "(|("+
+                "(a)?((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(en))|" +
+                "(a)?((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(en))?" +
+                "((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(in))" +
                 ")))yl\\)?");
         Matcher m = p.matcher(input);
 
@@ -52,6 +52,9 @@ public class Model {
                     return;
                 }
             }
+        }
+        if(mainChain.isAlcohol){
+            mainChain.calc_alcohol(mainChain.alcohol_positions_string, mainChain.sideChain);
         }
 
     }
