@@ -396,7 +396,7 @@ public class MainController extends Controller {
         canvas.setVisible(true);
         canvas.setDisable(false);
         summenformel.setVisible(true);
-        strukturname.setVisible(true);
+
         molmasse.setVisible(true);
 
         Model model = new Model();
