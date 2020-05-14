@@ -8,9 +8,7 @@ public enum GreekNumbers {
     tetraconta(40), pentaconta(50), hexaconta(60),
     heptaconta(70), octaconta(80), nonaconta(90),
     hecta(100), henhecta(101), dicta(200), docosadicta(222),
-    tricta(300), dohexacontatricta(362), tetracta(400),
-    pentacta(500), hexacta(600), heptacta(700),
-    octacta(800), nonacta(900);
+    tricta(300), dohexacontatricta(362), tetracta(400);
 
     //GreekNumbers found on
     // https://de.wikipedia.org/wiki/Griechische_Zahlw%C3%B6rter#Altgriechische_Zahlw%C3%B6rter
