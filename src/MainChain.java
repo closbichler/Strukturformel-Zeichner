@@ -55,10 +55,10 @@ public class MainChain {
 
     String regex = "^-?([a-z]{2,})" +
             "((an)|(" + //4
-            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))|" + //10
-            "(a)?(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(en))?" + //16
-            "(-?(\\d\\d?(,\\d\\d?)*)?-?([a-z]{2,})?(in))" + //21
-            "))((\\d\\d?(,\\d\\d?)*)?([a-z]{2,})?(ol))?$";
+            "(a)?(-?(\\d{1,3}(,\\d{1,3})*)?-?([a-z]{2,})?(en))|" + //10
+            "(a)?(-?(\\d{1,3}(,\\d{1,3})*)?-?([a-z]{2,})?(en))?" + //16
+            "(-?(\\d{1,3}(,\\d{1,3})*)?-?([a-z]{2,})?(in))" + //21
+            "))((\\d{1,3}(,\\d{1,3})*)?([a-z]{2,})?(ol))?$";
 
     //Takes the input and turns calculates the output values
     //Returns if the input was correct or if there were any mistakes3e
@@ -210,7 +210,7 @@ public class MainChain {
 
         } else {
             if (alcohol_positions.size() != greekNumber_alcohol.getValue() && alcohol_positions.size() != 1) {
-                ErrorMessages.addMessage("\nWrong Greeksyllabe " + greek_syllable_alcohol+ " for " + alcohol_positions.size() + " alcohol-groups");
+                ErrorMessages.addMessage("\nWrong Greeksyllabe " + greek_syllable_alcohol + " for " + alcohol_positions.size() + " alcohol-groups");
             }
         }
 
@@ -221,6 +221,18 @@ public class MainChain {
         for (i = 2; i < name.length(); i++) {
             try {
                 HydroCarbons.valueOf(name.substring(0, i));
+                System.out.println(name.substring(0, i) + " " + name.length());
+                for (int j = i+1; j <= name.length(); j++) {
+                    try {
+                        System.out.println(name.substring(0, j));
+                        HydroCarbons.valueOf(name.substring(0, j));
+
+                        i = j;
+                        break;
+                    } catch (Exception ignored) {
+                    }
+
+                }
                 name = name.substring(0, i);
                 break;
             } catch (Exception ignored) {
