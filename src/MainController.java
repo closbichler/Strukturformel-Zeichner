@@ -527,9 +527,13 @@ public class MainController extends Controller {
                 ErrorMessages.throwInternalError();
             }
         } else {
-            errormsg.setText(ErrorMessages.getFirst3Messages());
-            ErrorMessages.clear();
+            printErrorMessages();
         }
+    }
+
+    public void printErrorMessages() {
+        errormsg.setText(ErrorMessages.getFirst3Messages());
+        ErrorMessages.clear();
     }
 
     public void copyToClipboard(ActionEvent actionEvent) {

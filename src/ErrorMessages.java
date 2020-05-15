@@ -16,7 +16,7 @@ public class ErrorMessages {
     }
 
     public static boolean anyErrorsThrown() {
-        if(undefErr || !messages.isEmpty())
+        if(undefErr || internalErr || !messages.isEmpty())
             return true;
         return false;
     }
