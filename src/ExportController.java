@@ -22,7 +22,7 @@ import java.io.IOException;
 public class ExportController extends Controller {
     private int txtlinks;
     private String mol, sum, struktur;
-    private Canvas canvas;
+    private Canvas canvas, canvasdescr;
     private String initialFileName;
 
     @FXML
@@ -33,6 +33,7 @@ public class ExportController extends Controller {
     public void setInitialFileNameAndCanvas(String name, Canvas canvas, String strukturname, String molmasse, String summenformel) {
         initialFileName = name;
         this.canvas = canvas;
+        canvasdescr = new Canvas(canvas.getWidth(), canvas.getHeight());
         mol = "Molmasse: " + molmasse;
         sum = "Summenformel: " + summenformel;
         struktur = strukturname;
@@ -67,81 +68,75 @@ public class ExportController extends Controller {
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg"));
         }
 
-        if(summenformel.isSelected() && molmasse.isSelected() && !radio1.isSelected() && radio2.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.fillText(mol, txtlinks, 20);
-            gc.fillText(sum, txtlinks, 40);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 45);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 45);
-            this.canvas = canvas;
-        }
-        else if((summenformel.isSelected() || molmasse.isSelected()) && !radio1.isSelected() && radio2.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            if(molmasse.isSelected())
-                gc.fillText(mol, txtlinks, 20);
-            else
-                gc.fillText(sum, txtlinks, 20);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 25);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 25);
-            this.canvas = canvas;
-        }
+        int addSize = 0;
 
-        if(radio2.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
+        if(!radio1.isSelected() && summenformel.isSelected())
+            addSize += 25;
+        if(!radio1.isSelected() && molmasse.isSelected())
+            addSize += 25;
+        if(!radio1.isSelected() && (radio2.isSelected() || radio3.isSelected()))
+            addSize += 25;
+
+        if(!radio1.isSelected() && radio2.isSelected()){
+            Canvas canvasdescr = new Canvas(this.canvasdescr.getWidth(), this.canvasdescr.getHeight()+addSize);
+            GraphicsContext gc = canvasdescr.getGraphicsContext2D();
+
             Font prev = gc.getFont();
             gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
             gc.fillText(struktur, txtlinks, 20);
             gc.setFont(prev);
+
+            if(molmasse.isSelected() && summenformel.isSelected()) {
+                gc.fillText(mol, txtlinks, 40);
+                gc.fillText(sum, txtlinks, 60);
+            }
+            else if(molmasse.isSelected()){
+                gc.fillText(mol, txtlinks, 40);
+            }
+            else if(summenformel.isSelected()){
+                gc.fillText(sum, txtlinks, 40);
+            }
+
             if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 25);
+                gc.drawImage(this.canvas.snapshot(sp, null), 0, addSize);
             else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 25);
-            this.canvas = canvas;
-        }
-        else if(radio3.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            Font prev = gc.getFont();
-            gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
-            gc.fillText(struktur, txtlinks, this.canvas.getHeight()+20);
-            gc.setFont(prev);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
-            this.canvas = canvas;
+                gc.drawImage(this.canvas.snapshot(null, null), 0, addSize);
+
+            this.canvas = canvasdescr;
         }
 
-        if(summenformel.isSelected() && molmasse.isSelected() && !radio1.isSelected() && radio3.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+50);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            gc.fillText(mol, txtlinks, this.canvas.getHeight()+20);
-            gc.fillText(sum, txtlinks, this.canvas.getHeight()+40);
+        if(!radio1.isSelected() && radio3.isSelected()){
+            Canvas canvasdescr = new Canvas(this.canvasdescr.getWidth(), this.canvasdescr.getHeight()+addSize);
+            GraphicsContext gc = canvasdescr.getGraphicsContext2D();
+
+            Font prev = gc.getFont();
+            gc.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+
+            if(molmasse.isSelected() && summenformel.isSelected()) {
+                gc.fillText(struktur, txtlinks, this.canvas.getHeight()+20);
+                gc.setFont(prev);
+                gc.fillText(mol, txtlinks, this.canvas.getHeight()+40);
+                gc.fillText(sum, txtlinks, this.canvas.getHeight()+60);
+            }
+            else if(molmasse.isSelected()){
+                gc.fillText(struktur, txtlinks, this.canvas.getHeight()+20);
+                gc.setFont(prev);
+                gc.fillText(mol, txtlinks, this.canvas.getHeight()+40);
+            }
+            else if(summenformel.isSelected()){
+                gc.fillText(struktur, txtlinks, this.canvas.getHeight()+20);
+                gc.setFont(prev);
+                gc.fillText(sum, txtlinks, this.canvas.getHeight()+40);
+            }
+
+            gc.setFont(prev);
+
             if(transparenz.isSelected())
                 gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
             else
                 gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
-            this.canvas = canvas;
-        }
-        else if((summenformel.isSelected() || molmasse.isSelected()) && !radio1.isSelected() && radio3.isSelected()){
-            Canvas canvas = new Canvas(this.canvas.getWidth(), this.canvas.getHeight()+25);
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            if(molmasse.isSelected())
-                gc.fillText(mol, txtlinks, this.canvas.getHeight()+20);
-            else
-                gc.fillText(sum, txtlinks, this.canvas.getHeight()+20);
-            if(transparenz.isSelected())
-                gc.drawImage(this.canvas.snapshot(sp, null), 0, 0);
-            else
-                gc.drawImage(this.canvas.snapshot(null, null), 0, 0);
-            this.canvas = canvas;
+
+            this.canvas = canvasdescr;
         }
 
         stage.close();
