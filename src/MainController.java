@@ -1,5 +1,6 @@
 import com.sun.webkit.Timer;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.KeyCode;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -84,9 +83,26 @@ public class MainController extends Controller {
         // Contextmenu in Canvas
         ContextMenu c = new ContextMenu();
         MenuItem m1 = new MenuItem("In Zwischenablage kopieren");
-        m1.setOnAction(e -> copyToClipboard(e));
+        m1.setOnAction(e -> copyToClipboard());
         c.getItems().add(m1);
         canvas.setOnContextMenuRequested(e -> {c.show(stage, e.getScreenX(), e.getScreenY());});
+
+        // KeyCombinations
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            final KeyCodeCombination saveComb = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+            final KeyCodeCombination copyComb = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(saveComb.match(keyEvent)) {
+                    openExportWindow();
+                } else if(copyComb.match(keyEvent)) {
+                    copyToClipboard();
+                } else if(keyEvent.getCode() == KeyCode.ESCAPE) {
+                    stage.close();
+                }
+            }
+        });
     }
 
     public void minimize() {
@@ -538,7 +554,7 @@ public class MainController extends Controller {
         ErrorMessages.clear();
     }
 
-    public void copyToClipboard(ActionEvent actionEvent) {
+    public void copyToClipboard() {
         if(struktur.isEmpty())
             return;
         Clipboard clipboard = Clipboard.getSystemClipboard();
