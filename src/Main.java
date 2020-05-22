@@ -14,15 +14,16 @@ public class Main extends Application {
         Parent root = loader.load();
         root.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());
 
-        MainController controller = loader.getController();
-        controller.setStage(primaryStage);
-        controller.readFiles();
-
         primaryStage.setTitle("Strukturformel-Zeichner");
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setResizable(false);
         primaryStage.getIcons().add(new Image(getClass().getResource("images/taskbar-icon.png").toExternalForm()));
+
+        MainController controller = loader.getController();
+        controller.setStage(primaryStage);
+        controller.readFiles();
+
         primaryStage.show();
     }
 
