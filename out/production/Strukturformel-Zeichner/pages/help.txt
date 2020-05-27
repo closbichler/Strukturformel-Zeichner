@@ -1,6 +1,0 @@
-Um eine Struktur zu zeichnen, muss im Textfeld "IUPAC-Nomenklatur" die IUPAC-Nomenklatur eingegeben werden.
-Dann kann über den Knopf "Zeichnen" die Struktur unterhalb angezeigt werden.
-
-Beim fehlerhafter Eingabe wird unterhalb des Eingabefelds das Problem angezeigt.
-
-Um die Grafik zu exportieren kann man unter dem Menüpunkt "Datei" auf "Exportieren" drücken und die gewünschten Einstellungen auswählen.
