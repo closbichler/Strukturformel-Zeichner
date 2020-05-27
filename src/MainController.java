@@ -395,7 +395,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if(input.getText().isBlank())
+        if(input.getText().isEmpty())
             return;
 
         addToHistory(input.getText());

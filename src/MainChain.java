@@ -210,7 +210,7 @@ public class MainChain {
 
         } else {
             if (alcohol_positions.size() != greekNumber_alcohol.getValue() && alcohol_positions.size() != 1) {
-                ErrorMessages.addMessage("\nWrong Greeksyllabe " + greek_syllable_alcohol + " for " + alcohol_positions.size() + " alcohol-groups");
+                ErrorMessages.addMessage("Falsche multiplizierende Vorsilbe für " + alcohol_positions.size() + " OH-Gruppen");
             }
         }
 

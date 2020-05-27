@@ -10,15 +10,15 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/page0.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ressources/pages/page0.fxml"));
         Parent root = loader.load();
-        root.getStylesheets().add(getClass().getResource("styles/style.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("ressources/styles/style.css").toExternalForm());
 
         primaryStage.setTitle("Strukturformel-Zeichner");
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setResizable(false);
-        primaryStage.getIcons().add(new Image(getClass().getResource("images/taskbar-icon.png").toExternalForm()));
+        primaryStage.getIcons().add(new Image(getClass().getResource("ressources/images/taskbar-icon.png").toExternalForm()));
 
         MainController controller = loader.getController();
         controller.setStage(primaryStage);
