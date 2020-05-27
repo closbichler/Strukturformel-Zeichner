@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 enum Orientation{
     Up, Right, Left, Down

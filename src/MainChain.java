@@ -1,6 +1,4 @@
-import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -158,20 +156,23 @@ public class MainChain {
                 int pos = Integer.parseInt(s);
                 int anzahl = Collections.frequency(alcohol_positions, pos);
                 if(pos > hydroCarbon.getValue()){
-                    ErrorMessages.addMessage("Es kann eine OH Gruppe an der " + pos + ". Stelle geben");
+                    ErrorMessages.addMessage("Es kann keine OH Gruppe an der " + pos + ". Stelle geben");
                     return;
                 }
                 else if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
                     alcohol_positions.add(pos);
                 } else {
-                    ErrorMessages.addMessage("Es können nicht " + (anzahl + 1) + " OH-Gruppen an der Stelle " + pos + " geben");
+                    if(anzahl == 0)
+                        ErrorMessages.addMessage("Es kann keine OH-Gruppe an der Stelle " + pos + " geben");
+                    else
+                        ErrorMessages.addMessage("Es können nicht " + (anzahl + 1) + " OH-Gruppen an der Stelle " + pos + " geben");
                     alcohol_positions.add(pos);
                 }
 
             }
         }
         if (alcohol_positions.size() == 0) {
-            ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
+            //ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
 
             if (greekNumber_alcohol.getValue() == 0) {
                 alcohol_positions.add(1);

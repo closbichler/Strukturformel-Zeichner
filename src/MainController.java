@@ -1,5 +1,3 @@
-import com.sun.webkit.Timer;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
 import java.util.List;
 
 public class MainController extends Controller {
@@ -62,15 +59,16 @@ public class MainController extends Controller {
 
     public void readFiles() {
         String path = System.getProperty("user.dir");
+
         try {
-            List<String> lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/documentation.txt"));
+            List<String> lines = Files.readAllLines(Paths.get("src/ressources/pages/documentation.txt"));
             String text = "";
             for (String l : lines) {
                 text += l + "\n";
             }
             doc.setText(text);
 
-            lines = Files.readAllLines(Paths.get(path, "src/ressources/pages/help.txt"));
+            lines = Files.readAllLines(Paths.get("src/ressources/pages/help.txt"));
             text = "";
             for (String l : lines) {
                 text += l + "\n";
