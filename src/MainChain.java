@@ -157,7 +157,11 @@ public class MainChain {
             for (String s : split) {
                 int pos = Integer.parseInt(s);
                 int anzahl = Collections.frequency(alcohol_positions, pos);
-                if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
+                if(pos > hydroCarbon.getValue()){
+                    ErrorMessages.addMessage("Es kann eine OH Gruppe an der " + pos + ". Stelle geben");
+                    return;
+                }
+                else if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
                     alcohol_positions.add(pos);
                 } else {
                     ErrorMessages.addMessage("Es können nicht " + (anzahl + 1) + " OH-Gruppen an der Stelle " + pos + " geben");
