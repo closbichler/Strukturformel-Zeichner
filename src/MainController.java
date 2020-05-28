@@ -16,7 +16,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -58,25 +60,25 @@ public class MainController extends Controller {
     String struktur = "";
 
     public void readFiles() {
-        String path = System.getProperty("user.dir");
+        BufferedReader doc_reader = null, help_reader = null;
+        doc_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/documentation.txt")));
+        help_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/help.txt")));
 
+        String text = "", line;
         try {
-            List<String> lines = Files.readAllLines(Paths.get("src/ressources/pages/documentation.txt"));
-            String text = "";
-            for (String l : lines) {
-                text += l + "\n";
+            while ((line = doc_reader.readLine()) != null) {
+                text += line;
             }
             doc.setText(text);
 
-            lines = Files.readAllLines(Paths.get("src/ressources/pages/help.txt"));
-            text = "";
-            for (String l : lines) {
-                text += l + "\n";
+            while ((line = help_reader.readLine()) != null) {
+                text += line;
             }
             help.setText(text);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
 
         // Contextmenu in Canvas
         ContextMenu c = new ContextMenu();
