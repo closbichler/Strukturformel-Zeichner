@@ -14,7 +14,7 @@ public class SideChain {
 
     private void regex(String input) {
         String regex = "^(\\d{1,3}(,\\d{1,3})*)-?([A-Za-z]{2,})?\\(?(([a-z]{2,})" +
-                "(|("+
+                "(|(" +
                 "(a)?((\\d{1,3}(,\\d{1,3})*)?([a-z]{2,})?(en))|" +
                 "(a)?((\\d{1,3}(,\\d{1,3})*)?([a-z]{2,})?(en))?" +
                 "((\\d{1,3}(,\\d{1,3})*)?([a-z]{2,})?(in))" +
@@ -36,8 +36,7 @@ public class SideChain {
             mainchain = calc_syllable(greek_syllable, m.group(4));
             mainChain = new MainChain(mainchain, true);
             validateChains();
-        }
-        else {
+        } else {
             ErrorMessages.throwUndefinedError();
         }
 
@@ -71,7 +70,7 @@ public class SideChain {
                 try {
                     greekNumber = GreekNumbers.valueOf(mainchain.substring(0, i));
                     break;
-                } catch (Exception e) {
+                } catch (Exception ignored) {
 
                 }
 
@@ -82,7 +81,7 @@ public class SideChain {
                 return mainchain.substring(i);
             }
         }
-        if(greekNumber == null){
+        if (greekNumber == null) {
             greekNumber = GreekNumbers.none;
         }
         return mainchain;
@@ -90,7 +89,10 @@ public class SideChain {
 
     boolean validateChains() {
 
-        if (greekNumber != null && greekNumber.getValue() != positions.size() && positions.size()!= 1) {
+        if (greekNumber != null && greekNumber.getValue() != positions.size() && positions.size() != 1) {
+            ErrorMessages.addMessage("Die multiplizierende Vorsilbe der Seitenkette ist inkorrekt");
+            return false;
+        } else if (greekNumber != null && positions.size() == 1 && greekNumber.getValue() != 0) {
             ErrorMessages.addMessage("Die multiplizierende Vorsilbe der Seitenkette ist inkorrekt");
             return false;
         }

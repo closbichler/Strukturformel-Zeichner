@@ -63,7 +63,7 @@ public class Model {
     public String toString() {
         return "Model{" +
                 "mainChain=" + mainChain + "," +
-                "\n\t sideChains=" + sideChains +
+                "\n\tsideChains=" + sideChains +
                 '}';
     }
 }
