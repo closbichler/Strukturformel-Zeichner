@@ -155,14 +155,13 @@ public class MainChain {
             for (String s : split) {
                 int pos = Integer.parseInt(s);
                 int anzahl = Collections.frequency(alcohol_positions, pos);
-                if(pos > hydroCarbon.getValue()){
+                if (pos > hydroCarbon.getValue()) {
                     ErrorMessages.addMessage("Es kann keine OH Gruppe an der " + pos + ". Stelle geben");
                     return;
-                }
-                else if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
+                } else if (bonds_per_carbon.get(pos - 1) < 4 - anzahl) {
                     alcohol_positions.add(pos);
                 } else {
-                    if(anzahl == 0)
+                    if (anzahl == 0)
                         ErrorMessages.addMessage("Es kann keine OH-Gruppe an der Stelle " + pos + " geben");
                     else
                         ErrorMessages.addMessage("Es können nicht " + (anzahl + 1) + " OH-Gruppen an der Stelle " + pos + " geben");
@@ -219,6 +218,8 @@ public class MainChain {
             }
         }
 
+
+
     }
 
     private boolean findName() {
@@ -227,7 +228,8 @@ public class MainChain {
             try {
                 HydroCarbons.valueOf(name.substring(0, i));
                 //System.out.println(name.substring(0, i) + " " + name.length());
-                for (int j = i+1; j <= name.length(); j++) {
+
+                for (int j = i + 1; j <= name.length(); j++) {
                     try {
                         //System.out.println(name.substring(0, j));
                         HydroCarbons.valueOf(name.substring(0, j));
@@ -399,14 +401,15 @@ public class MainChain {
                     return;
                 }
             }
-        } else {
-            if (multibond_char != null && multibond_char.equals("a")) {
-                //Incorrect a after Carbon syllable
-                //e.g. Propa1en
-                ErrorMessages.addMessage("Bei einzelnen Mehrfachbindungen ist ein -a nach dem Zahlwort überflüssig (z.B.: Prop 1 en)");
-                return;
-            }
         }
+
+        if ((double_bonds.size() + triple_bonds.size() <= 1 ) && multibond_char != null && multibond_char.equals("a")) {
+            //Incorrect a after Carbon syllable
+            //e.g. Propa1en
+            ErrorMessages.addMessage("Bei einzelnen Mehrfachbindungen ist ein -a nach dem Zahlwort überflüssig");
+            return;
+        }
+
         if (greekNumber_en.getValue() == 0) {
             if (double_bonds.size() > 1) {
                 //No Greek Syllable or Wrong Greek Syllable name
