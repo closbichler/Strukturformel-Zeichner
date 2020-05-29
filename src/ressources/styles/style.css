@@ -78,6 +78,19 @@ Yellow:     #6EFF4D
     -fx-padding: 0 0 0 0;
 }
 
+.btn-minimize {
+    -fx-background-image: url('../images/minimize.png');
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
+}
+
+.btn-close {
+    -fx-background-image: url('../images/close.png');
+    -fx-background-repeat: stretch;
+    -fx-background-position: center;
+    -fx-end-margin: 0px;
+}
+
 .btn-close:hover {
     -fx-background-color: -fx-red;
 }

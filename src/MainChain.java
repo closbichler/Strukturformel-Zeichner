@@ -228,6 +228,7 @@ public class MainChain {
             try {
                 HydroCarbons.valueOf(name.substring(0, i));
                 //System.out.println(name.substring(0, i) + " " + name.length());
+
                 for (int j = i + 1; j <= name.length(); j++) {
                     try {
                         //System.out.println(name.substring(0, j));

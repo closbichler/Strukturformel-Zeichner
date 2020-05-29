@@ -66,6 +66,7 @@
       <element id="file-copy" path="$USER_HOME$/eclipse/javafx-sdk-11.0.2/bin/api-ms-win-crt-filesystem-l1-1-0.dll" />
       <element id="file-copy" path="$USER_HOME$/eclipse/javafx-sdk-11.0.2/bin/api-ms-win-core-localization-l1-2-0.dll" />
       <element id="file-copy" path="$USER_HOME$/eclipse/javafx-sdk-11.0.2/bin/javafx_iio.dll" />
+      <element id="module-source" name="Strukturformel-Zeichner" />
     </root>
   </artifact>
 </component>
