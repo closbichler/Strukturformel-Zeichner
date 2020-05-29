@@ -83,7 +83,9 @@ public class MainController extends Controller {
         MenuItem m1 = new MenuItem("In Zwischenablage kopieren");
         m1.setOnAction(e -> copyToClipboard());
         c.getItems().add(m1);
-        canvas.setOnContextMenuRequested(e -> {c.show(stage, e.getScreenX(), e.getScreenY());});
+        canvas.setOnContextMenuRequested(e -> {
+            c.show(stage, e.getScreenX(), e.getScreenY());
+        });
 
         // KeyCombinations
         stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
@@ -92,11 +94,11 @@ public class MainController extends Controller {
 
             @Override
             public void handle(KeyEvent keyEvent) {
-                if(saveComb.match(keyEvent)) {
+                if (saveComb.match(keyEvent)) {
                     openExportWindow();
-                } else if(copyComb.match(keyEvent)) {
+                } else if (copyComb.match(keyEvent)) {
                     copyToClipboard();
-                } else if(keyEvent.getCode() == KeyCode.ESCAPE) {
+                } else if (keyEvent.getCode() == KeyCode.ESCAPE) {
                     stage.close();
                 }
             }
@@ -137,7 +139,7 @@ public class MainController extends Controller {
     }
 
     public void openExportWindow() {
-        if(struktur.length() < 3)
+        if (struktur.length() < 3)
             return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("pages/export.fxml"));
@@ -169,8 +171,8 @@ public class MainController extends Controller {
     }
 
     public void addToHistory(String struktur) {
-        for(MenuItem m : history.getItems()) {
-            if(m.getText().equals(struktur))
+        for (MenuItem m : history.getItems()) {
+            if (m.getText().equals(struktur))
                 return;
         }
         MenuItem menuItem = new MenuItem(struktur);
@@ -189,28 +191,28 @@ public class MainController extends Controller {
             drawCanvas();
     }
 
-    public String getMolmasse(int c, int h, int oh){
-        double m = c*12.01 + h*1.01 + oh*(1.01+16);
+    public String getMolmasse(int c, int h, int oh) {
+        double m = c * 12.01 + h * 1.01 + oh * (1.01 + 16);
 
-        return String.format("%.2f",m) + " g/mol";
+        return String.format("%.2f", m) + " g/mol";
     }
 
-    public String getSummenformel(int c, int h, int oh){
+    public String getSummenformel(int c, int h, int oh) {
         String sum = "C";
 
-        if(c > 1)
+        if (c > 1)
             sum += c;
-        if(h > 0)
+        if (h > 0)
             sum += "H" + h;
-        if(oh == 1)
+        if (oh == 1)
             sum += "OH";
-        if(oh > 1)
+        if (oh > 1)
             sum += "(OH)" + oh;
 
         return sum;
     }
-  
-  public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
+
+    public void calcMainChain(ArrayList<ArrayList<String>> mainChainString, Model model) {
         for (int i = 1; i <= model.mainChain.hydroCarbon.getValue(); i++) {
             ArrayList<String> bonds = new ArrayList<>();
             for (int j = 0; j < 4; j++) {
@@ -249,19 +251,17 @@ public class MainController extends Controller {
                 if (!alcohol) {
                     for (Integer alcohol_position : model.mainChain.alcohol_positions) {
                         if (alcohol_position == i) {
-                            if(i == 1 && bonds.get(3) == null ){
+                            if (i == 1 && bonds.get(3) == null) {
                                 bonds.remove(3);
                                 bonds.add(3, "OH");
                                 integer++;
                                 alcohol = true;
-                            }
-                            else if(i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null ){
+                            } else if (i == model.mainChain.hydroCarbon.getValue() && bonds.get(1) == null) {
                                 bonds.remove(1);
                                 bonds.add(1, "OH");
                                 integer++;
                                 alcohol = true;
-                            }
-                            else if (bonds.get(0) == null ) {
+                            } else if (bonds.get(0) == null) {
 
                                 bonds.remove(0);
                                 bonds.add(0, "OH");
@@ -393,7 +393,7 @@ public class MainController extends Controller {
     }
 
     public void drawCanvas() {
-        if(input.getText().isEmpty())
+        if (input.getText().isEmpty())
             return;
 
         addToHistory(input.getText());
@@ -433,7 +433,7 @@ public class MainController extends Controller {
 
                     boolean orientation = true;
                     for (SideChainInput sideChainInput : sideChainInputs) {
-                        if (sideChainInput != null && sideChainInput.pos == position ) {
+                        if (sideChainInput != null && sideChainInput.pos == position) {
                             calcSideChains(sideChainString, Orientation.Down, sideChain);
                             SideChainInput down = new SideChainInput(Orientation.Down, position, sideChainString);
                             sideChainInputs[i] = down;
@@ -458,11 +458,11 @@ public class MainController extends Controller {
             for (SideChain sideChain : model.sideChains) {
                 h_atoms += sideChain.mainChain.h_atoms;
                 c_atoms += sideChain.mainChain.hydroCarbon.getValue() * sideChain.positions.size();
-                oh_atoms += sideChain.mainChain.oh_atoms;
+                oh_atoms += sideChain.mainChain.alcohol_positions.size();
             }
             h_atoms += model.mainChain.h_atoms;
             c_atoms += model.mainChain.hydroCarbon.getValue();
-            oh_atoms += model.mainChain.oh_atoms;
+            oh_atoms += model.mainChain.alcohol_positions.size();
 
 
             struktur = input.getText();
@@ -473,7 +473,7 @@ public class MainController extends Controller {
             do {
 
                 try {
-                    if(fontsize == 0) {
+                    if (fontsize == 0) {
                         ErrorMessages.throwInternalError();
                         printErrorMessages();
                         return;
@@ -511,23 +511,22 @@ public class MainController extends Controller {
             try {
                 int up = 0, down = 0;
                 ArrayList<Integer> positions = new ArrayList<>();
-                for(SideChain s : model.sideChains){
-                    for(Integer j : s.positions) {
-                        if(positions.contains(j)){
-                            if(s.mainChain.hydroCarbon.getValue()*2 > down){
-                                down = s.mainChain.hydroCarbon.getValue()*2;
+                for (SideChain s : model.sideChains) {
+                    for (Integer j : s.positions) {
+                        if (positions.contains(j)) {
+                            if (s.mainChain.hydroCarbon.getValue() * 2 > down) {
+                                down = s.mainChain.hydroCarbon.getValue() * 2;
                             }
-                        }
-                        else if (s.mainChain.hydroCarbon.getValue()*2 > up) {
-                            up = s.mainChain.hydroCarbon.getValue()*2;
+                        } else if (s.mainChain.hydroCarbon.getValue() * 2 > up) {
+                            up = s.mainChain.hydroCarbon.getValue() * 2;
                         }
                         positions.add(j);
                     }
                 }
 
                 col += (grid.getMaxCol() - model.mainChain.hydroCarbon.getValue() * 2) / 2;
-                row = (grid.getMaxRow() - (up+down+3))/2 + up+1;
-                if(((grid.getMaxRow() - (up+down+3)) % 2) == 1)
+                row = (grid.getMaxRow() - (up + down + 3)) / 2 + up + 1;
+                if (((grid.getMaxRow() - (up + down + 3)) % 2) == 1)
                     row++;
 
                 gc.clearRect(0, 0, canvaslen, canvaswid);
@@ -553,12 +552,12 @@ public class MainController extends Controller {
     }
 
     public void copyToClipboard() {
-        if(struktur.isEmpty())
+        if (struktur.isEmpty())
             return;
         Clipboard clipboard = Clipboard.getSystemClipboard();
         ClipboardContent content = new ClipboardContent();
 
-        WritableImage writableImage = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+        WritableImage writableImage = new WritableImage((int) canvas.getWidth(), (int) canvas.getHeight());
         canvas.snapshot(null, writableImage);
         content.putImage(writableImage);
         clipboard.setContent(content);
