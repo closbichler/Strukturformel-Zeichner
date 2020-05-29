@@ -226,10 +226,10 @@ public class MainChain {
         for (i = 2; i < name.length(); i++) {
             try {
                 HydroCarbons.valueOf(name.substring(0, i));
-                System.out.println(name.substring(0, i) + " " + name.length());
+                //System.out.println(name.substring(0, i) + " " + name.length());
                 for (int j = i+1; j <= name.length(); j++) {
                     try {
-                        System.out.println(name.substring(0, j));
+                        //System.out.println(name.substring(0, j));
                         HydroCarbons.valueOf(name.substring(0, j));
 
                         i = j;
