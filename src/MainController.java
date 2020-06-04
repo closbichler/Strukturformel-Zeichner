@@ -71,6 +71,8 @@ public class MainController extends Controller {
             }
             doc.setText(text);
 
+            text = "";
+
             while ((line = help_reader.readLine()) != null) {
                 text += line;
             }
