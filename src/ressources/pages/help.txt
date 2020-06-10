@@ -1,9 +1,9 @@
 Um eine Struktur zu zeichnen, muss im Textfeld "IUPAC-Nomenklatur" die IUPAC-Nomenklatur eingegeben werden. 
-Bindestriche und Abstände werden vom Programm ignoriert, können also wahlweise auch weggelassen werden. 
+Bindestriche und Abstaende werden vom Programm ignoriert, koennen also wahlweise auch weggelassen werden.
 Beistriche sind jedoch zwingend um Zahlen klar abzutrennen. 
-Dann kann über den Knopf "Zeichnen" die Struktur unterhalb angezeigt werden. 
+Dann kann ueber den Knopf "Zeichnen" die Struktur unterhalb angezeigt werden.
 
 Bei fehlerhafter Eingabe wird unterhalb des Eingabefelds das Problem angezeigt. 
-Um die Grafik zu exportieren kann man unter dem Menüpunkt "Datei" auf "Exportieren" drücken und die gewünschten Einstellungen auswählen. 
-Weiters kann die Grafik auch in die Zwischenablage gespeichert und so direkt in ein Dokument eingefügt werden. 
-Das Programm speichert die letzten Eingaben und kann diese über den Menüpunkt "Datei" > "Letzte" wieder aufrufen.
+Um die Grafik zu exportieren kann man unter dem Menuepunkt "Datei" auf "Exportieren" druecken und die gewuenschten Einstellungen auswaehlen.
+Weiters kann die Grafik auch in die Zwischenablage gespeichert und so direkt in ein Dokument eingefuegt werden.
+Das Programm speichert die letzten Eingaben und kann diese ueber den Menuepunkt "Datei" > "Letzte" wieder aufrufen.
