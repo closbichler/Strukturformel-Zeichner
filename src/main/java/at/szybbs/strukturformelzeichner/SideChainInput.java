@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import java.util.ArrayList;
 
 enum Orientation{
@@ -36,7 +38,7 @@ public class SideChainInput {
             }
             chainString+="],";
         }
-        return "SideChainInput{" +
+        return "at.szybbs.strukturformelzeichner.SideChainInput{" +
                 "orientation=" + orientation +
                 ", pos=" + pos +
                 ", chain=" + chainString+

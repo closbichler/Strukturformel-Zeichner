@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -158,7 +160,7 @@ public class MainController extends Controller {
         Stage popupWindow = new Stage();
         Parent root = loader.load();
 
-        root.getStylesheets().add(getClass().getResource("ressources/styles/style.css").toExternalForm());
+        root.getStylesheets().add(getClass().getResource("/styles/style.css").toExternalForm());
         Controller controller = loader.getController();
         controller.setStage(popupWindow);
 
@@ -166,7 +168,7 @@ public class MainController extends Controller {
         popupWindow.setResizable(false);
         popupWindow.initStyle(StageStyle.UNDECORATED);
         popupWindow.setScene(new Scene(root));
-        popupWindow.getIcons().add(new Image(getClass().getResource("ressources/images/taskbar-icon.png").toExternalForm()));
+        popupWindow.getIcons().add(new Image(getClass().getResource("/images/taskbar-icon.png").toExternalForm()));
 
         return popupWindow;
     }

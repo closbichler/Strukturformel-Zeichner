@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -61,7 +63,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return "Model{" +
+        return "at.szybbs.strukturformelzeichner.Model{" +
                 "mainChain=" + mainChain + "," +
                 "\n\tsideChains=" + sideChains +
                 '}';

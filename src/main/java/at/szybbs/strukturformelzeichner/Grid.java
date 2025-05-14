@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import javafx.scene.canvas.GraphicsContext;
 
 class Grid {

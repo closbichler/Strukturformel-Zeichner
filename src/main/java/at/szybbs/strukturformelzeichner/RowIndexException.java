@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 public class RowIndexException extends Exception {
     private int row;
 

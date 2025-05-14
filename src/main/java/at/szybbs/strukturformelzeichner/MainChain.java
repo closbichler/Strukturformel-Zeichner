@@ -1,9 +1,11 @@
+package at.szybbs.strukturformelzeichner;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//Stores the MainChain of the HydroCarbon
+//Stores the at.szybbs.strukturformelzeichner.MainChain of the HydroCarbon
 //Simply create an object of it and call the method regex
 
 //Import variables are the enums hydroCarbon, greekNumber, double_bonds and triple_bonds
@@ -171,7 +173,7 @@ public class MainChain {
             }
         }
         if (alcohol_positions.size() == 0) {
-            //ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
+            //at.szybbs.strukturformelzeichner.ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
 
             if (greekNumber_alcohol.getValue() == 0) {
                 alcohol_positions.add(1);
@@ -489,7 +491,7 @@ public class MainChain {
 
     @Override
     public String toString() {
-        return "MainChain{" +
+        return "at.szybbs.strukturformelzeichner.MainChain{" +
                 "hydroCarbon=" + hydroCarbon +
                 ", greekNumber_en=" + greekNumber_en +
                 ", greekNumber_in=" + greekNumber_in +

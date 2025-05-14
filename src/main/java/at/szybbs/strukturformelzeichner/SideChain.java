@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,7 +105,7 @@ public class SideChain {
 
     @Override
     public String toString() {
-        return "SideChain{" +
+        return "at.szybbs.strukturformelzeichner.SideChain{" +
                 "greekNumber=" + greekNumber +
                 ", positions=" + positions +
                 ", \nmainChain=" + mainChain +

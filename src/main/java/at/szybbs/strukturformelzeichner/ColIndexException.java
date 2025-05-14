@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 public class ColIndexException extends Exception {
     private int col;
 

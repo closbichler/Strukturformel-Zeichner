@@ -1,3 +1,5 @@
+package at.szybbs.strukturformelzeichner;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
