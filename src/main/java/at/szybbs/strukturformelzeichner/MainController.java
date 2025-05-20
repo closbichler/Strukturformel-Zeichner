@@ -21,6 +21,7 @@ import javafx.stage.StageStyle;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class MainController extends Controller {
@@ -60,8 +61,8 @@ public class MainController extends Controller {
 
     public void readFiles() {
         BufferedReader doc_reader = null, help_reader = null;
-        doc_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/documentation.txt")));
-        help_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/help.txt")));
+        doc_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/documentation.txt"), StandardCharsets.UTF_8));
+        help_reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("pages/help.txt"), StandardCharsets.UTF_8));
 
         String text = "", line;
         try {
