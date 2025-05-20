@@ -173,7 +173,7 @@ public class MainChain {
             }
         }
         if (alcohol_positions.size() == 0) {
-            //at.szybbs.strukturformelzeichner.ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
+            //ErrorMessages.addMessage("Bitte geben Sie Positionen für die OH-Gruppen mit");
 
             if (greekNumber_alcohol.getValue() == 0) {
                 alcohol_positions.add(1);
@@ -491,7 +491,7 @@ public class MainChain {
 
     @Override
     public String toString() {
-        return "at.szybbs.strukturformelzeichner.MainChain{" +
+        return "MainChain{" +
                 "hydroCarbon=" + hydroCarbon +
                 ", greekNumber_en=" + greekNumber_en +
                 ", greekNumber_in=" + greekNumber_in +
