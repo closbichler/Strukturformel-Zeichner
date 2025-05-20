@@ -63,7 +63,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return "at.szybbs.strukturformelzeichner.Model{" +
+        return "Model{" +
                 "mainChain=" + mainChain + "," +
                 "\n\tsideChains=" + sideChains +
                 '}';

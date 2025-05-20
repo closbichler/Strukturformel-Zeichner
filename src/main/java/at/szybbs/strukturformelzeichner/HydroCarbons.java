@@ -18,7 +18,7 @@ public enum HydroCarbons {
     hect(100), dict(200), trict(300);
 
 
-    //Found those Names for at.szybbs.strukturformelzeichner.HydroCarbons from 1 to 30 on the website
+    //Found those Names for HydroCarbons from 1 to 30 on the website
     // https://www.internetchemie.info/chemie-lexikon/stoffgruppen/a/alkane.php
 
     //Storing the carbon amount as integer

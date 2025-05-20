@@ -105,7 +105,7 @@ public class SideChain {
 
     @Override
     public String toString() {
-        return "at.szybbs.strukturformelzeichner.SideChain{" +
+        return "SideChain{" +
                 "greekNumber=" + greekNumber +
                 ", positions=" + positions +
                 ", \nmainChain=" + mainChain +

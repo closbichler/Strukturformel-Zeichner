@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//Stores the at.szybbs.strukturformelzeichner.MainChain of the HydroCarbon
+//Stores the MainChain of the HydroCarbon
 //Simply create an object of it and call the method regex
 
 //Import variables are the enums hydroCarbon, greekNumber, double_bonds and triple_bonds

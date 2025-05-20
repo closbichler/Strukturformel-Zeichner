@@ -12,7 +12,7 @@ public enum GreekNumbers {
     hecta(100), henhecta(101), dicta(200), docosadicta(222),
     tricta(300), dohexacontatricta(362), tetracta(400);
 
-    //at.szybbs.strukturformelzeichner.GreekNumbers found on
+    //GreekNumbers found on
     // https://de.wikipedia.org/wiki/Griechische_Zahlw%C3%B6rter#Altgriechische_Zahlw%C3%B6rter
 
     //Stores the number behind the greek number word

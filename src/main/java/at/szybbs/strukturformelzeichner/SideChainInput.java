@@ -38,7 +38,7 @@ public class SideChainInput {
             }
             chainString+="],";
         }
-        return "at.szybbs.strukturformelzeichner.SideChainInput{" +
+        return "SideChainInput{" +
                 "orientation=" + orientation +
                 ", pos=" + pos +
                 ", chain=" + chainString+
